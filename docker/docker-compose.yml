@@ -1,0 +1,127 @@
+version: '3'
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+services:
+
+### Clipsal C-Gate Server #########################################
+    cgate:
+      build:
+        context: ./cgate
+      ports:
+        - "20023:20023"
+        - "20025:20025"
+        - "20026:20026"
+        - "20123:20123"
+      volumes:
+        - ./cgate/config/C-GateConfig.txt:/cgate/config/C-GateConfig.txt
+        - ./cgate/config/access.txt:/cgate/config/access.txt
+        - ./cgate/config/NET1.xml:/cgate/tag/NET1.xml
+      networks:
+        code-network:
+          aliases:
+            - cgate-container
+
+### NGINX Server #########################################
+    nginx:
+      build:
+        context: ./nginx
+      volumes:
+        - ../code/php:/code:cached
+        - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+        - ./nginx/ssl:/etc/nginx/ssl
+      ports:
+        - "80:80"
+        - "443:443"
+        - "9090:9090"
+      depends_on:
+        - python
+        #- vue
+      networks:
+        - frontend
+        - backend
+
+### Python ##############################################
+
+    python:
+      build: ./python
+      volumes:
+        - ../code/django:/var/www/html:cached
+      working_dir: /var/www/html
+      expose:
+        - "8888"
+      depends_on:
+        - mysql
+      networks:
+        - backend
+
+### Vue ##############################################
+#
+#    vue:
+#      build: ../code/vue
+#      volumes:
+#        - ../code/vue:/app:cached
+#        - /app/node_modules
+#      working_dir: /app
+#      ports:
+#        - "4000:4000"
+#      networks:
+#        - frontend
+#        - backend
+
+### PHP ##############################################
+  
+    php:
+      build:
+        context: ./php-fpm
+      ports:
+        - "9000:9000"
+      volumes:
+        - ./php-fpm/php73.ini:/usr/local/etc/php/php.ini
+        - ./php-fpm/log.conf:/usr/local/etc/php-fpm.d/zz-log.conf
+        - ../code/php:/code:cached
+      networks:
+        - backend
+
+### MySQL ################################################
+    mysql:
+      build:
+        context: ./mysql
+      environment:
+        - MYSQL_DATABASE=crave
+        - MYSQL_USER=crave
+        - MYSQL_PASSWORD=admin
+        - MYSQL_ROOT_PASSWORD=root
+        - TZ=UTC
+      volumes:
+        - ../data/mysql:/var/lib/mysql:cached
+        - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:cached
+      ports:
+        - "3306:3306"
+      networks:
+        - backend
+      command: --secure-file-priv=""
+
+
+### phpMyAdmin ###########################################
+    phpmyadmin:
+      build: ./phpmyadmin
+      environment:
+        - PMA_ARBITRARY=1
+        - MYSQL_USER=crave
+        - MYSQL_PASSWORD=admin
+        - MYSQL_ROOT_PASSWORD=root
+        - PMA_HOST:mysql
+      volumes:
+        - ./phpmyadmin/php.ini:/usr/local/etc/php/php.ini
+      ports:
+        - "8080:80"
+      depends_on:
+        - mysql
+      networks:
+        - frontend
+        - backend

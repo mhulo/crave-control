@@ -1,0 +1,24 @@
+# /etc/systemd/system/crave.service
+
+# sudo usermod -a -G docker michael
+# sudo nano /etc/systemd/system/crave.service
+
+# sudo systemctl enable docker.service
+# sudo systemctl enable crave.service
+# sudo systemctl start crave.service
+
+[Unit]
+Description=Docker Compose Opt Service
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/opt
+ExecStart=/usr/local/bin/docker-compose up -d
+ExecStop=/usr/local/bin/docker-compose down
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target

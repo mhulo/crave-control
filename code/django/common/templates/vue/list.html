@@ -1,0 +1,44 @@
+{% verbatim %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/static/common/css/vue.css"/>
+  <title>Product App</title>
+</head>
+<body>
+
+<template>
+  <RecycleScroller
+    class="scroller"
+    :items="list"
+    :item-size="32"
+    key-field="id"
+    v-slot="{ item }"
+  >
+    <div class="user">
+      {{ item.name }}
+    </div>
+  </RecycleScroller>
+</template>
+
+<script>
+export default {
+  props: {
+    list: Array,
+  },
+}
+</script>
+
+<style scoped>
+.scroller { height: 100%; }
+.user { height: 32%; padding: 0 12px; display: flex; align-items: center; }
+</style>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue-virtual-scroll-list@2.3.0/dist/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="/static/common/js/main.js"></script>
+</body>
+</html>
+{% endverbatim %}
+

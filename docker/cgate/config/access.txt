@@ -1,0 +1,13 @@
+##C-Gate Server Access Control File
+## Created:Fri Apr 27 16:22:26 GMT 2018
+## File name: /clipsal/c-gate/config/access.txt
+## Standard C-Gate Configuration
+interface 0:0:0:0:0:0:0:1 Program
+interface 127.0.0.1 Program
+interface localhost Program
+## Custom Configuration for docker
+remote 10.255.255.255 Program
+remote 192.168.255.255 Program
+remote 172.255.255.255 Program
+
+## End of access control file

@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="_token" content="{{ csrf_token }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>LOC-8</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{% static 'common/js/cc-main.js' %}"></script>
+  <script type="text/javascript" src="{% static 'common/js/cc-login.js' %}"></script>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300,400">
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'common/css/cc-main.css' %}"/>
+  <link rel="stylesheet" href="{% static 'common/css/cc-login.css' %}"/>
+
+</head>
+<body>
+
+<!-- particles.js container -->
+<div id="particles-js">
+  <div id="main-container">
+    <div id="logo-container">
+      <div class="auth-title">CRAVE</div>
+      <div class="auth-subtitle">control</div>
+    </div>
+    <div id="login-container"></div>
+  </div>
+</div>
+
+  <script>
+    $(document).ready(function () {
+      nextUrl = '{{ request.GET.next }}';
+      {% if request.user.is_authenticated %}userName = '{{ user.username }}';{% endif %}
+      renderAuth('#login-container');
+    });
+  </script>
+  <script type="text/javascript" src="{% static 'common/js/particles.js' %}"></script>
+  <script type="text/javascript" src="{% static 'common/js/particles-app.js' %}"></script>
+
+</body>
+</html>

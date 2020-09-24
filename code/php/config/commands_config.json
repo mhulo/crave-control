@@ -1,0 +1,285 @@
+{
+  "command_1" : {
+    "description" : "dim master lights",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelDim",
+        "params" : {
+          "device_id": "NET1_254_56_0",
+          "set_value": null,
+          "ramp_time": 4              
+        }
+      }
+    ]
+  },
+  "command_2" : {
+    "description" : "dim nia lights",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelDim",
+        "params" : {
+          "device_id": "NET1_254_56_3",
+          "ramp_time": 4              
+        }
+      }
+    ]
+  },
+  "command_3" : {
+    "description" : "dim study lights",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelDim",
+        "params" : {
+          "device_id": "NET1_254_56_5",
+          "ramp_time": 4              
+        }
+      }
+    ]
+  },
+  "command_4" : {
+    "description" : "dim dining lights",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelDim",
+        "params" : {
+          "device_id": "NET1_254_56_8",
+          "ramp_time": 4              
+        }
+      }
+    ]
+  },
+  "command_5" : {
+    "description" : "dim lounge lights",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelDim",
+        "params" : {
+          "device_id": "NET1_254_56_9",
+          "ramp_time": 4              
+        }
+      }
+    ]
+  },
+  "command_6" : {
+    "description" : "dim kitchen lights",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelDim",
+        "params" : {
+          "device_id": "NET1_254_56_15",
+          "ramp_time": 4              
+        }
+      }
+    ]
+  },
+  "command_7" : {
+    "description" : "dim entrance lights",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelDim",
+        "params" : {
+          "device_id": "NET1_254_56_16",
+          "ramp_time": 4              
+        }
+      }
+    ]
+  },
+  "command_8" : {
+    "description" : "dim lounge n dining",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelDim",
+        "params" : {
+          "device_id": "NET1_254_56_8",
+          "ramp_time": 4              
+        }
+      },
+      {
+        "method" : "cgate/cgateController@levelDim",
+        "params" : {
+          "device_id": "NET1_254_56_9",
+          "ramp_time": 4              
+        }
+      },
+      {
+        "method" : "cgate/cgateController@levelDim",
+        "params" : {
+          "device_id": "NET1_254_56_15",
+          "ramp_time": 4              
+        }
+      },
+      {
+        "method" : "cgate/cgateController@levelDim",
+        "params" : {
+          "device_id": "NET1_254_56_16",
+          "ramp_time": 4              
+        }
+      }
+    ]
+  },
+  "command_9" : {
+    "description" : "ensuite fan",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_1"          
+        }
+      }
+    ]
+  },
+  "command_23" : {
+    "description" : "stairs led strip",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_6"          
+        }
+      }
+    ]
+  },
+  "command_10" : {
+    "description" : "wir light",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_7"          
+        }
+      }
+    ]
+  },
+  "command_11" : {
+    "description" : "ensuite ceiling heat",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_11"          
+        }
+      }
+    ]
+  },
+  "command_12" : {
+    "description" : "bathroom lights",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_12"          
+        }
+      }
+    ]
+  },
+  "command_13" : {
+    "description" : "ensuite floor heat",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_13"          
+        }
+      }
+    ]
+  },
+  "command_14" : {
+    "description" : "entrance lights",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_16"          
+        }
+      }
+    ]
+  },
+  "command_15" : {
+    "description" : "master led strip",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_17"          
+        }
+      }
+    ]
+  },
+  "command_16" : {
+    "description" : "bathroom fan",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_18"          
+        }
+      }
+    ]
+  },
+  "command_17" : {
+    "description" : "bathroom ceiling heat",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_21"          
+        }
+      }
+    ]
+  },
+  "command_18" : {
+    "description" : "bathroom floor heat",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_22"          
+        }
+      }
+    ]
+  },
+  "command_19" : {
+    "description" : "garage light",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_23"          
+        }
+      }
+    ]
+  },
+  "command_20" : {
+    "description" : "front door light",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_24"          
+        }
+      }
+    ]
+  },
+  "command_21" : {
+    "description" : "study lights toggle",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_5"          
+        }
+      }
+    ]
+  },
+  "command_22" : {
+    "description" : "ensuite lights",
+    "actions" : [
+      {
+        "method" : "cgate/cgateController@levelToggle",
+        "params" : {
+          "device_id": "NET1_254_56_2"          
+        }
+      }
+    ]
+  }
+}

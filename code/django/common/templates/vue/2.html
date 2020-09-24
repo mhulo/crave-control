@@ -1,0 +1,26 @@
+{% verbatim %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/http-vue-loader"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <comp-1></comp-1>
+    </div>
+
+    <script type="text/javascript">
+      Vue.use(httpVueLoader);
+
+      new Vue({
+        el: '#app',
+        components: { 
+          'comp-1': 'url:/static/common/vue/comp_1.vue'
+        }
+      });
+    </script>
+  </body>
+</html>
+{% endverbatim %}

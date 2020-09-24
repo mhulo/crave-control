@@ -1,0 +1,59 @@
+
+  *, *:before, *:after { -webkit-box-sizing: border-box;  -moz-box-sizing: border-box; box-sizing: border-box; }
+
+  html, body { height: 100%; margin: 0; padding: 0; }
+  body { min-width: 500px; overflow: auto; padding: 0px; font-size: 0px; font-family: arial; font-weight: 300; color: #aab1b0; text-rendering: optimizeLegibility; -webkit-font-smoothing: subpixel-antialiased; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  button, button:active, button:focus, button.active, button:focus:active { -webkit-box-shadow: none; box-shadow: none; background-image: none; outline: none; }
+  #content-area:focus, input:focus, select:focus, textarea:focus, button:focus { -webkit-box-shadow: none; box-shadow: none; background-image: none; outline: none; }
+
+  .nav-container { display: inline-block; vertical-align: top; border: 0px pink solid; height: 100%; width: 50px; padding: 10px 0px 0px 7px; overflow: auto; background: #8d8f90; }
+  .main-container { display: inline-block; margin-left: 0px; vertical-align: top; border: 0px green solid; height: 100%; width: calc(100% - 50px); overflow: auto; padding: 0px; }
+
+  #main-header { display: block; font-size: 11px; border: 0px blue solid; height: 40px; width: 100%; }
+  .crumb-header { display: block; font-size: 11px; border: 0px red solid; height: 40px; width: 100%; background: #131517;}
+  .page-container { display: block; position: relative; font-size: 11px; height: calc(100% - 80px); width: 100%; border: 0px purple solid; }
+ 
+  .show-page-div { height: 100%; width: 100%; background: #2c353c; overflow-x: auto; }
+  .show-popup-div { display: none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; background: #2c353c; overflow: auto; }
+
+  .list-page-div { height: 100%; width: 100%; background: #2c353c; overflow: auto; }
+  .list-popup-div { display: none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; background: #2c353c; overflow: auto; }
+
+  #logo-r-div { font-family: "Raleway", sans-serif; float: left; width: 280px; border: 0px pink solid; }
+  .logo-href { height: 30px; margin: 4px 0px 0px 25px; }
+  .logo-text-div { float: right; margin: 1px 0px 0px 0px; }
+  .logo-title-text { color: black; font-size: 18pt; line-height: 25px; font-weight: 300; letter-spacing: 1px; margin: 0px 10px 0px 0px; }
+  .logo-subtitle-text { position: absolute; top: 20px; left: 278px; color: black; font-size: 9pt; font-weight: 400; letter-spacing: 1px; }
+
+  .nav-icon { font-size: 16px; margin-bottom: 16px; background: #6b6b6b; line-height: 38px; color: white; border: 0px red solid; height: 36px; width: 36px; text-align: center; border-radius: 100%; }
+  .nav-icon:hover { background: #242a31; }
+
+  #show-quote-search { float: right; width: calc(60% - 220px); margin: 9px 25px 0px 0px; border-radius: 12px; padding: 3px 10px 3px 10px; border: 0px; }
+  #list-quote-search { float: right; width: calc(60% - 265px); margin: 9px 25px 0px 0px; border-radius: 12px; padding: 3px 10px 3px 10px; border: 0px; }
+
+  #show-order-search { float: right; width: calc(60% - 220px); margin: 9px 25px 0px 0px; border-radius: 12px; padding: 3px 10px 3px 10px; border: 0px; }
+  #list-order-search { float: right; width: calc(60% - 190px); margin: 9px 25px 0px 0px; border-radius: 12px; padding: 3px 10px 3px 10px; border: 0px; }
+
+  #profile-button { float: right; font-size: 16px; background: #131517; line-height: 30px; color: white; display: inline-block; border: 0px red solid; height: 30px; width: 30px; text-align: center; border-radius: 100%; margin-left: 10px; padding: 0px; margin: 5px 25px 0px 0px;}
+  #profile-button:hover { background: #2fbd78; }
+  .login-user { float: right; font-family: 'Roboto', sans-serif; color: #2c353c; font-size: 14px; margin: 9px 10px 0px 0px; }
+
+  .map-crumb-text { display: inline-block; font-family: 'Roboto', sans-serif; color: #aab1b0; font-size: 15px; margin: 9px 0px 0px 25px; }
+  .list-crumb-text { display: inline-block; width: calc(40% - 10px); font-family: 'Roboto', sans-serif; color: #aab1b0; font-size: 15px; margin: 9px 0px 0px 25px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+  #show-crumb-text { display: inline-block; width: calc(40% - 150px); font-family: 'Roboto', sans-serif; color: #aab1b0; font-size: 15px; margin: 9px 0px 0px 25px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+  #filter-counts-text { display: inline-block; width: 120px; font-family: 'Roboto', sans-serif; color: #aab1b0; font-size: 12px; margin: 0px 0px 0px 15px; text-overflow: ellipsis; text-align: right; overflow: hidden; white-space: nowrap; }
+
+  .bubble-title-1 { font-family: 'Roboto', sans-serif; font-size: 10px; display: inline-block; vertical-align: top; padding-top: 1px; border: 0px cyan solid; height: 18px; width: 20px; text-align: center; background: #42525d; color: white; border-radius: 9px; }
+  .bubble-title-2 { font-family: 'Roboto', sans-serif; font-size: 10px; display: inline-block; vertical-align: top; padding: 2px 10px 0px 10px; border: 0px cyan solid; height: 18px; margin-right: 10px; text-align: center; background: #42525d; color: white; border-radius: 9px; }
+  .bubble-title-3 { font-family: 'Roboto', sans-serif; font-size: 10px; display: inline-block; vertical-align: top; width: 42px; padding: 1px 0px 0px 0px; border: 0px cyan solid; height: 17px; margin-right: 10px; text-align: center; background: #42525d; color: white; border-radius: 9px; }
+  .bubble-title-4 { font-family: 'Roboto', sans-serif; font-size: 10px; display: inline-block; vertical-align: top; width: 74px; padding-top: 2px; border: 0px cyan solid; height: 18px; margin-right: 10px; text-align: center; background: #42525d; color: white; border-radius: 9px; }
+  .bubble-space { display: inline-block; vertical-align: top; width: 10px; height: 10px; }
+
+  .show-grid-header { background: #131517; width: 5030px; }
+  .show-grid-area { overflow: auto; height: calc(100% - 40px); width: 5030px; }
+  .show-rows-area { overflow: auto; height: 100%; }
+
+  .grid-row { font-size: 12px; border: 1px #4e5453 solid; padding: 0px 5px 0px 5px; }
+  .grid-hdr-row { height: 40px; border-width: 1px 1px 0px 1px; }
+  .grid-bundle-row { height: 55px; background: #2c353c; }
+  .grid-item-row { height: 55px; background: #242a31; }

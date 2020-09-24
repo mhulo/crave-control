@@ -1,0 +1,28 @@
+{% verbatim %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/http-vue-loader"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-virtual-scroll-list@2.3.0/dist/index.min.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <list></list>
+    </div>
+
+    <script type="text/javascript">
+      Vue.use(httpVueLoader);
+      Vue.component('virtual-list', 'vue-virtual-scroll-list');
+
+      new Vue({
+        el: '#app',
+        components: { 
+          'list': 'url:/static/common/vue/list.vue'
+        }
+      });
+    </script>
+  </body>
+</html>
+{% endverbatim %}
