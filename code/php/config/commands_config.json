@@ -281,5 +281,49 @@
         }
       }
     ]
+  },
+  "command_23" : {
+    "description" : "toggle stairs led strip",
+    "actions" : [
+      {
+        "method" : "hue/hueController@levelToggle",
+        "params" : {
+          "device_id": "2"             
+        }
+      }
+    ]
+  },
+  "command_24" : {
+    "description" : "dim stairs led strip",
+    "actions" : [
+      {
+        "method" : "hue/hueController@levelDim",
+        "params" : {
+          "device_id": "2"             
+        }
+      }
+    ]
+  },
+  "command_25" : {
+    "description" : "toggle bedroom led strip",
+    "actions" : [
+      {
+        "method" : "hue/hueController@levelToggle",
+        "params" : {
+          "device_id": "3"             
+        }
+      }
+    ]
+  },
+  "command_26" : {
+    "description" : "dim bedroom led strip",
+    "actions" : [
+      {
+        "method" : "hue/hueController@levelDim",
+        "params" : {
+          "device_id": "3"             
+        }
+      }
+    ]
   }
 }

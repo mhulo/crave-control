@@ -7,7 +7,6 @@
 	*/
 ?>
 <?php
-	define ("CONST_ws_host", "192.168.2.171"); // your websocket host for the daemon/server that sends c-gate updates
-	define ("CONST_cgate_ws_port", "5000"); // your websocket port for the daemon/server that sends c-gate updates
-	define ("CONST_advair_ws_port", "5001"); // your websocket port for the daemon/server that sends advantageair updates
+	define ("CONST_ws_host", "192.168.2.170"); // your websocket host for the daemon/server that sends c-gate updates
+	define ("CONST_ws_port", "5000"); // your websocket port for the daemon/server that sends c-gate updates
 ?>

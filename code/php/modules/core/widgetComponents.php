@@ -13,7 +13,7 @@
          *
          * @param string $widget_div_id Takes the id of the widget div so that the components be named and addressed based off that eg. "1_w0001".
          * @param string $widget_command Takes the id of the command as specified in the widgets_config.json file eg. "command_1".
-         * @param string $listener_interface Takes the name of the listener_interface for this widget eg. "cbus_cgate".
+         * @param string $listener_interface Takes the name of the listener_interface for this widget eg. "cgate".
          * @param string $listener_id Takes the name of the listener_id for the widget eg. "HOME1_254_56_12".
          */
         public function __construct($widget_div_id,$widget_command,$listener_interface,$listener_id)
@@ -65,7 +65,7 @@
 
             $ret_str  = "    <p class=\"component_value_elem\">\n";
             $ret_str .= "        <input id=\"" . $comp_div_id . "_main\" class=\"component_value mdl-slider mdl-js-slider slider_mdl1\" type=\"range\" min=\"0\" max=\"100\" value=\"0\" tabindex=\"0\"";
-            $ret_str .= " onchange=\"slider_value_changed(this.value,'mdl1','" . $comp_div_id . "','" . $this->widget_command . "','" . $this->listener_interface . "');\"";
+            $ret_str .= " onchange=\"slider_value_changed(this.value,'mdl1','" . $comp_div_id . "','" . $this->widget_command . "');\"";
             $ret_str .= " >\n";
             $ret_str .= "     </p>\n";
             $ret_str .= $this->get_listener("slider", "mdl1", $comp_id, $val_type);

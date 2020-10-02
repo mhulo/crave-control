@@ -6,7 +6,7 @@
 
   	public function __construct() {
       $this->cr = chr(0x0D) . chr(0x0A); // carriage return
-      $this->host_url = 'docker_cgate_1'; // c-gate host name / IP address
+      $this->host_url = 'cgate'; // c-gate host name / IP address
       $this->change_tcp_port = '20025'; // c-gate status change port
       $this->command_tcp_port = '20023'; // c-gate send-command interface port
       $this->project = 'NET1'; // your c-gate project name eg. home1

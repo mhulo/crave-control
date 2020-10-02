@@ -1,24 +1,17 @@
 <?php 
 
-  require_once '/code/modules/cgate/cgateCommon.php';
+  require_once '/code/modules/hue/hueCommon.php';
   require_once '/code/modules/core/redisController.php';
+  require_once '/code/modules/core/coreCommon.php';
 
-  class cgateController
+  class hueController
   {
   	public $var1;
 
   	public function __construct()
     {
-      $this->cgate =  new cgateCommon;
+      $this->hue =  new hueCommon;
       $this->redis =  new redisController;
-    }
-
-    public function noopTest($q)
-    {
-      // issue a noop command to test if cgate is responding
-      $send_msg = 'noop';
-      $result_msg = $this->cgate->messageSend($send_msg);
-      return $send_msg . '  ::  ' . $result_msg;
     }
 
     public function startDaemon($q)
@@ -26,8 +19,8 @@
       // create an id that the daemon while loop can check to see if it should continue or not
       $rc = $this->redis->connect();
       $id = $this->redis->rand();
-      $rc->set('cgate_daemon_id', $id);
-      exec('php /code/modules/cgate/cgateDaemon.php '. $id, $output);
+      $rc->set('hue_daemon_id', $id);
+      exec('php /code/modules/hue/hueDaemon.php '. $id, $output);
       $resp = print_r($output, true);
       return $resp;
     }
@@ -36,7 +29,7 @@
     {
       // reset the id so the while loop will stop
       $rc = $this->redis->connect();
-      $rc->set('cgate_daemon_id', '0');
+      $rc->set('hue_daemon_id', '0');
       return 'stopped';
     }
 
@@ -47,9 +40,12 @@
       // input from the widget which is how you can achieve group dimming
 
       // issue a get command and get the status of the whole network for lighting
-      $result_msg = $this->cgate->messageSend($this->cgate->get_all_msg);
+      $curl_url = $this->hue->bridge_url . 'lights/';
+      $res = $this->hue->hitCurl('GET', $curl_url, null);
+
       header("Content-Type: application/json;charset=utf-8");
-      return $this->cgate->cgateToJson($result_msg);
+      return $this->hue->hueToJson($res);
+      //return $ret_str;
     }
 
     public function levelDim($q)
@@ -58,9 +54,10 @@
       // if $set_value is null in the config params, then it will use the
       // input from the widget which is how you can achieve scene dimming
 
-      $send_msg = 'RAMP //' . $this->cgate->deviceIdTocgateId($q->device_id) . ' ' . round((($q->set_val/100)*255),0) . ' ' . $q->ramp_time . 's';
-      $result_msg = $this->cgate->messageSend($send_msg);
-      return 'c-gate sent:' . $send_msg . '    c-gate returned:' . $result_msg . '<br>';
+      $curl_url = $this->hue->bridge_url . 'lights/' . $q->device_id . '/state';
+      $curl_data = '{"bri":' . round((($q->set_val/100)*254),0) . '}';
+      $ret_str = $this->hue->hitCurl('PUT', $curl_url, $curl_data);
+      return $ret_str;
     }
 
     public function levelToggle($q)
@@ -69,13 +66,13 @@
       // if $set_value is null in the config params, then it will use the
       // input from the widget which is how you can achieve discrete on/off
 
-      if ($q->set_val == '100') { $msg_val = 'ON'; }
-      else { $msg_val = 'OFF'; }
+      if ($q->set_val == '100') { $on_state = 'true'; }
+      else { $on_state = 'false'; }
 
-      $send_msg = $msg_val . ' //' . $this->cgate->deviceIdTocgateId($q->device_id);
-
-      $result_msg = $this->cgate->messageSend($send_msg);
-      return 'c-gate sent:' . $send_msg . '    c-gate returned:' . $result_msg . '<br>';
+      $curl_url = $this->hue->bridge_url . 'lights/' . $q->device_id . '/state';
+      $curl_data = '{"on":' . $on_state . '}';
+      $ret_str = $this->hue->hitCurl('PUT', $curl_url, $curl_data);
+      return $ret_str;
     }
 
   }

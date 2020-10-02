@@ -7,7 +7,7 @@
 
   	public function __construct()
     {
-      //$this->cgate =  new cgateCommon;
+
     }
 
     public function runCommand($q)
@@ -32,6 +32,37 @@
         $res .= useContr('modules/' . $action['method'], json_decode($r));
       }
       return $res;
+    }
+
+    public function redisShow($redis, $chan, $msg)
+    {
+      echo 'got message:' . $msg . ' on channel ' . $chan;
+      exit();
+    }
+
+    public function redisSet()
+    {
+
+      $redis = new Redis();
+      $redis->connect('redis', 6379);
+
+      $cgate_data = '{ "cgate__NET1_254_56_0__level": "80", "cgate__NET1_254_56_3__level": "20" }';
+      $redis->set('cgate_data', $cgate_data);
+      //$redis->publish('events', $cgate_data);
+
+      echo 'data set';
+    }
+
+    public function redisGet()
+    {
+
+      $redis = new Redis(); 
+      $redis->connect('redis', 6379);
+      //$redis->subscribe(['events'], array($this, 'redisShow'));
+
+      print_r($redis->keys("*"));
+      echo '<br><br>*************<br>';
+
     }
 
   }

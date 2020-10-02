@@ -101,13 +101,13 @@ class Router {
     // Find routes with params
     if (isset($this->params[$route])) { 
       $params = $this->params[$route];
-      error_log('route with params');
+      //error_log('route with params');
     }
 
     // Route without params
     if ($params === false) {
       return $route === '' ? '/' : $route;
-      error_log('route without params');
+      //error_log('route without params');
     }
 
     //error_log('this->params:' . print_r($this->params, true));

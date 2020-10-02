@@ -167,6 +167,46 @@
     "ui_style" : "",
     "command" : "command_20",
     "groups" : ["Lights", "Downstairs"]
+  },
+  "w0013" : {
+    "ui_type" : "switch_1",
+    "name" : "Stairs LED Strip",
+    "listener_interface" : "hue",
+    "listener_device_id" : "2",
+    "ui_style" : "",
+    "command" : "command_23",
+    "groups" : ["Lights","Hue"]
+  },
+  "w0014" : {
+    "ui_type" : "dimmer_1",
+    "name" : "Stairs LED Strip",
+    "listener_interface" : "hue",
+    "listener_device_id" : "2",
+    "ui_style" : "",
+    "fave_percentage_1" : "20",
+    "fave_percentage_2" : "50",
+    "command" : "command_24",
+    "groups" : ["Lights","Hue"]
+  },
+  "w0015" : {
+    "ui_type" : "switch_1",
+    "name" : "Bedroom LED Strip",
+    "listener_interface" : "hue",
+    "listener_device_id" : "3",
+    "ui_style" : "",
+    "command" : "command_25",
+    "groups" : ["Lights","Hue"]
+  },
+  "w0016" : {
+    "ui_type" : "dimmer_1",
+    "name" : "Bedroom LED Strip",
+    "listener_interface" : "hue",
+    "listener_device_id" : "3",
+    "ui_style" : "",
+    "fave_percentage_1" : "20",
+    "fave_percentage_2" : "50",
+    "command" : "command_26",
+    "groups" : ["Lights","Hue"]
   }
 }
  

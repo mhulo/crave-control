@@ -1,68 +1,69 @@
-<?php require_once "/code/src/widgets.php"; ?>
-<?php require_once "/code/src/widget_components.php"; ?>
-<?php require_once "/code/config/websocket_config.php"; ?>
-<?php
+<?php 
 
-    $interfaces_arr = array();
-    $groups_arr = array();
-    $sections_arr = array();
+  require_once "/code/modules/core/widgets.php";
+  require_once "/code/modules/core/widgetComponents.php";
+  require_once "/code/config/websocket_config.php";
 
-    $widgets_json_file = "/code/config/widgets_config.json";
-    $widgets_conf_obj = json_decode(file_get_contents($widgets_json_file), true);
-    $json_err = json_last_error_msg();
-    if ($json_err != 'No error'){
-      echo "error with file: ". $widgets_json_file . '<br>';
-      echo $json_err;
-      exit();
-    }
+  $interfaces_arr = array();
+  $groups_arr = array();
+  $sections_arr = array();
 
-    // use the widgets config json to create an interfaces array, a groups array and a sections array with what widgets are in each group
-    foreach ($widgets_conf_obj as $id => $params) {
+  $widgets_json_file = "/code/config/widgets_config.json";
+  $widgets_conf_obj = json_decode(file_get_contents($widgets_json_file), true);
+  $json_err = json_last_error_msg();
+  if ($json_err != 'No error'){
+    echo "error with file: ". $widgets_json_file . '<br>';
+    echo $json_err;
+    exit();
+  }
 
-        $interfaces_arr[] = $params['listener_interface'];
-        foreach ($params['groups'] as $group) {
-            $groups_arr[] = $group;
-            $sections_arr[$group][] = $id;
-        }
-    }
+  // use the widgets config json to create an interfaces array, a groups array and a sections array with what widgets are in each group
+  foreach ($widgets_conf_obj as $id => $params) {
 
-    $interfaces_arr = array_keys(array_flip($interfaces_arr));
-    $interfaces_str = "['" . implode("', '", $interfaces_arr) . "']";
+      $interfaces_arr[] = $params['listener_interface'];
+      foreach ($params['groups'] as $group) {
+          $groups_arr[] = $group;
+          $sections_arr[$group][] = $id;
+      }
+  }
 
-    $groups_arr = array_keys(array_flip($groups_arr));
+  $interfaces_arr = array_keys(array_flip($interfaces_arr));
+  $interfaces_str = "['" . implode("', '", $interfaces_arr) . "']";
 
-    $top_groups_str = "";
-    foreach ($groups_arr as $i => $val) {
-      if ($i == 0) { $top_groups_str .= "            <a name=\"t" . $i . "\" href=\"#scroll-tab-" . $i . "\" class=\"topnav mdl-layout__tab is-active\"><div class=\"navtext\">" . $val . "</div></a>\n"; }
-      else { $top_groups_str .= "            <a name=\"t" . $i . "\" href=\"#scroll-tab-" . $i . "\" class=\"topnav mdl-layout__tab\"><div class=\"navtext\">" . $val . "</div></a>\n"; }
-    }
+  $groups_arr = array_keys(array_flip($groups_arr));
 
-    $left_groups_str = "";
-    foreach ($groups_arr as $i => $val) {
-        $left_groups_str .= "           <li class=\"mdl-list__item\">\n";
-        if ($i == 0) { $left_groups_str .= "                <button name=\"t" . $i . "\" class=\"leftnav mdl-button mdl-js-button mdl-js-ripple-effect is-active\">" . $val . "</button>\n"; }
-        else { $left_groups_str .= "                <button name=\"t" . $i . "\" class=\"leftnav mdl-button mdl-js-button mdl-js-ripple-effect\">" . $val . "</button>\n"; }
-        $left_groups_str .= "            </li>\n";
-    }
+  $top_groups_str = "";
+  foreach ($groups_arr as $i => $val) {
+    if ($i == 0) { $top_groups_str .= "            <a name=\"t" . $i . "\" href=\"#scroll-tab-" . $i . "\" class=\"topnav mdl-layout__tab is-active\"><div class=\"navtext\">" . $val . "</div></a>\n"; }
+    else { $top_groups_str .= "            <a name=\"t" . $i . "\" href=\"#scroll-tab-" . $i . "\" class=\"topnav mdl-layout__tab\"><div class=\"navtext\">" . $val . "</div></a>\n"; }
+  }
 
-    $sects_str = "";
-    $pagenum = 0;
-    foreach ($sections_arr as $group => $group_widgets) {
-        if ($pagenum == 0) { $sects_str .= "          <section class=\"mdl-layout__tab-panel is-active\" id=\"scroll-tab-" . $pagenum . "\">"; }
-        else { $sects_str .= "          <section class=\"mdl-layout__tab-panel\" id=\"scroll-tab-" . $pagenum . "\">"; }
-        $sects_str .= "            <div class=\"mdl-grid\">";
+  $left_groups_str = "";
+  foreach ($groups_arr as $i => $val) {
+      $left_groups_str .= "           <li class=\"mdl-list__item\">\n";
+      if ($i == 0) { $left_groups_str .= "                <button name=\"t" . $i . "\" class=\"leftnav mdl-button mdl-js-button mdl-js-ripple-effect is-active\">" . $val . "</button>\n"; }
+      else { $left_groups_str .= "                <button name=\"t" . $i . "\" class=\"leftnav mdl-button mdl-js-button mdl-js-ripple-effect\">" . $val . "</button>\n"; }
+      $left_groups_str .= "            </li>\n";
+  }
 
-        foreach ($group_widgets as $widget_id) {
+  $sects_str = "";
+  $pagenum = 0;
+  foreach ($sections_arr as $group => $group_widgets) {
+      if ($pagenum == 0) { $sects_str .= "          <section class=\"mdl-layout__tab-panel is-active\" id=\"scroll-tab-" . $pagenum . "\">"; }
+      else { $sects_str .= "          <section class=\"mdl-layout__tab-panel\" id=\"scroll-tab-" . $pagenum . "\">"; }
+      $sects_str .= "            <div class=\"mdl-grid\">";
 
-            $widget_obj = new crave_widget($pagenum,$widget_id,$widgets_conf_obj);
-            $call_func = "get_" . $widgets_conf_obj[$widget_id]['ui_type'];
-            $sects_str .= $widget_obj->$call_func();
+      foreach ($group_widgets as $widget_id) {
 
-        }
+          $widget_obj = new crave_widget($pagenum,$widget_id,$widgets_conf_obj);
+          $call_func = "get_" . $widgets_conf_obj[$widget_id]['ui_type'];
+          $sects_str .= $widget_obj->$call_func();
 
-        $sects_str .= "            </div>\n";
-        $sects_str .= "          </section>\n\n";
-        $pagenum++;
+      }
+
+      $sects_str .= "            </div>\n";
+      $sects_str .= "          </section>\n\n";
+      $pagenum++;
     }
 ?>
 <!doctype html>
@@ -105,9 +106,7 @@
         $(document).ready(function(){
 
           ws_host_addr = '<?php echo CONST_ws_host; ?>';
-          ws_host_ports = [];
-          ws_host_ports['cgate'] = '<?php echo CONST_cgate_ws_port; ?>';
-          ws_host_ports['advair'] = '<?php echo CONST_advair_ws_port; ?>';
+          ws_host_port = '<?php echo CONST_ws_port; ?>';
           ws_sockets = [];
 	        ws_last_msg_time = [];
 

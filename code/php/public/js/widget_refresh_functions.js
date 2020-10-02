@@ -21,36 +21,38 @@
         // this is where it spawns a listener for each interface needed
         // based on the interfaces that the widgets on the page need
 
-        $.each(listner_addresses_arr, function(i,field) {
-            console.log(field+' interface spawned');
-            get_live_status(field);
-        });
+        //$.each(listner_addresses_arr, function(i,field) {
+        //    console.log(field+' interface spawned');
+        //    get_live_status(field);
+        //});
+
+        get_live_status();
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-    function get_live_status(interface) {        
+    function get_live_status() {        
 
         // get a refreshed set of values for the given interface
 
         //create a new websocket object.
-        socket_uri = "ws://"+ws_host_addr+":"+ws_host_ports[interface]+"/code/modules/interfaces/"+interface+"/"+interface+"Daemon.php?"; 
-        ws_sockets[interface] = new WebSocket(socket_uri);
+        socket_uri = "ws://"+ws_host_addr+":"+ws_host_port+"/code/modules/core/websocketDaemon.php?"; 
+        ws_sockets = new WebSocket(socket_uri);
 
-        ws_sockets[interface].onopen = function(ev) { // connection is open 
-            console.log('socket connected to '+interface+' interface');
+        ws_sockets.onopen = function(ev) { // connection is open 
+            console.log('connected to websocket interface');
         };
 
         // message received on websocket from server
-        ws_sockets[interface].onmessage = function(ev){
+        ws_sockets.onmessage = function(ev){
             //console.log('got something');
-            ws_last_msg_time[interface] = $.now(); // keep track of how recently anything was sent to this interface
+            ws_last_msg_time = $.now(); // keep track of how recently anything was sent to this interface
             //console.log('last='+ws_last_msg_time[interface]);
 
             if (ev.data == 'pong') {
-                console.log(interface+' '+ev.data+' received');
+                console.log(ev.data+' received');
             }
             else {
-                //console.log(interface+' '+ev.data);
+                //console.log('ws data: ' + ev.data);
                 var result = JSON.parse(ev.data); // daemon via websocket sends json data
                 $.each(result, function(i,field){
                     if (($('.'+i).length) && ($('.'+i).val() != field)) { // if the value exists and is different to the network
@@ -62,18 +64,18 @@
             }
         };
 
-        ws_sockets[interface].onerror   = function(ev){
-            console.log('socket error on '+interface+' interface');
+        ws_sockets.onerror   = function(ev){
+            console.log('error on websocket interface');
         };
 
-        ws_sockets[interface].onclose   = function(ev){
-            console.log('socket disconnected from '+interface+' interface');
+        ws_sockets.onclose   = function(ev){
+            console.log('disconnected from websocket interface');
             //try to reconnect in 5 seconds
 
             setTimeout(function(){
-                if (ws_sockets[interface].readyState != 1) { // if something else hasn't triggered a re-connect already
-                    console.log('waited 5 secs.. reconnecting to '+interface);
-                    get_live_status(interface);
+                if (ws_sockets.readyState != 1) { // if something else hasn't triggered a re-connect already
+                    console.log('waited 5 secs.. reconnecting');
+                    get_live_status();
                 }
             }, 5000);
 
@@ -82,28 +84,28 @@
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
-    function check_socket_active(interface) {
+    function check_socket_active() {
 
-        if (ws_sockets[interface].readyState == 1) {
+        if (ws_sockets.readyState == 1) {
 
             //console.log('got here');
-            if ((($.now() - ws_last_msg_time[interface]) > 2000) && (($.now() - ws_last_msg_time[interface]) < 10000)) { // if update in the last 2 to 10 secs range, send a ping then go again
+            if ((($.now() - ws_last_msg_time) > 2000) && (($.now() - ws_last_msg_time) < 10000)) { // if update in the last 2 to 10 secs range, send a ping then go again
         
-                ws_sockets[listener_interface].send('ping');
-                console.log(listener_interface+' ping sent');
+                ws_sockets.send('ping');
+                console.log('ping sent');
 
                 setTimeout(function() {
-                    check_socket_active(listener_interface);
+                    check_socket_active();
                 },2000 ); // go again in 2 secs
             }
-            else if (($.now() - ws_last_msg_time[interface]) > 10000)  { // if update longer than 10 secs ago, reconnect
+            else if (($.now() - ws_last_msg_time) > 10000)  { // if update longer than 10 secs ago, reconnect
 	
-                ws_sockets[interface].close();
-                get_live_status(interface);
+                ws_sockets.close();
+                get_live_status();
             }
         }
-        else if (ws_sockets[interface].readyState > 1) {
-	        get_live_status(interface);
+        else if (ws_sockets.readyState > 1) {
+	        get_live_status();
         }
     }
 
@@ -155,7 +157,7 @@
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-    function slider_value_changed(comp_val,comp_subtype,comp_div_id,widget_command,listener_interface) {
+    function slider_value_changed(comp_val,comp_subtype,comp_div_id,widget_command) {
 
 	//console.log('got here');
 
@@ -179,7 +181,7 @@
             $('#'+comp_div_id+' .value_by_listener').val('x');
 
             setTimeout(function() {
-                check_socket_active(listener_interface);
+                check_socket_active();
             },2000 ); // send a ping or two to ensure the websocket it working if nothing is moving on its own within 2 secs
 
             setTimeout(function() {
