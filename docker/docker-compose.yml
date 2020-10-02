@@ -22,9 +22,7 @@ services:
         - ./cgate/config/access.txt:/cgate/config/access.txt
         - ./cgate/config/NET1.xml:/cgate/tag/NET1.xml
       networks:
-        code-network:
-          aliases:
-            - cgate-container
+        - backend
 
 ### NGINX Server #########################################
     nginx:
@@ -35,9 +33,9 @@ services:
         - ./nginx/nginx.conf:/etc/nginx/nginx.conf
         - ./nginx/ssl:/etc/nginx/ssl
       ports:
-        - "80:80"
-        - "443:443"
-        - "9090:9090"
+        - "80:80" # http
+        - "443:443" # https
+        - "9090:9090" # php
       depends_on:
         - python
         #- vue
@@ -55,7 +53,7 @@ services:
       expose:
         - "8888"
       depends_on:
-        - mysql
+        - redis
       networks:
         - backend
 
@@ -73,6 +71,17 @@ services:
 #        - frontend
 #        - backend
 
+### Redis DB ################################################
+
+    redis:
+      build: ./redis
+      ports:
+        - "6379:6379"
+      volumes:
+        - ../data/redis:/data
+      networks:
+        - backend
+
 ### PHP ##############################################
   
     php:
@@ -87,41 +96,3 @@ services:
       networks:
         - backend
 
-### MySQL ################################################
-    mysql:
-      build:
-        context: ./mysql
-      environment:
-        - MYSQL_DATABASE=crave
-        - MYSQL_USER=crave
-        - MYSQL_PASSWORD=admin
-        - MYSQL_ROOT_PASSWORD=root
-        - TZ=UTC
-      volumes:
-        - ../data/mysql:/var/lib/mysql:cached
-        - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:cached
-      ports:
-        - "3306:3306"
-      networks:
-        - backend
-      command: --secure-file-priv=""
-
-
-### phpMyAdmin ###########################################
-    phpmyadmin:
-      build: ./phpmyadmin
-      environment:
-        - PMA_ARBITRARY=1
-        - MYSQL_USER=crave
-        - MYSQL_PASSWORD=admin
-        - MYSQL_ROOT_PASSWORD=root
-        - PMA_HOST:mysql
-      volumes:
-        - ./phpmyadmin/php.ini:/usr/local/etc/php/php.ini
-      ports:
-        - "8080:80"
-      depends_on:
-        - mysql
-      networks:
-        - frontend
-        - backend
