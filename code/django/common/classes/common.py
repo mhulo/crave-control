@@ -9,7 +9,10 @@ import hashlib
 import base64
 import sys
 import random
+import telnetlib
+import logging
 
+from django.core.cache import cache
 from django.db import connection
 from django.db import connections
 from django.db.models import OuterRef, Subquery, Count
@@ -21,13 +24,14 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.template import loader
+
 from time import gmtime, strftime, sleep, mktime, time
 from typing import Dict, List, Union, Iterable
 from pprint import pprint
 from operator import itemgetter
 from requests.auth import HTTPBasicAuth
 from calendar import monthrange
-import logging
+
 
 def crisp_curs():
 

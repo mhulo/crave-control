@@ -41,9 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.gis',
-    'django_mysql',
     'corsheaders',
+    'django_mysql',
     #'rest_framework',
 ]
 
@@ -85,18 +84,28 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        #'ENGINE': 'django.db.backends.mysql',
-        'ENGINE': 'django.contrib.gis.db.backends.mysql',
-        'NAME': 'crave',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'mysql',
-        'PORT': '3306',
-    },
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'crave',
+#        'USER': 'root',
+#        'PASSWORD': 'root',
+#        'HOST': 'mysql',
+#        'PORT': '3306',
+#    },
+#}
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "SOCKET_CONNECT_TIMEOUT": 2,  # seconds
+        },
+        "KEY_PREFIX": "crave"
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

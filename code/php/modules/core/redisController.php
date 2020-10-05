@@ -12,7 +12,7 @@
     {
       try {
         $redis = new Redis();
-        $redis->connect('redis', 6379, 2);
+        $redis->connect('redis', 6379, 2); // 2 is 2-sec timeout
         $redis->ping();
         return $redis;
       }

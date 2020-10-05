@@ -7,5 +7,7 @@ urlpatterns = [
 	# template routes
   path('app/cgate/admin/', login_required(TemplateView.as_view(template_name='cc_cgate/admin.html'))),
 
-  path('api/test/', Test.as_view()),
+  path('api/cgate/test1/', Test1.as_view()),
+  path('api/cgate/test2/', Test2.as_view()),
+  path('api/cgate/test3/', Test3.as_view()),
 ]
