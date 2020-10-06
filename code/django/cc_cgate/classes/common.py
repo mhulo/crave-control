@@ -35,7 +35,6 @@ class Cgate:
     return resp2
 
 
-
   def CgateToJson(self, cgate_text):
 
     levels = {}

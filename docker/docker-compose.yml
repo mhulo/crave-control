@@ -30,6 +30,7 @@ services:
         context: ./nginx
       volumes:
         - ../code/php:/code:cached
+        - ../code/static:/static:cached
         - ./nginx/nginx.conf:/etc/nginx/nginx.conf
         - ./nginx/ssl:/etc/nginx/ssl
       ports:
@@ -48,10 +49,10 @@ services:
     python:
       build: ./python
       volumes:
-        - ../code/django:/var/www/html:cached
-      working_dir: /var/www/html
-      expose:
-        - "8888"
+        - ../code/fastapi:/app:cached
+      working_dir: /app
+      ports:
+        - "8888:8888"
       depends_on:
         - redis
       networks:

@@ -16,6 +16,4 @@ RUN pip install --upgrade pip \
     && pip install -r requirements.txt \
     && rm /usr/bin/mysql*
 
-COPY uwsgi.ini /uwsgi.ini
-
-CMD ["uwsgi", "--ini", "/uwsgi.ini"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8888", "--reload"]
