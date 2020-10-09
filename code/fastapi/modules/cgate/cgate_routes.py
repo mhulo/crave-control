@@ -17,7 +17,6 @@ def CgateTest2():
   bar = {}
   bar['aa'] = 'ee'
   bar['xx'] = 'ss'
-
   rc.JSet('foo', bar)
   x = rc.JGet('foo')
 
