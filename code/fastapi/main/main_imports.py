@@ -1,6 +1,7 @@
 import json
 import redis
 import asyncio
+import telnetlib
 
 from time import gmtime, strftime, sleep, mktime, time
 from typing import Optional, Dict, List, Union, Iterable
@@ -8,7 +9,8 @@ from fastapi import FastAPI, APIRouter, HTTPException, WebSocket, WebSocketDisco
 from fastapi.responses import HTMLResponse, PlainTextResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from main.redis_cache import RedisCache
+from modules.core.classes.core_redis import CoreRedis
+from modules.core.classes.core_wss import CoreWss
 
 
 

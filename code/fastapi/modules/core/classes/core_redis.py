@@ -2,11 +2,22 @@ import json
 import redis
 from time import time
 
-class RedisCache:
+class CoreRedis:
 
+  # will only connect if not already connected
   def Conn(self):
 
   	return redis.Redis(host='redis', port=6379, db=0)
+
+
+  # get a value and load json to dict
+  def WGet(self, key):
+
+    r = self.Conn()
+    val = r.get(key)
+    if (val != None):
+      val = json.loads(val.decode("utf-8"))
+    return val
 
 
   # dump a dict value to json and set
@@ -14,13 +25,17 @@ class RedisCache:
 
     r = self.Conn()
     r.set(key, json.dumps(val))
+    r.set('last_updated', str(time()))
 
 
   # get a value and load json to dict
   def JGet(self, key):
 
     r = self.Conn()
-    return json.loads(r.get(key))
+    val = r.get(key)
+    if (val != None):
+      val = json.loads(val.decode("utf-8"))
+    return val
 
 
   def Set(self, key, val):
@@ -34,7 +49,10 @@ class RedisCache:
   def Get(self, key):
 
     r = self.Conn()
-    return r.get(key).decode("utf-8")
+    val = r.get(key)
+    if (val != None):
+      val = val.decode("utf-8")
+    return val
 
 
 

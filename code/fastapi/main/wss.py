@@ -3,20 +3,20 @@ from main.web_imports import *
 rc = RedisCache()
 app = FastAPI(debug=True)
 
-class ConnectionManager:
+class CoreWss:
   def __init__(self):
     self.active_connections: List[WebSocket] = []
+
 
   async def connect(self, websocket: WebSocket):
     await websocket.accept()
     self.active_connections.append(websocket)
 
+
   def disconnect(self, websocket: WebSocket):
     if (websocket in self.active_connections):
       self.active_connections.remove(websocket)
 
-  async def send_personal_message(self, message: str, websocket: WebSocket):
-    await websocket.send_text(message)
 
   async def broadcast(self, message: str):
     for connection in self.active_connections:
@@ -26,7 +26,7 @@ class ConnectionManager:
         self.disconnect(connection)
 
 
-manager = ConnectionManager()
+wss = CoreWss()
 
 def get_change_data():
   data_keys = ['ws_daemon_id', 'last_updated']
@@ -44,7 +44,7 @@ def get_val_data():
   return data
 
 
-# wait for a change then return
+# wait for a data change then return
 async def data_changed():
   cached_change_data = get_change_data()
   latest_change_data = cached_change_data
@@ -63,7 +63,7 @@ async def send_updates(cached_val_data = {}):
       if (latest_val_data[key] == cached_val_data[key]):
         send = False
     if (send == True):
-      await manager.broadcast(f"Server says: {key} changed to: {latest_val_data[key]}")
+      await wss.broadcast(f"Server says: {key} changed to: {latest_val_data[key]}")
   return latest_val_data
 
 
@@ -86,17 +86,17 @@ async def start_ws_svr():
 
 @app.websocket("/ws/{client_id}")
 async def ws_client(websocket: WebSocket, client_id: int):
-  await manager.connect(websocket)
+  await wss.connect(websocket)
   try:
-    await manager.broadcast(f"Client #{client_id} joined the chat")
+    await wss.broadcast(f"Client #{client_id} joined the chat")
     await send_updates()
     while True:
       data = await websocket.receive_text()
-      await manager.send_personal_message(f"You wrote: {data}", websocket)
-      await manager.broadcast(f"Client #{client_id} says: {data}")
+      await wss.send_personal_message(f"You wrote: {data}", websocket)
+      await wss.broadcast(f"Client #{client_id} says: {data}")
   except WebSocketDisconnect:
-    manager.disconnect(websocket)
-    await manager.broadcast(f"Client #{client_id} left the chat")
+    wss.disconnect(websocket)
+    await wss.broadcast(f"Client #{client_id} left the chat")
 
 
 @app.get('/wss/test/')

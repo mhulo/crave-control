@@ -1,6 +1,28 @@
-import telnetlib
+from main.main_imports import *
+ 
 
 class Cgate:
+
+  def __init__(self):
+    self.rc = CoreRedis()
+    self.wss = CoreWss()
+
+
+  async def StartDaemon(self):
+
+    daemon_id = str(time())
+    self.rc.Set('cgate_daemon_id', daemon_id)
+    instance_id = daemon_id
+    cached_val_data = {}
+
+    while (instance_id == daemon_id):
+      change_data = await self.data_changed()
+      latest_val_data = await self.send_updates(cached_val_data)
+      instance_id = change_data['cgate_daemon_id']
+      cached_val_data = latest_val_data
+
+    return { 'message' : 'ws server stopped', 'iid' : instance_id, 'did' : daemon_id }
+
 
   def LevelsShow(self):
 
@@ -60,45 +82,45 @@ class Cgate:
     return levels
 
 
-  def TestHtml(self):
+  def get_change_data(self):
+    data_keys = ['cgate_daemon_id', 'last_updated']
+    data = {}
+    for key in data_keys:
+      data[key] = self.rc.Get(key)
+    return data
 
-    html = """
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Chat</title>
-    </head>
-    <body>
-        <h1>WebSocket Chat</h1>
-        <h2>Your ID: <span id="ws-id"></span></h2>
-        <form action="" onsubmit="sendMessage(event)">
-            <input type="text" id="messageText" autocomplete="off"/>
-            <button>Send</button>
-        </form>
-        <ul id='messages'>
-        </ul>
-        <script>
-            var client_id = Date.now()
-            document.querySelector("#ws-id").textContent = client_id;
-            var ws = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
-            ws.onmessage = function(event) {
-                var messages = document.getElementById('messages')
-                var message = document.createElement('li')
-                var content = document.createTextNode(event.data)
-                message.appendChild(content)
-                messages.appendChild(message)
-            };
-            function sendMessage(event) {
-                var input = document.getElementById("messageText")
-                ws.send(input.value)
-                input.value = ''
-                event.preventDefault()
-            }
-        </script>
-    </body>
-</html>
-"""
-    return html
+
+  def get_val_data(self):
+    data_keys = ['foo']
+    data = {}
+    for key in data_keys:
+      data[key] = self.rc.Get(key)
+    return data
+
+
+  # wait for a data change then return
+  async def data_changed(self):
+    cached_change_data = self.get_change_data()
+    latest_change_data = cached_change_data
+    while (cached_change_data == latest_change_data):
+      latest_change_data = self.get_change_data()
+      await asyncio.sleep(300/1000) # 300ms
+    await self.wss.Broadcast(f"changed")
+    return latest_change_data
+
+
+  # grab latest data and broadcast it
+  async def send_updates(self, cached_val_data = {}):
+    latest_val_data = self.get_val_data()
+    for key in latest_val_data:
+      send = True
+      if (key in cached_val_data):
+        if (latest_val_data[key] == cached_val_data[key]):
+          send = False
+      if (send == True):
+        await self.wss.Broadcast(f"Server says: {key} changed to: {latest_val_data[key]}")
+    return latest_val_data
+
 
 
 

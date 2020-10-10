@@ -38,7 +38,7 @@ services:
         - "443:443" # https
         - "9090:9090" # php
       depends_on:
-        - web
+        - python
         #- vue
       networks:
         - frontend
@@ -46,30 +46,15 @@ services:
 
 ### Web ##############################################
 
-    web:
+    python:
       build: ./python
-      command: uvicorn main.web:app --host 0.0.0.0 --port 8888 --reload
+      command: uvicorn main.main:app --host 0.0.0.0 --port 8888 --reload
+      #command: gunicorn main.main:app --bind 0.0.0.0:8888 -k uvicorn.workers.UvicornWorker
       volumes:
         - ../code/fastapi:/app:cached
       working_dir: /app
       ports:
         - "8888:8888"
-      depends_on:
-        - redis
-      networks:
-        - backend
-
-### Websocket Server ##############################################
-
-    wss:
-      build: ./python
-      command: uvicorn main.wss:app --host 0.0.0.0 --port 8000 --reload
-      #command: gunicorn main.wss:app --bind 0.0.0.0:8000 -k uvicorn.workers.UvicornWorker
-      volumes:
-        - ../code/fastapi:/app:cached
-      working_dir: /app
-      ports:
-        - "8000:8000"
       depends_on:
         - redis
       networks:

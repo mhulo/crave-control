@@ -1,0 +1,47 @@
+
+wss client daemons --> \           / --> update some state
+ interface deamons --> event handler --> send ws update
+      timer daemon --> /           \ --> do action
+                                   \ --> trigger another event
+
+interface sends to event class
+event class puts message in redis with
+ - event type
+ - where to get message data 
+
+interface daemons..
+ - cgate_daemon
+ - hue_daemon
+ - advantage_daemon
+ - etc..
+
+
+folder structure..
+
+modules:
+  core:
+   - core_routes
+   - classes
+     :: core_event
+     :: core_timer
+     :: core_wss
+     :: core_action
+     :: core_redis
+  cgate:
+   - cgate_routes
+   - classes
+     :: cgate
+  hue:
+   - hue_routes
+   - classes
+     :: hue
+
+
+events..
+
+type:
+  - levels_changed (interface)
+  - time_changed
+  - 
+
+
