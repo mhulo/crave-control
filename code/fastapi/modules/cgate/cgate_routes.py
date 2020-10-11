@@ -5,14 +5,8 @@ from .classes.cgate import *
 router = APIRouter()
 
 
-@router.get('/app/cgate/wstest/')
-def CgateWsTest():
-  resp = Cgate().WsTest()
-  return HTMLResponse(resp)
-
-
 @router.get('/app/cgate/get/')  
-def CgatePing():
+def cgate_ping():
   resp = CoreRedis().Get('wss_clients')
   return HTMLResponse(resp)
 
@@ -24,7 +18,7 @@ async def cgate_start_daemon():
 
 
 @router.get('/api/cgate/levels/')  
-def CgateLevelsShow():
+def cgate_levels_show():
   resp = Cgate().LevelsShow()
   return resp
 

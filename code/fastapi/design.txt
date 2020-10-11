@@ -1,13 +1,11 @@
 
-wss client daemons --> \           / --> update some state
- interface deamons --> event handler --> send ws update
-      timer daemon --> /           \ --> do action
-                                   \ --> trigger another event
+   interface deamons --> \           / --> update some state
+event_client daemons --> event handler --> send ws update
+ event_server daemon --> /           \ --> do action
+        timer daemon -->/             \--> trigger another event
 
-interface sends to event class
-event class puts message in redis with
- - event type
- - where to get message data 
+* interface daemon sends to device updates to redis
+* event daemon listens for redis change and then throws to event handler
 
 interface daemons..
  - cgate_daemon
@@ -24,7 +22,6 @@ modules:
    - classes
      :: core_event
      :: core_timer
-     :: core_wss
      :: core_action
      :: core_redis
   cgate:

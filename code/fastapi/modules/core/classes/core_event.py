@@ -1,6 +1,6 @@
 from main.main_imports import *
 
-class CoreWss:
+class CoreEvent:
 
   def __init__(self):
     self.rc = CoreRedis()
@@ -9,29 +9,30 @@ class CoreWss:
 
   async def ClientDaemon(self, websocket: WebSocket, client_id: int):
     # https://stackoverflow.com/questions/62413893/how-to-send-websocket-updates-to-any-connected-clients-while-running-a-while-tru
-    await self.Connect(websocket, client_id)
+    await self.WsConnect(websocket, client_id)
     try:
-      await self.Broadcast(f"Client #{client_id} connected")
-      await self.SendUpdates()
+      await self.WsBroadcast(f'client #{client_id} connected')
+      latest_val_data = self.GetValData()
+      await self.HandleEvent(latest_val_data)
       while True:
         data = await websocket.receive_text()
-        await self.Broadcast(f"Client #{client_id} data: {data}")
+        if (data == 'ping'):
+          await self.WsSend('pong', websocket)
     except WebSocketDisconnect:
-      self.Disconnect(client_id)
-      await self.Broadcast(f"Client #{client_id} disconnected")
+      self.WsDisconnect(client_id)
+      await self.WsBroadcast(f'client #{client_id} disconnected')
 
 
   async def ServerDaemon(self):
-
     daemon_id = str(time())
-    self.rc.Set('wss_daemon_id', daemon_id)
+    self.rc.Set('event_server.daemon_id', daemon_id)
     instance_id = daemon_id
     cached_val_data = {}
-
     while (instance_id == daemon_id):
       change_data = await self.DataChanged()
-      latest_val_data = await self.SendUpdates(cached_val_data)
-      instance_id = change_data['wss_daemon_id']
+      latest_val_data = self.GetValData()
+      await self.HandleEvent(latest_val_data, cached_val_data)
+      instance_id = change_data['event_server.daemon_id']
       cached_val_data = latest_val_data
 
 
@@ -41,26 +42,23 @@ class CoreWss:
     latest_change_data = cached_change_data
     while (cached_change_data == latest_change_data):
       latest_change_data = self.GetChangeData()
-      await asyncio.sleep(300/1000) # 300ms
-    await self.Broadcast(f"changed")
+      await asyncio.sleep(0.3) # 300ms
     return latest_change_data
 
 
-  # grab latest data and broadcast it
-  async def SendUpdates(self, cached_val_data = {}):
-    latest_val_data = self.GetValData()
+  # grab latest data then handle and broadcast updates
+  async def HandleEvent(self, latest_val_data, cached_val_data = {}):
     for key in latest_val_data:
       send = True
       if (key in cached_val_data):
         if (latest_val_data[key] == cached_val_data[key]):
           send = False
       if (send == True):
-        await self.Broadcast(f"Server says: {key} changed to: {latest_val_data[key]}")
-    return latest_val_data
+        await self.WsBroadcast(f'server says: {key} changed to: {latest_val_data[key]}')
 
 
   def GetChangeData(self):
-    data_keys = ['wss_daemon_id', 'last_updated']
+    data_keys = ['event_server.daemon_id', 'last_updated']
     data = {}
     for key in data_keys:
       data[key] = self.rc.Get(key)
@@ -75,22 +73,26 @@ class CoreWss:
     return data
 
 
-  async def Connect(self, websocket: WebSocket, client_id: int):
+  async def WsConnect(self, websocket: WebSocket, client_id: int):
     await websocket.accept()
     self.clients[client_id] = websocket
 
 
-  def Disconnect(self, client_id: int):
+  def WsDisconnect(self, client_id: int):
     if (client_id in self.clients):
       del self.clients[key]
 
 
-  async def Broadcast(self, message: str):
+  async def WsBroadcast(self, message: str):
     for key in self.clients:
       try:
         await self.clients[key].send_text(message)
       except:
-        self.Disconnect(key)
+        self.WsDisconnect(key)
+
+
+  async def WsSend(self, message: str, websocket: WebSocket):
+    await websocket.send_text(message)
 
 
   def TestHtml(self):
@@ -113,7 +115,7 @@ class CoreWss:
         <script>
             var client_id = Date.now()
             document.querySelector("#ws-id").textContent = client_id;
-            var ws = new WebSocket(`ws://localhost:8888/wss/${client_id}/`);
+            var ws = new WebSocket(`ws://localhost:8888/wss/core/${client_id}/`);
             ws.onmessage = function(event) {
                 var messages = document.getElementById('messages')
                 var message = document.createElement('li')

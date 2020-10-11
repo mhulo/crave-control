@@ -82,44 +82,6 @@ class Cgate:
     return levels
 
 
-  def get_change_data(self):
-    data_keys = ['cgate_daemon_id', 'last_updated']
-    data = {}
-    for key in data_keys:
-      data[key] = self.rc.Get(key)
-    return data
-
-
-  def get_val_data(self):
-    data_keys = ['foo']
-    data = {}
-    for key in data_keys:
-      data[key] = self.rc.Get(key)
-    return data
-
-
-  # wait for a data change then return
-  async def data_changed(self):
-    cached_change_data = self.get_change_data()
-    latest_change_data = cached_change_data
-    while (cached_change_data == latest_change_data):
-      latest_change_data = self.get_change_data()
-      await asyncio.sleep(300/1000) # 300ms
-    await self.wss.Broadcast(f"changed")
-    return latest_change_data
-
-
-  # grab latest data and broadcast it
-  async def send_updates(self, cached_val_data = {}):
-    latest_val_data = self.get_val_data()
-    for key in latest_val_data:
-      send = True
-      if (key in cached_val_data):
-        if (latest_val_data[key] == cached_val_data[key]):
-          send = False
-      if (send == True):
-        await self.wss.Broadcast(f"Server says: {key} changed to: {latest_val_data[key]}")
-    return latest_val_data
 
 
 

@@ -10,7 +10,6 @@ from fastapi.responses import HTMLResponse, PlainTextResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from modules.core.classes.core_redis import CoreRedis
-from modules.core.classes.core_wss import CoreWss
 
 
 

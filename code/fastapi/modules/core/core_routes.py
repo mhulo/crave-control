@@ -1,27 +1,29 @@
 from main.main_imports import *
+from modules.core.classes.core_event import *
 
 
 router = APIRouter()
-ws = CoreWss()
-
-@router.websocket("/wss/{client_id}/")
-async def wss_client_daemon(websocket: WebSocket, client_id: int):
-  await ws.ClientDaemon(websocket, client_id)
+ev = CoreEvent()
 
 
-@router.get("/api/wss/server/start/")
-async def wss_server_daemon():
-  await ws.ServerDaemon()
+@router.websocket("/wss/core/{client_id}/")
+async def event_client_daemon(websocket: WebSocket, client_id: int):
+  await ev.ClientDaemon(websocket, client_id)
+
+
+@router.get("/api/core/event_server/start/")
+async def event_server_daemon_start():
+  await ev.ServerDaemon()
 
 
 @router.get('/app/wss/test/')
-def WssTest():
-  resp = ws.TestHtml()
+def websocket_test():
+  resp = ev.TestHtml()
   return HTMLResponse(resp)
 
 
 @router.get('/app/redis/set/{q}/')
-def RedisSet(q: str):
+def redis_set(q: str):
   CoreRedis().Set('foo', q)
   return HTMLResponse('set to ' + q)
 
