@@ -46,7 +46,7 @@ class CoreEvent:
     return latest_change_data
 
 
-  # grab latest data then handle and broadcast updates
+  # grab latest data then handle changes and broadcast updates
   async def HandleEvent(self, latest_val_data, cached_val_data = {}):
     for key in latest_val_data:
       send = True
