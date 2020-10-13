@@ -12,8 +12,8 @@ def cgate_ping():
 
 
 @router.get("/api/cgate/start/")
-async def cgate_start_daemon():
-  resp = await Cgate().StartDaemon()
+async def cgate_start():
+  resp = await Cgate().Start()
   return resp
 
 
@@ -26,6 +26,6 @@ def cgate_levels_show():
 @router.get('/api/cgate/change/')  
 async def cgate_changed():
   resp = await Cgate().Changed()
-  return resp
+  return { 'cgate said' : resp }
 
 

@@ -1,25 +1,41 @@
 from main.main_imports import *
- 
+from modules.core.classes.core_state import * 
 
 class Cgate:
 
   def __init__(self):
-    self.rc = CoreRedis()
-    self.wss = CoreWss()
+    self.redis = Request.state.core_redis
+    self.ws = Request.state.core_ws
 
 
-  async def StartDaemon(self):
+  async def Changed(self):
+
+    tn = telnetlib.Telnet('cgate', 20025)
+    resp = ''
+
+    while (resp == ''):
+      try:
+        resp += tn.read_very_eager().decode('utf-8')
+      except:
+        resp = 'error'
+      await asyncio.sleep(0.1) # 100ms
+
+    return resp
+
+
+  async def Start(self):
 
     daemon_id = str(time())
-    self.rc.Set('cgate_daemon_id', daemon_id)
+    self.redis.Set('cgate_daemon_id', daemon_id)
     instance_id = daemon_id
     cached_val_data = {}
 
     while (instance_id == daemon_id):
-      change_data = await self.data_changed()
-      latest_val_data = await self.send_updates(cached_val_data)
-      instance_id = change_data['cgate_daemon_id']
-      cached_val_data = latest_val_data
+      change_resp = await self.Changed()
+      #latest_val_data = await self.send_updates(cached_val_data)
+      #cached_val_data = latest_val_data
+      await self.ws.Broadcast(f'cgate says: {change_resp}')
+      instance_id = self.redis.Get('cgate_daemon_id')
 
     return { 'message' : 'ws server stopped', 'iid' : instance_id, 'did' : daemon_id }
 
@@ -56,7 +72,10 @@ class Cgate:
 
     # read response to command
     while (last_line == False):
-      read_buffer = tn.read_until(bcr,timeout).decode('utf-8')
+      try:
+        read_buffer = tn.read_until(bcr,timeout).decode('utf-8')
+      except:
+        read_buffer = 'error'
       if ('-' not in read_buffer):
         last_line = True # // ie. last line has no '-' ie '300 //' not '300-//'
       resp2 += read_buffer

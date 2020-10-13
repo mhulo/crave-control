@@ -1,5 +1,8 @@
 from main.main_imports import *
 
+from modules.core.classes.core_state import *
+Request.state = CoreState()
+
 from modules.core import core_routes
 from modules.cgate import cgate_routes
 

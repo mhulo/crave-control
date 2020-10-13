@@ -1,9 +1,7 @@
 from main.main_imports import *
-from modules.core.classes.core_state import *
 from modules.core.classes.core_event import *
 
 router = APIRouter()
-Request.state = CoreState()
 
 core_redis = Request.state.core_redis
 core_ws = Request.state.core_ws

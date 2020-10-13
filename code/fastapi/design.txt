@@ -1,11 +1,29 @@
 
-   interface deamons --> \           / --> update some state
-event_client daemons --> event handler --> send ws update
- event_server daemon --> /           \ --> do action
-        timer daemon -->/             \--> trigger another event
+                                                                   | --> update some state
+interface daemons --> redis --> event daemon --> event handler --> | --> send ws update
+                                                /                  | --> do action
+                                user input --> /                   | --> trigger another event
 
 * interface daemon sends to device updates to redis
 * event daemon listens for redis change and then throws to event handler
+
+
+main
+ - main_imports
+ - main_functions
+modules
+ - core
+   - classes
+     - state
+     - redis
+     - ws
+     - event
+   core_routes
+ - cgate
+
+
+
+
 
 interface daemons..
  - cgate_daemon

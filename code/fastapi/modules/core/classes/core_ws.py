@@ -19,7 +19,7 @@ class CoreWs:
       while True:
         data = await websocket.receive_text()
         if (data == 'ping'):
-          await self.Send('pong', websocket)
+          await self.Send('pong', client_id)
     except WebSocketDisconnect:
       self.Disconnect(client_id)
       await self.Broadcast(f'client #{client_id} disconnected')
