@@ -23,3 +23,9 @@ def cgate_levels_show():
   return resp
 
 
+@router.get('/api/cgate/change/')  
+async def cgate_changed():
+  resp = await Cgate().Changed()
+  return resp
+
+
