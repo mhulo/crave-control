@@ -1,13 +1,15 @@
 from main.main_imports import *
+from main.main_settings import *
 
-from modules.core.classes.core_state import *
-Request.state = CoreState()
-
-from modules.core import core_routes
-from modules.cgate import cgate_routes
+# load redis and websockets into state for all modules to use
+from main.main_state import *
+Request.state = MainState()
 
 app = FastAPI(debug=True)
 
-app.include_router(core_routes.router)
-app.include_router(cgate_routes.router)
+# autoload routers in main_settings
+for i in active_modules:
+  mod_file = import_module('modules.' + i.lower() + '.' + i.lower() + '_routes')
+  app.include_router(mod_file.router)
+
 

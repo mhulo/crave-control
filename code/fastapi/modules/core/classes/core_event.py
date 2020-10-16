@@ -2,14 +2,15 @@ from main.main_imports import *
 
 class CoreEvent:
 
-  #def __init__(self):
-    #self.rc = CoreRedis()
+  def __init__(self):
+    self.redis = Request.state.redis
+    self.ws = Request.state.ws
 
 
   # server websocket daemon
   async def Start(self):
     daemon_id = str(time())
-    self.rc.Set('event_server.daemon_id', daemon_id)
+    self.redis.Set('event_server.daemon_id', daemon_id)
     instance_id = daemon_id
     cached_val_data = {}
     while (instance_id == daemon_id):
@@ -38,14 +39,14 @@ class CoreEvent:
         if (latest_val_data[key] == cached_val_data[key]):
           send = False
       if (send == True):
-        await self.WsBroadcast(f'server says: {key} changed to: {latest_val_data[key]}')
+        await self.ws.Broadcast(f'server says: {key} changed to: {latest_val_data[key]}')
 
 
   def GetChangeData(self):
     data_keys = ['event_server.daemon_id', 'last_updated']
     data = {}
     for key in data_keys:
-      data[key] = self.rc.Get(key)
+      data[key] = self.redis.Get(key)
     return data
 
 
@@ -53,7 +54,7 @@ class CoreEvent:
     data_keys = ['foo']
     data = {}
     for key in data_keys:
-      data[key] = self.rc.Get(key)
+      data[key] = self.redis.Get(key)
     return data
 
 

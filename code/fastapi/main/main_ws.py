@@ -1,6 +1,6 @@
 from main.main_imports import *
 
-class CoreWs:
+class MainWs:
 
   def __init__(self, redis):
     self.clients = {}
@@ -67,7 +67,7 @@ class CoreWs:
         <script>
             var client_id = Date.now()
             document.querySelector("#ws-id").textContent = client_id;
-            var ws = new WebSocket(`ws://localhost:8888/ws/${client_id}/`);
+            var ws = new WebSocket(`ws://localhost:8888/ws/core/${client_id}/`);
             ws.onmessage = function(event) {
                 var messages = document.getElementById('messages')
                 var message = document.createElement('li')

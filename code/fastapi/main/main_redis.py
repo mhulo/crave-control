@@ -3,7 +3,7 @@ import redis
 
 from time import time
 
-class CoreRedis:
+class MainRedis:
 
   # will only connect if not already connected
   def Conn(self):
