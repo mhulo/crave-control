@@ -7,6 +7,32 @@ interface daemons --> redis --> event daemon --> event handler --> | --> send ws
 * interface daemon sends to device updates to redis
 * event daemon listens for redis change and then throws to event handler
 
+redis data..
+
+cgate_daemon
+  - instance_id
+  - started_ts
+  - last_iteration_ts
+  - message
+cgate_state
+
+event_daemon
+  - id
+  - started
+  - last_iteration_ts
+  - message
+  - state
+
+state
+  - cgate
+  - hue
+
+ws:
+  - id
+  - last_iteration
+  - message 
+
+file structure..
 
 main
  - main_imports

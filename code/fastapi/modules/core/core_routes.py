@@ -45,7 +45,7 @@ def core_redis_set(q: str):
 
 @router.get('/app/core/redis/get/')
 def core_redis_get():
-  resp = modules['core'].redis.JGet('cgate.state')
+  resp = modules['core'].redis.JGet('cgate_state')
   return resp
 
 

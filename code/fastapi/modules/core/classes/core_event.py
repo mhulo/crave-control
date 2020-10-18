@@ -3,59 +3,42 @@ from main.main_imports import *
 class CoreEvent:
 
   def __init__(self):
+    self.mod_name = 'core'
+    #####
+    self.daemon_key = self.mod_name + '_daemon'
     self.redis = Request.state.redis
     self.ws = Request.state.ws
 
-
   # server websocket daemon
   async def Start(self):
-    daemon_id = str(time())
-    self.redis.Set('event_server.daemon_id', daemon_id)
-    instance_id = daemon_id
-    cached_val_data = {}
-    while (instance_id == daemon_id):
-      change_data = await self.DataChanged()
-      latest_val_data = self.GetValData()
-      await self.HandleEvent(latest_val_data, cached_val_data)
-      instance_id = change_data['event_server.daemon_id']
-      cached_val_data = latest_val_data
-
-
-  # wait for a data change then return
-  async def DataChanged(self):
-    cached_change_data = self.GetChangeData()
-    latest_change_data = cached_change_data
-    while (cached_change_data == latest_change_data):
-      latest_change_data = self.GetChangeData()
-      await asyncio.sleep(0.3) # 300ms
-    return latest_change_data
+    started_ts = str(time())
+    this_id = started_ts
+    instance_id = started_ts
+    self.redis.HSet(self.daemon_key, { 'instance_id' : instance_id , 'started_ts' : started_ts })
+    cached_state = {} # dict of json strings
+    i = 0
+    while (i < 10):
+      while (this_id == instance_id):
+        # could look at a global last_changed
+        state = self.redis.HGetAll('state')
+        await self.HandleEvent(state, cached_state)
+        instance_id = self.redis.HGet(self.daemon_key, 'instance_id')
+        cached_state = state
+        self.redis.HSet(self.daemon_key, { 'last_iteration_ts' : str(time()) })
+        await asyncio.sleep(0.25) # 250ms
 
 
   # grab latest data then handle changes and broadcast updates
-  async def HandleEvent(self, latest_val_data, cached_val_data = {}):
-    for key in latest_val_data:
-      send = True
-      if (key in cached_val_data):
-        if (latest_val_data[key] == cached_val_data[key]):
-          send = False
-      if (send == True):
-        await self.ws.Broadcast(f'server says: {key} changed to: {latest_val_data[key]}')
+  async def HandleEvent(self, state = {}, cached_state = {}):
+    change_data = {}
+    for key in state:
+      if (key in cached_state):
+        if (state[key] != cached_state[key]):
+          change_data[key] = json.loads(state[key])
+    if (change_data = {}):
+      await self.ws.Broadcast(json.dumps(change_data))
 
 
-  def GetChangeData(self):
-    data_keys = ['event_server.daemon_id', 'last_updated']
-    data = {}
-    for key in data_keys:
-      data[key] = self.redis.Get(key)
-    return data
-
-
-  def GetValData(self):
-    data_keys = ['foo']
-    data = {}
-    for key in data_keys:
-      data[key] = self.redis.Get(key)
-    return data
 
 
 

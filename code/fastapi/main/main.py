@@ -7,7 +7,7 @@ Request.state = MainState()
 
 app = FastAPI(debug=True)
 
-# autoload routers in main_settings
+# autoload routers listed in main_settings
 for i in active_modules:
   mod_file = import_module('modules.' + i.lower() + '.' + i.lower() + '_routes')
   app.include_router(mod_file.router)

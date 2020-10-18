@@ -10,6 +10,7 @@ class MainWs:
   # client websocket daemon
   async def Start(self, websocket: WebSocket, client_id: int):
     # https://stackoverflow.com/questions/62413893/how-to-send-websocket-updates-to-any-connected-clients-while-running-a-while-tru
+    # make this ping every 30 sec
     await self.Connect(websocket, client_id)
     try:
       await self.Broadcast(f'client #{client_id} connected')

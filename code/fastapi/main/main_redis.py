@@ -25,13 +25,6 @@ class MainRedis:
     return val
 
 
-  def GetData(self, keys):
-    data = {}
-    for key in keys:
-      data[key] = self.Get(key)
-    return data
-
-
   # dump a dict value to json and set
   def JSet(self, key, val):
     r = self.Conn()
@@ -48,12 +41,38 @@ class MainRedis:
     return val
 
 
-  def JGetData(self, keys):
-    data = {}
-    for key in keys:
-      data[key] = self.JGet(key)
-    return data
+  # set a dict of values to a hash
+  def HSet(self, rhash, rdata):
+    r = self.Conn()
+    val = r.hset(rhash, mapping=rdata)
+    return val
 
+
+  # get a value from a hash
+  def HGet(self, rhash, key):
+    r = self.Conn()
+    val = r.hget(rhash, key)
+    if (val != None):
+      val = val.decode("utf-8")
+    return val
+
+
+  # get all values from a hash
+  def HGetAll(self, rhash):
+    r = self.Conn()
+    resp = r.hgetall(rhash)
+    vals = {}
+    for i in resp:
+      if (resp[i] != None):
+        vals[i.decode("utf-8")] = resp[i].decode("utf-8")
+    return vals
+
+
+  # delete a key from a hash
+  def HDel(self, rhash, key):
+    r = self.Conn()
+    val = r.hdel(rhash, key)
+    return val
 
 
 
