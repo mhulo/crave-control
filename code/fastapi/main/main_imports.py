@@ -2,6 +2,7 @@ import json
 import redis
 import asyncio
 import sys
+import copy
 
 from time import gmtime, strftime, sleep, mktime, time
 from datetime import datetime

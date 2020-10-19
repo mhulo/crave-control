@@ -12,4 +12,9 @@ for i in active_modules:
   mod_file = import_module('modules.' + i.lower() + '.' + i.lower() + '_routes')
   app.include_router(mod_file.router)
 
+# load the view routes
+from views import view_routes
+app.include_router(view_routes.router)
+
+
 

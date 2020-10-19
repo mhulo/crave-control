@@ -14,8 +14,30 @@ router = APIRouter()
 
 # event routes
 @router.get("/api/core/event/start/")
-async def core_event_start():
-  await modules['core'].event.Start()
+async def core_event_start(background_tasks: BackgroundTasks):
+  #await modules['core'].event.Start()
+  background_tasks.add_task(modules['core'].event.Start)
+  resp = { 'message' : 'cgate daemon: started' }
+  return resp
+
+
+@router.get('/api/core/event/stop/')  
+async def core_event_stop():
+  resp = modules['core'].event.Stop()
+  resp = { 'message' : 'event daemon: stopped' }
+  return resp
+
+
+@router.get('/api/core/event/state/')  
+def core_event_state():
+  resp = modules['core'].event.State()
+  return resp
+
+
+@router.get('/api/core/event/status/')  
+def core_event_status():
+  resp = modules['core'].event.Status()
+  return resp
 
 
 # ws routes

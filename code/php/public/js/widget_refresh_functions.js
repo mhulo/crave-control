@@ -35,49 +35,60 @@
         // get a refreshed set of values for the given interface
 
         //create a new websocket object.
-        socket_uri = "ws://"+ws_host_addr+":"+ws_host_port+"/code/modules/core/websocketDaemon.php?"; 
+        var client_id = Date.now()
+        //socket_uri = "ws://"+ws_host_addr+":"+ws_host_port+"/code/modules/core/websocketDaemon.php?";
+        socket_uri = 'ws://localhost:8888/ws/core/' + client_id + '/'; 
         ws_sockets = new WebSocket(socket_uri);
 
         ws_sockets.onopen = function(ev) { // connection is open 
-            console.log('connected to websocket interface');
+          console.log('connected to websocket interface');
         };
 
         // message received on websocket from server
         ws_sockets.onmessage = function(ev){
-            //console.log('got something');
-            ws_last_msg_time = $.now(); // keep track of how recently anything was sent to this interface
-            //console.log('last='+ws_last_msg_time[interface]);
+          //console.log('got something');
+          ws_last_msg_time = $.now(); // keep track of how recently anything was sent to this interface
+          //console.log('last='+ws_last_msg_time[interface]);
 
-            if (ev.data == 'pong') {
-                console.log(ev.data+' received');
-            }
-            else {
-                //console.log('ws data: ' + ev.data);
-                var result = JSON.parse(ev.data); // daemon via websocket sends json data
-                $.each(result, function(i,field){
-                    if (($('.'+i).length) && ($('.'+i).val() != field)) { // if the value exists and is different to the network
-                        console.log(i+' updated to '+field);
-                        $('.'+i).val(field); // update it
-                        $('.'+i).trigger('change');
-                    }
+          if (ev.data == 'pong') {
+              console.log(ev.data+' received');
+          }
+          else {
+            //console.log('ws data: ' + ev.data);
+            var result = JSON.parse(ev.data); // daemon via websocket sends json data
+            $.each(result, function(key1,val1){
+              if (typeof val1 === 'string') {
+                if (key1 == 'message') {
+                  console.log(key1 + ': ' + val1);
+                }
+              }
+              else {
+                $.each(val1, function(key2,val2){
+                  if (($('.'+key2).length) && ($('.'+key2).val() != val2)) { // if the value exists and is different to the network
+                      console.log(key2+' updated to '+val2);
+                      $('.'+key2).val(val2); // update it
+                      $('.'+key2).trigger('change');
+                  }
                 });
-            }
+              }
+            });
+          }
         };
 
         ws_sockets.onerror   = function(ev){
-            console.log('error on websocket interface');
+          console.log('error on websocket interface');
         };
 
         ws_sockets.onclose   = function(ev){
-            console.log('disconnected from websocket interface');
-            //try to reconnect in 5 seconds
+          console.log('disconnected from websocket interface');
+          //try to reconnect in 5 seconds
 
-            setTimeout(function(){
-                if (ws_sockets.readyState != 1) { // if something else hasn't triggered a re-connect already
-                    console.log('waited 5 secs.. reconnecting');
-                    get_live_status();
-                }
-            }, 5000);
+          setTimeout(function(){
+            if (ws_sockets.readyState != 1) { // if something else hasn't triggered a re-connect already
+              console.log('waited 5 secs.. reconnecting');
+              get_live_status();
+            }
+          }, 5000);
 
         };
     }

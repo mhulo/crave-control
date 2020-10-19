@@ -1,7 +1,7 @@
 # Add any directories, files, or patterns you don't want to be tracked by version control
 /data/
 
-# ssh certs
+# ssh certs #
 *.crt
 *.csr
 *.key
@@ -69,6 +69,9 @@ venv.bak/
 *.stTheme.cache 
 *.sublime-workspace 
 *.sublime-project 
+
+# MacOS #
+*.DS_Store
 
 # sftp configuration file 
 sftp-config.json 

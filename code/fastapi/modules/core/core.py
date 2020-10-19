@@ -6,7 +6,7 @@ class Core:
   def __init__(self):
     self.redis = Request.state.redis
     self.ws = Request.state.ws
-    self.event = CoreEvent
+    self.event = CoreEvent()
 
 
 

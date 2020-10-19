@@ -13,56 +13,55 @@ class Cgate:
     self.ws = Request.state.ws
 
 
-  # wait for cgate updates and then load state to redis
+  # wait for updates and then load state to redis
   async def Start(self):
     started_ts = str(time())
     this_id = started_ts
     instance_id = started_ts
     self.redis.HSet(self.daemon_key, { 'instance_id' : instance_id , 'started_ts' : started_ts })
-    last_change = 0
-    cached_state = '' #json string
-    i = 0
-    with Telnet() as conn:
-      while (i < 10):
-        try:
-          conn.open('cgate', 20025)
-          self.redis.HSet(self.daemon_key, { 'message' : 'started',  'last_iteration_ts' : str(time()) })
+    self.redis.HSet(self.daemon_key, { 'message' : 'started',  'loop_ts' : str(time()) })
+    self.redis.HSet('state', { self.mod_name : '' })
+    retries = 0
+    max_retries = 1
+    updated_ts = 0
+    checked_ts = 0
+    cached_state = '{{}}' #json string
+    while ((retries < max_retries) and (this_id == instance_id)):
+      try:
+        with Telnet('cgate', 20025) as conn:
+          max_retries = 10
           while (this_id == instance_id):
-            last_change_diff = time() - last_change
+            updated_diff = time() - updated_ts
+            checked_diff = time() - checked_ts
             resp = self.Read(conn, self.event_timeout)
-            if ((resp != '') or (last_change_diff < 10) or (last_change_diff > 100)):
+            if ((resp != '') or (updated_diff < 10) or (checked_diff > 100)):
               state = json.dumps(self.State())
-            if (state != cached_state): # comparison of json strings
-              self.redis.HSet('state', { 'cgate' : state })
-              cached_state = state
-              last_change = time()
+              checked_ts = time()
+              if (state != cached_state): # comparison of json strings
+                updated_ts = time()
+                self.redis.HSet('state', { self.mod_name : state })
+                cached_state = state
             instance_id = self.redis.HGet(self.daemon_key, 'instance_id')
-            self.redis.HSet(self.daemon_key, { 'last_iteration_ts' : str(time()) })
-            if (last_change_diff < 10):
-              await asyncio.sleep(0.25) # 250ms
+            self.redis.HSet(self.daemon_key, { 'loop_ts' : str(time()) })
+            if (updated_diff < 600):
+              await asyncio.sleep(0.3) # 300ms
             else:
               await asyncio.sleep(2) # 2s (sleep mode)
-        except Exception as e:
-          self.redis.HSet(self.daemon_key, { 'message' : 'error - ' + str(e) + ' could not connect to host/port' })
-        i += 1
-        await asyncio.sleep(2) # 2s
+            retries = 0
+      except Exception as e:
+        self.redis.HSet(self.daemon_key, { 'message' : 'error - ' + str(e) + ' could not connect to host/port' })
+        instance_id = self.redis.HGet(self.daemon_key, 'instance_id')
+        retries += 1
+        await asyncio.sleep(2)
 
 
   def Stop(self):
-    self.redis.HSet('cgate_daemon', { 'instance_id' : '0',  'message' : 'stopped' })
+    self.redis.HSet(self.daemon_key, { 'instance_id' : '0',  'message' : 'stopped' })
+    self.redis.HSet('state', { self.mod_name : '{'+'}' })
 
 
   def Status(self):
-    status = self.redis.HGetAll(self.daemon_key)
-    if ('started_ts' in status):
-      status['started_ts'] = datetime.fromtimestamp(float(status['started_ts']))
-    if ('last_iteration_ts' in status):
-      iteration_diff = time() - float(status['last_iteration_ts'])
-      status['last_iteration_sec'] = iteration_diff
-      if (iteration_diff < 10): # consider it running if last iteration is within 10 sec
-        status['message'] = 'running'
-      status['last_iteration_ts'] = datetime.fromtimestamp(float(status['last_iteration_ts']))
-    ret_val = { self.daemon_key : status }
+    ret_val = self.redis.GetStatus(self.daemon_key)
     return ret_val
 
 
@@ -121,8 +120,12 @@ class Cgate:
           pos2 = row.index(':')
           pos3 = row.index('l=')+2
           row_id = 'cgate__' + row[pos1:pos2].replace('/', '_') + '__level'
-          row_level = row[pos3:]
-          resp[row_id] = row_level
+          row_level = round(int(row[pos3:]) * (100/255))
+          if (row_level > 100):
+            row_level = 100
+          if (row_level < 0):
+            row_level = 0
+          resp[row_id] = str(row_level)
         else:
           resp[i] = row
           i += 1

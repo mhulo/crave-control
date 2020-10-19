@@ -13,17 +13,18 @@ class MainWs:
     # make this ping every 30 sec
     await self.Connect(websocket, client_id)
     try:
-      await self.Broadcast(f'client #{client_id} connected')
-      vals_keys = ['foo']
-      vals_data = self.redis.GetData(vals_keys)
-      await self.Broadcast(vals_data)
+      msg_data = { 'message' : 'client #' + str(client_id) + ' connected' }
+      await self.Broadcast(json.dumps(msg_data))
+      state_data = json.dumps(self.redis.GetState())
+      await self.Broadcast(state_data)
       while True:
         data = await websocket.receive_text()
         if (data == 'ping'):
           await self.Send('pong', client_id)
     except WebSocketDisconnect:
       self.Disconnect(client_id)
-      await self.Broadcast(f'client #{client_id} disconnected')
+      msg_data = { 'message' : 'client #' + str(client_id) + ' disconnected' }
+      await self.Broadcast(json.dumps(msg_data))
 
 
   async def Connect(self, websocket: WebSocket, client_id: int):
@@ -37,7 +38,7 @@ class MainWs:
 
 
   async def Broadcast(self, message: str):
-    for key in self.clients:
+    for key in list(self.clients.keys()):
         await self.Send(message, key)
 
 
