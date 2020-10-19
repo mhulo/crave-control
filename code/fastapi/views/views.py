@@ -3,41 +3,111 @@ from main.main_imports import *
 class Views:
 
   def Admin(self):
-    
+
     html = """
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Chat</title>
-    </head>
-    <body>
-        <h1>WS Test</h1>
-        <h2>Your ID: <span id="ws-id"></span></h2>
-        <form action="" onsubmit="sendMessage(event)">
-            <input type="text" id="messageText" autocomplete="off"/>
-            <button>Send</button>
-        </form>
-        <ul id='messages'>
-        </ul>
-        <script>
-            var client_id = Date.now()
-            document.querySelector("#ws-id").textContent = client_id;
-            var ws = new WebSocket(`ws://localhost:8888/ws/core/${client_id}/`);
-            ws.onmessage = function(event) {
-                var messages = document.getElementById('messages')
-                var message = document.createElement('li')
-                var content = document.createTextNode(event.data)
-                message.appendChild(content)
-                messages.appendChild(message)
-            };
-            function sendMessage(event) {
-                var input = document.getElementById("messageText")
-                ws.send(input.value)
-                input.value = ''
-                event.preventDefault()
-            }
-        </script>
-    </body>
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> <!-- for jquery -->
+<script language="javascript" type="text/javascript">  
+  $(document).ready(function(){
+
+    $('#event_start').click(function() {
+      $.ajax({url: "/api/core/event/start/", success: function(result){
+        alert(JSON.stringify(result));
+       }});
+    });
+    $('#event_stop').click(function() {
+      $.ajax({url: "/api/core/event/stop/", success: function(result){
+        alert(JSON.stringify(result));
+       }});
+    });
+    $('#event_status').click(function() {
+      $.ajax({url: "/api/core/event/status/", success: function(result){
+        alert(JSON.stringify(result));
+       }});
+    });
+    $('#event_state').click(function() {
+      $.ajax({url: "/api/core/event/state/", success: function(result){
+        alert(JSON.stringify(result));
+       }});
+    });
+
+    $('#cgate_start').click(function() {
+      $.ajax({url: "/api/cgate/start/", success: function(result){
+        alert(JSON.stringify(result));
+       }});
+    });
+    $('#cgate_stop').click(function() {
+      $.ajax({url: "/api/cgate/stop/", success: function(result){
+        alert(JSON.stringify(result));
+       }});
+    });
+    $('#cgate_status').click(function() {
+      $.ajax({url: "/api/cgate/status/", success: function(result){
+        alert(JSON.stringify(result));
+       }});
+    });
+    $('#cgate_state').click(function() {
+      $.ajax({url: "/api/cgate/state/", success: function(result){
+        alert(JSON.stringify(result));
+       }});
+    });
+
+    $('#hue_start').click(function() {
+      $.ajax({url: "/api/hue/start", success: function(result){
+        alert(result);
+       }});
+    });
+    $('#hue_stop').click(function() {
+      $.ajax({url: "/api/hue/stop", success: function(result){
+        alert(result);
+       }});
+    });
+    $('#hue_levels').click(function() {
+      $.ajax({url: "/api/hue/levels", success: function(result){
+        alert(JSON.stringify(result));
+       }});
+    });
+
+  });
+</script>
+
+</head>
+<body>
+  <table border="1">
+    <tr>
+      <td align="center">Interface</td>
+      <td width="100"></td>
+      <td width="100"></td>
+      <td width="100"></td>
+      <td width="100"></td>
+    </tr>
+    <tr>
+      <td id="event_light">Event Listner [event]</td>
+      <td align="center"><button id="event_start">Start</button></td>
+      <td align="center"><button id="event_stop">Stop</button></td>
+      <td align="center"><button id="event_status">Status</button></td>
+      <td align="center"><button id="event_state">State</button></td>
+    </tr>
+    <tr>
+      <td id="cgate_light">Clipsal C-Bus [cgate]</td>
+      <td align="center"><button id="cgate_start">Start</button></td>
+      <td align="center"><button id="cgate_stop">Stop</button></td>
+      <td align="center"><button id="cgate_status">Status</button></td>
+      <td align="center"><button id="cgate_state">State</button></td>
+    </tr>
+    <tr>
+      <td>Philips Hue [hue]</td>
+      <td align="center"><button id="hue_start">Start</button></td>
+      <td align="center"><button id="hue_stop">Stop</button></td>
+      <td align="center"></td>
+      <td align="center"><button id="hue_levels">State</button></td>
+    </tr>
+  </table>
+
+</body>
 </html>
 """
     return html
