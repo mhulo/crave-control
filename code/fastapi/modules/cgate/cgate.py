@@ -22,7 +22,7 @@ class Cgate:
     self.redis.HSet(self.daemon_key, { 'message' : 'started',  'loop_ts' : str(time()) })
     self.redis.HSet('state', { self.mod_name : '' })
     retries = 0
-    max_retries = 1
+    max_retries = 1 # fail fast if cant connect first go - could be config issue. 
     updated_ts = 0
     checked_ts = 0
     cached_state = '{{}}' #json string
@@ -44,9 +44,9 @@ class Cgate:
             instance_id = self.redis.HGet(self.daemon_key, 'instance_id')
             self.redis.HSet(self.daemon_key, { 'loop_ts' : str(time()) })
             if (updated_diff < 600):
-              await asyncio.sleep(0.3) # 300ms
+              await asyncio.sleep(0.5) # 500ms
             else:
-              await asyncio.sleep(2) # 2s (sleep mode)
+              await asyncio.sleep(1.5) # 1.5s (sleep mode)
             retries = 0
       except Exception as e:
         self.redis.HSet(self.daemon_key, { 'message' : 'error - ' + str(e) + ' could not connect to host/port' })
@@ -121,10 +121,8 @@ class Cgate:
           pos3 = row.index('l=')+2
           row_id = 'cgate__' + row[pos1:pos2].replace('/', '_') + '__level'
           row_level = round(int(row[pos3:]) * (100/255))
-          if (row_level > 100):
-            row_level = 100
-          if (row_level < 0):
-            row_level = 0
+          if (row_level > 100): row_level = 100
+          if (row_level < 0): row_level = 0
           resp[row_id] = str(row_level)
         else:
           resp[i] = row

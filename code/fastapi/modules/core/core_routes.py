@@ -1,7 +1,8 @@
 from main.main_imports import *
 from main.main_settings import *
 
-# autoload modules in main_settings
+# autoload modules in main_settings so that core 
+# can access everything required for the actions
 modules = {}
 for i in active_modules:
   mod_file = import_module('modules.' + i.lower() + '.' + i.lower())
@@ -10,12 +11,34 @@ for i in active_modules:
 
 
 router = APIRouter()
+templates = Jinja2Templates(directory='modules/core/templates')
 
 
-# event routes
+# app (view) routes
+@router.get('/app/', response_class=HTMLResponse)
+async def core_index(request: Request):
+    return templates.TemplateResponse('index.html', { 'request': request })
+
+
+@router.get('/app/admin/', response_class=HTMLResponse)
+async def core_admin(request: Request):
+    return templates.TemplateResponse('admin.html', { 'request': request })
+
+
+@router.get('/app/ws_test/', response_class=HTMLResponse)
+async def core_ws_test(request: Request):
+    return templates.TemplateResponse('ws_test.html', { 'request': request })
+
+
+# wss routes
+@router.websocket("/wss/core/{client_id}/")
+async def core_ws_start(websocket: WebSocket, client_id: int):
+  await modules['core'].ws.Start(websocket, client_id)
+
+
+# api routes
 @router.get("/api/core/event/start/")
 async def core_event_start(background_tasks: BackgroundTasks):
-  #await modules['core'].event.Start()
   background_tasks.add_task(modules['core'].event.Start)
   resp = { 'message' : 'cgate daemon: started' }
   return resp
@@ -40,40 +63,9 @@ def core_event_status():
   return resp
 
 
-# ws routes
-@router.websocket("/ws/core/{client_id}/")
-async def core_ws_start(websocket: WebSocket, client_id: int):
-  await modules['core'].ws.Start(websocket, client_id)
-
-
 @router.get('/api/core/ws/broadcast/{q}/')
 async def core_ws_broadcast(q: str):
   await modules['core'].ws.Broadcast(q)
   return { 'message' : 'sent' }
-
-
-@router.get('/app/core/ws/test/')
-def core_ws_test():
-  resp = modules['core'].ws.TestHtml()
-  return HTMLResponse(resp)
-
-
-# redis routes
-@router.get('/app/core/redis/set/{q}/')
-def core_redis_set(q: str):
-  modules['core'].redis.Set('foo', q)
-  return HTMLResponse('set to ' + q)
-
-
-@router.get('/app/core/redis/get/')
-def core_redis_get():
-  resp = modules['core'].redis.JGet('cgate_state')
-  return resp
-
-
-
-
-
-
 
 

@@ -91,10 +91,6 @@
             $ret_str .= " </div>\n";
 
             $ret_str .= " <div id=\"" . $c01_div_id . "_faves\" class=\"faves_row\">\n";
-//               $ret_str .= "   <button class='f1 mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect' onclick='adjust_slider(\"" . $c01_div_id . "\",\"minus\");'><i class='material-icons'>remove</i></button>\n";
-//               $ret_str .= "   <button class='f2 mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect' onclick='adjust_slider(\"" . $c01_div_id . "\",\"" . $widgets_conf_obj[$widget_id]['fave_percentage_1'] . "\");'><span>" . $widgets_conf_obj[$widget_id]['fave_percentage_1'] . "%</span></button>\n";
-//               $ret_str .= "   <button class='f4 mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect' onclick='adjust_slider(\"" . $c01_div_id . "\",\"plus\");'><i class='material-icons'>add</i></button>\n";
-//               $ret_str .= "   <button class='f3 mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect' onclick='adjust_slider(\"" . $c01_div_id . "\",\"" . $widgets_conf_obj[$widget_id]['fave_percentage_2'] . "\");'><span>" . $widgets_conf_obj[$widget_id]['fave_percentage_2'] . "%</span></button>\n";
             $ret_str .= " </div>\n";
 
             $ret_str .= "</div>\n";

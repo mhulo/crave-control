@@ -1,0 +1,9 @@
+#sourced from https://gist.github.com/ethicka/27c36c975a5c2cbbd1874bc78bab61c4
+
+sudo openssl genrsa -out localhost.key 2048
+sudo openssl rsa -in localhost.key -out localhost.key.rsa
+
+sudo openssl req -new -key localhost.key.rsa -subj /CN=localhost -out localhost.csr -config localhost.conf
+
+sudo openssl x509 -req -extensions v3_req -days 3650 -in localhost.csr -signkey localhost.key.rsa -out localhost.crt -extfile localhost.conf
+sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain localhost.crt
