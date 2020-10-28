@@ -37,9 +37,10 @@ async def core_ws_start(websocket: WebSocket, client_id: int):
 
 
 # api routes
-@router.get("/api/core/command/run/")
-def core_command_run(request: Request):
-  return modules['core'].CommandRun(request, modules)
+@router.get("/api/core/run_command/")
+async def core_run_command(request: Request):
+  ret_val = await modules['core'].RunCommand(request, modules)
+  return ret_val
 
 
 @router.get("/api/core/widgets_conf/")
