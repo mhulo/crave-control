@@ -49,12 +49,12 @@
 
       widget_div_id = page_num + '_' + item_num + '_' + widget_id;
       comp_div_id = widget_div_id + '_toggle';
-      listener_type = 'toggle_mdl1';
+      listener_type = 'switch_mdl1';
 
       ret_str  = '<div class="cvcard mdl-cell mdl-cell--8-col mdl-cell--6-col-desktop">\n';
       ret_str += ' <div class="label_row">\n';
       ret_str += '   <span>' + widget_obj['name'] + '</span>\n';
-      ret_str += '   <span id="' + comp_div_id + '_label" class="level_label">0%</span>\n';
+      ret_str += '   <span id="' + comp_div_id + '_label" class="level_label">OFF</span>\n';
       ret_str += '   <button class="mdl-button mdl-js-button mdl-button--fab" onclick="toggle_faves(\'' + comp_div_id + '\');"><i class="material-icons">keyboard_arrow_down</i></button>\n';
       ret_str += ' </div>\n';
       ret_str += ' <div class="interface_row">\n';
@@ -62,10 +62,10 @@
       ret_str += '   <span id="' + comp_div_id + '_listener_label" class="mdl_dimmer_listener_label">0%</span>\n';
       ret_str += ' </div>\n';
       ret_str += ' <div class="icon_row">\n';
-      ret_str += '   <button id="' + comp_div_id + '_icon" class="widget_icon mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="slider_adjust(\'mdl1\',\'' + comp_div_id + '\',\'toggle\');"><i class="material-icons">lightbulb_outline</i></button>\n';
+      ret_str += '   <button id="' + comp_div_id + '_icon" class="widget_icon mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="switch_adjust(\'mdl1\',\'' + comp_div_id + '\',\'toggle\');"><i class="material-icons">lightbulb_outline</i></button>\n';
       ret_str += '   <div id="' + comp_div_id + '" class="component_container slider_mdl1">';
 
-      ret_str += get_slider_mdl1(comp_div_id, widget_obj);
+      ret_str += get_switch_mdl1(comp_div_id, widget_obj);
       ret_str += get_listener(comp_div_id, widget_obj, listener_type);
 
       ret_str += '   </div>\n';

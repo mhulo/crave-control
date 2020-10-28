@@ -37,10 +37,20 @@ async def core_ws_start(websocket: WebSocket, client_id: int):
 
 
 # api routes
+@router.get("/api/core/command/run/")
+def core_command_run(request: Request):
+  return modules['core'].CommandRun(request, modules)
+
+
+@router.get("/api/core/widgets_conf/")
+def core_widgets_conf():
+  return modules['core'].WidgetsConf()
+
+
 @router.get("/api/core/event/start/")
 async def core_event_start(background_tasks: BackgroundTasks):
   background_tasks.add_task(modules['core'].event.Start)
-  resp = { 'message' : 'cgate daemon: started' }
+  resp = { 'message' : 'event daemon: started' }
   return resp
 
 

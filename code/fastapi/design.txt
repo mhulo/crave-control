@@ -7,6 +7,11 @@ interface daemons --> redis --> event daemon --> event handler --> | --> send ws
 * interface daemon sends to device updates to redis
 * event daemon listens for redis change and then throws to event handler
 
+* message: something sent to an interface in the form required by the interface
+* action: a standard method to control an interface (eg. dim, toggle)
+* command: a named set of actions configured in json
+* run: a core method which looks up the commands.json and runs a command by name
+
 redis data..
 
 cgate_daemon

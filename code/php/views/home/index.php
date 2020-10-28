@@ -171,7 +171,7 @@
         </div> <!-- end leftside -->
 
         <div class="rightside">
-<?php /*echo $sects_str;*/ ?>
+<?php echo $sects_str; ?>
         </div> <!-- end rightside -->
 
       </main>

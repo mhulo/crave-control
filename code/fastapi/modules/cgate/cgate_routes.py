@@ -38,27 +38,4 @@ def cgate_ping():
   return resp
 
 
-@router.get('/api/cgate/hset/')  
-def cgate_hset():
-  redis_resp = str(cgate.redis.Del('core_daemon'))
-  resp = { 'message': 'redis said: ' + redis_resp }
-  return resp
-
-
-@router.get('/api/cgate/hget/')  
-def cgate_hget():
-  rhash = 'cgate_daemon'
-  rkey = 'message'
-  redis_resp = cgate.redis.HGet(rhash, rkey)
-  resp = { rkey : redis_resp }
-  return resp
-
-
-@router.get('/api/cgate/hgetall/')  
-def cgate_hget():
-  rhash = 'cgate_daemon'
-  redis_resp = cgate.redis.HGetAll(rhash)
-  resp = { rhash : redis_resp }  
-  return resp
-
 

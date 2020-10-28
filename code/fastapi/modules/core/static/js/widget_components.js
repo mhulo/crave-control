@@ -4,7 +4,25 @@
 //version: 2011-06-25
 //www.cravetechnology.com.au
 
+
 //////////////////////////////////////////////////////////////
+  function get_listener(comp_div_id, comp_obj, listener_type) {
+    // eg. comp_type = slider or switch
+    // eg. comp_subtype = mdl1 or mdc1 (ie. material design lite or material design components)
+
+    ret_str  = '<input value="x" class="hdn_lst listener_value ' + comp_obj['listener_interface'] + '__' + comp_obj['listener_device_id'] + '__' + comp_obj['listener_state_key'] + '"';
+    ret_str += ' onchange="listener_val_changed(\'' + comp_div_id + '\');"';
+    ret_str += ' >\n';
+    ret_str += '<input value="0" class="hdn_lst listener_time"';
+    ret_str += ' onchange="' + listener_type + '_listener_time_changed(\'' + comp_div_id + '\');"';
+    ret_str += ' >\n';
+    ret_str += '<input value="0" class="hdn_lst updated_time">\n';
+    ret_str += '<input value="x" class="hdn_lst value_by_listener">\n';
+
+    return ret_str;
+  }
+
+  //////////////////////////////////////////////////////////////
   function get_slider_mdl1(comp_div_id, comp_obj) {
 
     ret_str  = '<p class="component_value_elem">\n';
@@ -16,19 +34,14 @@
     return ret_str;
   }
 
-//////////////////////////////////////////////////////////////
-  function get_listener(comp_div_id, comp_obj, listener_type) {
-    // eg. comp_type = slider or switch
-    // eg. comp_subtype = mdl1 or mdc1 (ie. material design lite or material design components)
+  //////////////////////////////////////////////////////////////
+  function get_switch_mdl1(comp_div_id, comp_obj) {
 
-    ret_str  = '<input value="x" class="hdn_lst listener_value ' + comp_obj['listener_interface'] + '__' + comp_obj['listener_device_id'] + '__' + comp_obj['listener_sate_key'] + '"';
-    ret_str += ' onchange="listener_val_changed(\'' + comp_div_id + '\');"';
+    ret_str  = '<label id="' + comp_div_id + '_l" for="' + comp_div_id + '_main" class="mdl-switch mdl-js-switch">\n';
+    ret_str += ' <input id="' + comp_div_id + '_main" type="checkbox" class="widget_value switch_mdl1 mdl-switch__input"';
+    ret_str += ' onchange="switch_value_changed(this.checked, \'mdl1\', \'' + comp_div_id + '\', \'' + comp_obj['command'] + '\');"';
     ret_str += ' >\n';
-    ret_str += '<input value="0" class="hdn_lst listener_time"';
-    ret_str += ' onchange="' + listener_type + '_listener_time_changed(\'' + comp_div_id + '\');"';
-    ret_str += ' >\n';
-    ret_str += '<input value="0" class="hdn_lst updated_time">\n';
-    ret_str += '<input value="x" class="hdn_lst value_by_listener">\n';
+    ret_str += '</label>\n';
 
     return ret_str;
   }

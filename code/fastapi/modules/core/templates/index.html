@@ -31,91 +31,32 @@
     <link rel="stylesheet" href="/app/core/static/css/mdl_styles.css">
     <link rel="stylesheet" href="/app/core/static/css/styles.css">
 
-    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script> <!-- for mdl -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> <!-- for jquery -->
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script> <!-- for mdl -->
+    <script src="/app/core/static/js/core.js"></script>
     <script src="/app/core/static/js/widgets.js"></script>
     <script src="/app/core/static/js/widget_components.js"></script>
-    <script src="/app/core/static/js/widget_conf.js"></script>
-    <script src="/app/core/static/js/widget_functions.js"></script>
+
     <script>
         $(document).ready(function(){
 
-          // generate the sections
-          sections = {}
-          $.each(widgets_conf, function(key1,val1) {
-            $.each(val1['groups'], function(key2,val2) {
-              if (!(val2 in sections)) { sections[val2] = []; }
-              sections[val2].push(key1);
-            });
+          $.get('/api/core/widgets_conf/', function (data, status) {
+            if (status == 'success') {
+              widgets_conf = data;
+              generate_layout();
+              generate_comps(widgets_conf);
+              componentHandler.upgradeDom();
+            }
+
+            setTimeout(function () {
+              get_live_status() ;
+            }, 1000);
+
           });
 
-          // generate the groups
-          groups = Object.keys(sections);
-
-          // generate left group tabs
-          left_groups = ''
-          $.each(groups, function(key,val) {
-            if (key == 0) { actv = ' is-active'; }
-            else { actv = ''; }
-            left_groups += '<li class="mdl-list__item">\n';
-            left_groups += '<button name="t' + key + '" class="leftnav mdl-button mdl-js-button mdl-js-ripple-effect' + actv + '">' + val + '</button>\n';
-            left_groups += '</li>\n';
-          });
-          $('#left-list').html(left_groups);
-
-          // generate top group tabs
-          top_groups = ''
-          $.each(groups, function(key,val) {
-            if (key == 0) { actv = ' is-active'; }
-            else { actv = ''; }
-            top_groups += '<a name="t' + key + '" href="#scroll-tab-' + key + '" class="topnav mdl-layout__tab' + actv + '"><div class="navtext">' + val + '</div></a>\n';
-          });
-          $('#top-list').html(top_groups);
-
-          // generate the pages with widgets
-          elems = '';
-          page_num = 0;
-          $.each(sections, function(key1,val1) {
-            if (page_num == 0) { actv = 'is-active'; }
-            else { actv = ''; }
-            elems += '<section class="mdl-layout__tab-panel ' + actv + '" id="scroll-tab-' + page_num + '">';
-            elems += '  <div class="mdl-grid">';
-
-            // generate widgets in group
-            $.each(val1, function(key2,val2) {
-              w_conf = widgets_conf[val2];
-              elems += widgets[w_conf['ui_type']](page_num, key2, val2, w_conf);
-            });
-
-            elems += '  </div>\n';
-            elems += '</section>\n\n';
-            page_num++;
-          });
-          $('#widget-elems').html(elems);
-
-
-          ws_host_addr = '<?php echo CONST_ws_host; ?>';
-          ws_host_port = '<?php echo CONST_ws_port; ?>';
           ws_sockets = [];
           ws_last_msg_time = [];
-
           listner_addresses_arr = [];
-          //listner_addresses_arr = <php echo $interfaces_str; ?>
-
-          //setTimeout(function() {
-          //    spawn_listener_interfaces();
-          //},1000 );
-
-          $('.leftnav').on('click', function(){
-            $('.topnav[name='+this.name+']')[0].click();
-            $('.leftnav').removeClass('is-active');
-            $('.leftnav[name='+this.name+']').addClass('is-active');
-          });
-
-          $('.topnav').on('click', function(){
-            $('.leftnav').removeClass('is-active');
-            $('.leftnav[name='+this.name+']').addClass('is-active');
-          });
 
         });
     </script>

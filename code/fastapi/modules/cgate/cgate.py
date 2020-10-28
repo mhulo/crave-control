@@ -3,14 +3,39 @@ from main.main_imports import *
 class Cgate:
 
   def __init__(self):
+    self.host = 'cgate' # cgate host name / IP address
+    self.change_port = 20025 # cgate load change port
+    self.command_port = 20023 # cgate command port
+    self.project = 'NET1' # cgate project name as set up in cgate config xml file
+    self.network = '254' # the number of your network for this interface
+    self.app = '56' # the app for the lighting network - will expand to other apps in future
+    ######
     self.event_timeout = .001
     self.command_timeout = 1
     self.mod_name = 'cgate'
-    #####
     self.daemon_key = self.mod_name + '_daemon'
     self.state_key = self.mod_name + '_state'
     self.redis = Request.state.redis
     self.ws = Request.state.ws
+
+
+  def SetBrightness(self, data):
+    level = round(int(data['set_val']) * (255/100))
+    msg = 'RAMP //' + self.DeviceIdToCgateId(data['device_id']) + ' ' + str(level) + ' ' + str(data['ramp_time']) + 's'
+    resp_text = self.Send(msg)
+    ret_val = { msg : self.CgateToJson(resp_text) }
+    return ret_val
+
+
+  def SetPower(self, data):
+    if (int(data['set_val']) == 100):
+      level = 'ON'
+    else:
+      level = 'OFF'
+    msg = level + ' //' + self.DeviceIdToCgateId(data['device_id'])
+    resp_text = self.Send(msg)
+    ret_val = { msg : self.CgateToJson(resp_text) }
+    return ret_val
 
 
   # wait for updates and then load state to redis
@@ -28,7 +53,7 @@ class Cgate:
     cached_state = '{{}}' #json string
     while ((retries < max_retries) and (this_id == instance_id)):
       try:
-        with Telnet('cgate', 20025) as conn:
+        with Telnet(self.host, self.change_port) as conn:
           max_retries = 10
           while (this_id == instance_id):
             updated_diff = time() - updated_ts
@@ -66,26 +91,26 @@ class Cgate:
 
 
   def State(self):
-    cmd = 'get //NET1/254/56/* level'
-    resp_text = self.Send(cmd)
+    msg = 'GET //' + self.project + '/' + self.network + '/' + self.app + '/* LEVEL'
+    resp_text = self.Send(msg)
     ret_val = self.CgateToJson(resp_text)
     return ret_val
 
 
   def Ping(self):
-    cmd = 'noop'
-    resp_text = self.Send(cmd)
+    msg = 'NOOP'
+    resp_text = self.Send(msg)
     ret_val = self.CgateToJson(resp_text)
     return ret_val
 
 
-  def Send(self, cmd):
+  def Send(self, msg):
     with Telnet() as conn:
       try:
-        conn.open('cgate', 20023)
+        conn.open(self.host, self.command_port)
         resp1 = self.Read(conn, self.command_timeout) # read welcome msg
-        conn.write((cmd + '\r\n').encode('utf-8'))
-        resp2 = self.Read(conn, self.command_timeout) # read resp from cmd
+        conn.write((msg + '\r\n').encode('utf-8'))
+        resp2 = self.Read(conn, self.command_timeout) # read resp msg
         ret_val = resp2
       except Exception as e:
         ret_val = { 'message' : 'error: ' + str(e) + ' could not connect to host/port' }
@@ -114,11 +139,12 @@ class Cgate:
     resp = {}
     text_arr = cgate_text.split('\r\n')
     for row in text_arr:
+      row = row.upper()
       if (row != ''):
-        if ('level=' in row):
+        if ('LEVEL=' in row):
           pos1 = row.index('//')+2
           pos2 = row.index(':')
-          pos3 = row.index('l=')+2
+          pos3 = row.index('L=')+2
           row_id = 'cgate__' + row[pos1:pos2].replace('/', '_') + '__level'
           row_level = round(int(row[pos3:]) * (100/255))
           if (row_level > 100): row_level = 100
@@ -127,5 +153,10 @@ class Cgate:
         else:
           resp[i] = row
           i += 1
+    return resp
+
+
+  def DeviceIdToCgateId(self, device_id):
+    resp = device_id.replace('_', '/')
     return resp
 
