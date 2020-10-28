@@ -183,7 +183,7 @@
 
             // fire the action and reset the last set by listener
             console.log('widget command: '+widget_command+' --> widget value/s: '+comp_val);
-            var surl = '/api/core/command/run/?z='+get_rand_ext()+'&cmd='+widget_command+'&set_val='+comp_val;
+            var surl = '/api/core/run_command/?z='+get_rand_ext()+'&cmd='+widget_command+'&set_val='+comp_val;
             $.get(surl, function(data, status){
                 //console.log(surl);
             });
@@ -225,7 +225,7 @@
             (comp_val != val_by_listener)) { // and it was a user action
             // fire the action and reset the last set by listener
             console.log('widget command: '+widget_command+' --> widget value/s: '+truefalse_to_level(comp_val));
-            var surl = '/api/core/command/run/?z='+get_rand_ext()+'&cmd='+widget_command+'&set_val='+truefalse_to_level(comp_val);
+            var surl = '/api/core/run_command/?z='+get_rand_ext()+'&cmd='+widget_command+'&set_val='+truefalse_to_level(comp_val);
             $.get(surl, function(data, status){
             });
             $('#'+comp_div_id+' .value_by_listener').val('x');
