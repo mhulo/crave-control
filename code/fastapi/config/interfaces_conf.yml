@@ -1,0 +1,21 @@
+
+### Crave Core  #########################################
+core:
+  active: true
+  module_name: 'core'
+
+
+### Clipsal C-Gate  #########################################
+cgate1:
+  active: true
+  module_name: 'cgate'
+  host: 'cgate' # cgate host name inside docker or the IP address
+  change_port: 20025 # cgate load change port
+  command_port: 20023 # cgate command port
+  project: 'NET1' # cgate project name as set up in cgate config xml file
+  network: '254' # the number of your network for this interface
+  app: '56' # the app for the lighting network - will expand to other apps in future
+  event_timeout: .001
+  command_timeout: 1
+
+

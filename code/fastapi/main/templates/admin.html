@@ -28,22 +28,22 @@
     });
 
     $('#cgate_start').click(function() {
-      $.ajax({url: "/api/cgate/start/", success: function(result){
+      $.ajax({url: "/api/cgate1/start/", success: function(result){
         alert(JSON.stringify(result));
        }});
     });
     $('#cgate_stop').click(function() {
-      $.ajax({url: "/api/cgate/stop/", success: function(result){
+      $.ajax({url: "/api/cgate1/stop/", success: function(result){
         alert(JSON.stringify(result));
        }});
     });
     $('#cgate_status').click(function() {
-      $.ajax({url: "/api/cgate/status/", success: function(result){
+      $.ajax({url: "/api/cgate1/status/", success: function(result){
         alert(JSON.stringify(result));
        }});
     });
     $('#cgate_state').click(function() {
-      $.ajax({url: "/api/cgate/state/", success: function(result){
+      $.ajax({url: "/api/cgate1/state/", success: function(result){
         alert(JSON.stringify(result));
        }});
     });

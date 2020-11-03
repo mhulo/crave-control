@@ -6,4 +6,5 @@ class MainState:
   def __init__(self):
     self.redis = MainRedis()
     self.ws = MainWs(self.redis)
+    self.ifx = None
 

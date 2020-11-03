@@ -35,7 +35,7 @@
 
         //create a new websocket object.
         var client_id = Date.now()
-        socket_uri = 'ws://' + location.hostname + ':8888/wss/core/' + client_id + '/'; 
+        socket_uri = 'ws://' + location.hostname + ':8888/api/core/wss/' + client_id + '/'; 
         ws_sockets = new WebSocket(socket_uri);
 
         ws_sockets.onopen = function(ev) { // connection is open 
@@ -502,7 +502,7 @@
         // generate widgets in group
         $.each(val1, function(key2,val2) {
           w_conf = widgets_conf[val2];
-          elems += widgets[w_conf['type']](page_num, key2, val2, w_conf);
+          elems += widgets[w_conf['widget']](page_num, key2, val2, w_conf);
         });
 
         elems += '  </div>\n';
