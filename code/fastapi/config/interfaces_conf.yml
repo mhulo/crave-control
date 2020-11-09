@@ -6,7 +6,7 @@ core:
 
 
 ### Clipsal C-Gate  #########################################
-cgate1:
+cgate:
   active: true
   module_name: 'cgate'
   host: 'cgate' # cgate host name inside docker or the IP address

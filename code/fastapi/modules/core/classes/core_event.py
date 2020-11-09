@@ -1,4 +1,4 @@
-from main.main_imports import *
+from main.main_common import *
 
 class CoreEvent:
 
@@ -8,6 +8,7 @@ class CoreEvent:
     self.daemon_key = self.mod_name + '_daemon'
     self.redis = Request.state.redis
     self.ws = Request.state.ws
+
 
   # event server daemon
   async def Start(self):
@@ -19,15 +20,14 @@ class CoreEvent:
     self.redis.HSet('state', { self.mod_name : '' })
     cached_state = {}
     cached_updated_ts = 0
-
     while (this_id == instance_id):
       updated_ts = float(self.redis.HGet('state', 'updated_ts'))
       if (updated_ts != cached_updated_ts):
         state = self.redis.GetState()
         await self.HandleEvent(state, cached_state)
-        instance_id = self.redis.HGet(self.daemon_key, 'instance_id')
         cached_state = state
-        self.redis.HSet(self.daemon_key, { 'loop_ts' : str(time()) })
+      self.redis.HSet(self.daemon_key, { 'loop_ts' : str(time()) })
+      instance_id = self.redis.HGet(self.daemon_key, 'instance_id')
       cached_updated_ts = updated_ts
       await asyncio.sleep(0.25) # 250ms
 
@@ -60,7 +60,6 @@ class CoreEvent:
         change_data[key] = state[key]
     if (change_data != {}):
       await self.ws.Broadcast(json.dumps(change_data))
-      #await self.ws.Broadcast('update')
 
 
 

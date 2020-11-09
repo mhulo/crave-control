@@ -6,19 +6,23 @@ def to_classname(s):
   return s
 
 
+def to_dict(x):
+  if (x == None):
+    x = {}
+  return x
+
+
 def get_interface_conf(ifx):
   conf = interfaces_conf[ifx]
   conf['interface'] = ifx
   return conf
 
 
-def get_interface(path_str):
+# get the interface name based on the path string
+def get_ifx(r):
   s = ''
-  if ('/api/' in path_str):
-    s = path_str.split('/api/')[1].split('/')[0]
+  p = r.scope['path']
+  if ('/api/' in p):
+    s = p.split('/api/')[1].split('/')[0]
   return s
-
-
-
-
 

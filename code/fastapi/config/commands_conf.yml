@@ -1,8 +1,14 @@
 
+set_widget_val:
+  description: 'set widget val'
+  actions:
+    - method: 'core@SetWidgetVal'
+      params: null
+
 cmd0001:
   description: 'dim master lights'
   actions:
-    - method: 'cgate1@SetBrightness'
+    - method: 'cgate@SetBrightness'
       params:
         device_id: 'NET1_254_56_0'
         set_val: null
@@ -16,7 +22,6 @@ cmd0002:
         device_id: 'NET1_254_56_3'
         ramp_time: 4              
 
-
 cmd0003:
   description: 'dim study lights'
   actions:
@@ -24,7 +29,6 @@ cmd0003:
       params:
         device_id: 'NET1_254_56_5'
         ramp_time: 4
-
 
 cmd0004:
   description: 'dim dining lights'

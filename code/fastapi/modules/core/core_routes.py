@@ -38,6 +38,13 @@ async def core_event_start(background_tasks: BackgroundTasks):
   return resp
 
 
+@router.get('/event/start_debug/')  
+async def core_event_start_debug():
+  resp = await modules['core'].event.Start()
+  resp = { 'message' : 'event daemon: started' }
+  return resp
+
+
 @router.get('/event/stop/')  
 async def core_event_stop():
   resp = modules['core'].event.Stop()
@@ -61,5 +68,12 @@ def core_event_status():
 async def core_ws_broadcast(q: str):
   await modules['core'].ws.Broadcast(q)
   return { 'message' : 'sent' }
+
+
+@router.get('/redis/del/{hash_key}/')  
+def core_event_status(hash_key: str):
+  modules['core'].redis.HDel('state', hash_key)
+  resp = { 'message' : 'redis hash ' + hash_key + ': deleted' }
+  return resp
 
 

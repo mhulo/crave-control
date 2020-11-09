@@ -5,41 +5,44 @@ from modules.cgate.cgate import *
 router = APIRouter()
 
 
-async def background_start(ifx):
+async def background_start(r):
+  ifx = get_ifx(r)
   await Cgate(ifx).Start()
 
 
 @router.get('/start/')
-async def background_start(background_tasks: BackgroundTasks):
-  background_tasks.add_task(background_start, Request.state.ifx)
+async def cgate_start(request: Request, background_tasks: BackgroundTasks):
+  background_tasks.add_task(background_start, request)
   resp = { 'message' : 'cgate daemon: started' }
   return resp
 
 
 @router.get('/stop/')  
-async def cgate_stop():
-  resp = Cgate(Request.state.ifx).Stop()
+async def cgate_stop(request: Request):
+  ifx = get_ifx(request)
+  resp = Cgate(ifx).Stop()
   resp = { 'message' : 'cgate daemon: stopped' }
   return resp
 
 
 @router.get('/state/')
-def cgate_state():
-  resp = Cgate(Request.state.ifx).State()
+def cgate_state(request: Request):
+  ifx = get_ifx(request)
+  resp = Cgate(ifx).State()
   return resp
 
 
 @router.get('/status/')  
-def cgate_status():
-  resp = Cgate(Request.state.ifx).Status()
+def cgate_status(request: Request):
+  ifx = get_ifx(request)
+  resp = Cgate(ifx).Status()
   return resp
 
 
 @router.get('/ping/')  
-def cgate_ping():
-  resp = Cgate(Request.state.ifx).Ping()
+def cgate_ping(request: Request):
+  ifx = get_ifx(request)
+  resp = Cgate(ifx).Ping()
   return resp
-
-
 
 

@@ -76,9 +76,12 @@ class MainRedis:
 
 
   # delete a key from a hash
-  def HDel(self, rhash, key):
+  def HDel(self, rhash, key=None):
     r = self.Conn()
-    val = r.hdel(rhash, key)
+    if (key == None):
+      val = r.delete(rhash)
+    else:
+      val = r.hdel(rhash, key)      
     return val
 
 

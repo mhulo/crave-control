@@ -6,11 +6,14 @@
 
 
 //////////////////////////////////////////////////////////////
-  function get_listener(comp_div_id, comp_obj, listener_type) {
+  function get_listener(comp_div_id, comp_obj, listener_type, state_key) {
     // eg. comp_type = slider or switch
     // eg. comp_subtype = mdl1 or mdc1 (ie. material design lite or material design components)
 
-    ret_str  = '<input value="x" class="hdn_lst listener_value ' + comp_obj['listener_interface'] + '__' + comp_obj['listener_device_id'] + '__' + comp_obj['listener_state_key'] + '"';
+    //console.log('*** comp obj ***');
+    //console.log(comp_obj);
+
+    ret_str  = '<input value="x" class="hdn_lst listener_value ' + comp_obj['devices'][0] + '.' + state_key + '"';
     ret_str += ' onchange="listener_val_changed(\'' + comp_div_id + '\');"';
     ret_str += ' >\n';
     ret_str += '<input value="0" class="hdn_lst listener_time"';

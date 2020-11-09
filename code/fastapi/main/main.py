@@ -15,13 +15,16 @@ for k, v in interfaces_conf.items():
     app.include_router(mod_file.router, prefix=mod_prefix)
 
 
+# commented out below because middleware breaks background
+# tasks due to a starlette bug at the time of writing
+# could use asyncio.create_task instead of background_task
 # set the interface name as ifx in state based on the path
-@app.middleware('http')
-async def add_xx(request: Request, call_next):
-  ifx = get_interface(request.scope['path'])
-  request.state.ifx = ifx
-  response = await call_next(request)
-  return response
+#@app.middleware('http')
+#async def add_xx(request: Request, call_next):
+#  ifx = ifx(request)
+#  request.state.ifx = ifx
+#  response = await call_next(request)
+#  return response
 
 
 # mount the core static dir
@@ -43,6 +46,5 @@ async def app_admin(request: Request):
 @app.get('/app/ws_test/', response_class=HTMLResponse)
 async def app_ws_test(request: Request):
     return templates.TemplateResponse('ws_test.html', { 'request': request })
-
 
 

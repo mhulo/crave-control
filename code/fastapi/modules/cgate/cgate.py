@@ -10,9 +10,17 @@ class Cgate:
     self.ws = Request.state.ws
 
 
+  def SetDevice(self, data):
+    ret_val = []
+    if ('brightness' in data):
+      resp = self.SetBrightness(data)
+      ret_val.append(resp)
+    return ret_val
+
+
   def SetBrightness(self, data):
-    level = round(int(data['set_val']) * (255/100))
-    msg = 'RAMP //' + self.DeviceIdToCgateId(data['device_id']) + ' ' + str(level) + ' ' + str(data['ramp_time']) + 's'
+    level = round(int(data['brightness']) * (255/100))
+    msg = 'ramp //' + self.DeviceIdToCgateId(data['address']) + ' ' + str(level) + ' ' + str(data['ramp_time']) + 's'
     resp_text = self.Send(msg)
     ret_val = { msg : self.CgateToJson(resp_text) }
     return ret_val
@@ -20,9 +28,9 @@ class Cgate:
 
   def SetPower(self, data):
     if (int(data['set_val']) == 100):
-      level = 'ON'
+      level = 'on'
     else:
-      level = 'OFF'
+      level = 'off'
     msg = level + ' //' + self.DeviceIdToCgateId(data['device_id'])
     resp_text = self.Send(msg)
     ret_val = { msg : self.CgateToJson(resp_text) }
@@ -82,15 +90,26 @@ class Cgate:
 
 
   def State(self):
-    msg = 'GET //' + self.conf['project'] + '/' + self.conf['network'] + '/' + self.conf['app'] + '/* LEVEL'
+    ret_val = {}
+    ifx_vals = self.StateRaw()
+    for k, v in devices_conf[self.conf['interface']].items():
+      ret_val[k] = {}
+      ret_val[k]['address'] = v['address']
+      ret_val[k]['level'] = ifx_vals[v['address']]['level']
+      ret_val[k]['brightness'] = ifx_vals[v['address']]['level']      
+    return ret_val
+
+
+  def StateRaw(self):
+    ret_val = {}
+    msg = 'get //' + self.conf['project'] + '/' + self.conf['network'] + '/' + self.conf['app'] + '/* level'
     resp_text = str(self.Send(msg))
     ret_val = self.CgateToJson(resp_text)
     return ret_val
-    #return resp_text
 
 
   def Ping(self):
-    msg = 'NOOP'
+    msg = 'noop'
     resp_text = self.Send(msg)
     ret_val = self.CgateToJson(resp_text)
     return ret_val
@@ -133,15 +152,16 @@ class Cgate:
     for row in text_arr:
       row = row.upper()
       if (row != ''):
-        if ('LEVEL=' in row):
+        if ('level=' in row.lower()):
           pos1 = row.index('//')+2
           pos2 = row.index(':')
           pos3 = row.index('L=')+2
-          row_id = 'cgate__' + row[pos1:pos2].replace('/', '_') + '__level'
+          row_id = row[pos1:pos2].replace('/', '_')
           row_level = round(int(row[pos3:]) * (100/255))
           if (row_level > 100): row_level = 100
           if (row_level < 0): row_level = 0
-          resp[row_id] = str(row_level)
+          resp[row_id] = {}
+          resp[row_id]['level'] = str(row_level)
         else:
           resp[i] = row
           i += 1

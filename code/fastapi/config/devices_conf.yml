@@ -1,0 +1,19 @@
+
+
+cgate:
+  nia_bedroom_lights:
+    address: NET1_254_56_1
+
+  kitchen_lights:
+    address: NET1_254_56_15
+
+  dining_lights:
+    address: NET1_254_56_8
+
+  lounge_lights:
+    address: NET1_254_56_9
+
+
+
+
+

@@ -16,6 +16,7 @@ class Core:
   async def RunAction(self, modules, module, act_meth, data):
     if (module == 'core'):
       act_mod = getattr(modules['core'], 'action')
+      data['modules'] = modules
     else:
       act_mod = modules[module]
 
@@ -39,7 +40,11 @@ class Core:
 
     for action in commands_conf[cmd]['actions']:
       method = action['method'].split('@')
-      ret_val[i] = await self.RunAction(modules, method[0], method[1], {**action['params'], **request.query_params})
+      if ('params' in action):
+        action_params = to_dict(action['params'])
+      else:
+        action_params = {}
+      ret_val['action_'+str(i)] = await self.RunAction(modules, method[0], method[1], {**action_params, **request.query_params})
       i += 1
 
     return ret_val
@@ -47,5 +52,6 @@ class Core:
 
   def WidgetsConf(self):
     return widgets_conf
+
 
 
