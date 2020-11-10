@@ -17,5 +17,6 @@ cgate:
   app: '56' # the app for the lighting network - will expand to other apps in future
   event_timeout: .001
   command_timeout: 1
+  ramp_time: 4
 
 

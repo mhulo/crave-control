@@ -41,6 +41,7 @@ class CoreAction:
       await asyncio.sleep(0.01)
 
     ret_val = {}
+    ret_val['label'] = widget['label']
     ret_val['command'] = data['cmd']
     ret_val['widget'] = data['wgt']
     ret_val['sub_actions'] = acts

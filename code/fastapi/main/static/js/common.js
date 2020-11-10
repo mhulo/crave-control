@@ -53,8 +53,8 @@
           }
           else {
             //console.log('ws data: ' + ev.data);
-            var result = JSON.parse(ev.data); // daemon via websocket sends json data
-            $.each(result, function(key1,val1){
+            var state_data = JSON.parse(ev.data); // daemon via websocket sends json data
+            $.each(state_data, function(key1,val1){
               if (typeof val1 === 'string') {
                 if (key1 == 'message') {
                   console.log(key1 + ': ' + val1);
@@ -62,11 +62,14 @@
               }
               else {
                 $.each(val1, function(key2,val2){
-                  if (($('.'+key2).length) && ($('.'+key2).val() != val2)) { // if the value exists and is different to the network
-                      console.log(key2+' updated to '+val2);
-                      $('.'+key2).val(val2); // update it
-                      $('.'+key2).trigger('change');
-                  }
+                  $.each(val2, function(key3,val3){
+                    device_id = key1+'__'+key2+'__'+key3;
+                    if (($('.'+device_id).length) && ($('.'+device_id).val() != val3)) { // if the value exists and is different to the network
+                      //console.log(device_id+' updated to '+val3);
+                      $('.'+device_id).val(val3); // update it
+                      $('.'+device_id).trigger('change');
+                    }
+                  });
                 });
               }
             });
@@ -95,42 +98,34 @@
 
     function check_socket_active() {
 
-        if (ws_sockets.readyState == 1) {
+      if (ws_sockets.readyState == 1) {
+          //console.log('got here');
+          if ((($.now() - ws_last_msg_time) > 2000) && (($.now() - ws_last_msg_time) < 10000)) { // if update in the last 2 to 10 secs range, send a ping then go again
+              ws_sockets.send('ping');
+              console.log('ping sent');
 
-            //console.log('got here');
-            if ((($.now() - ws_last_msg_time) > 2000) && (($.now() - ws_last_msg_time) < 10000)) { // if update in the last 2 to 10 secs range, send a ping then go again
-        
-                ws_sockets.send('ping');
-                console.log('ping sent');
-
-                setTimeout(function() {
-                    check_socket_active();
-                },2000 ); // go again in 2 secs
-            }
-            else if (($.now() - ws_last_msg_time) > 10000)  { // if update longer than 10 secs ago, reconnect
-  
-                ws_sockets.close();
-                get_live_status();
-            }
-        }
-        else if (ws_sockets.readyState > 1) {
-          get_live_status();
-        }
+              setTimeout(function() {
+                  check_socket_active();
+              },2000 ); // go again in 2 secs
+          }
+          else if (($.now() - ws_last_msg_time) > 10000)  { // if update longer than 10 secs ago, reconnect
+              ws_sockets.close();
+              get_live_status();
+          }
+      }
+      else if (ws_sockets.readyState > 1) {
+        get_live_status();
+      }
     }
 
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-    function slider_check_action_fired(comp_subtype,comp_div_id) {
+    function slider_check_action_fired(comp_div_id) {
 
         listener_time = $('#'+comp_div_id+' .listener_time').val();
         listener_val = $('#'+comp_div_id+' .listener_value').val();
         if (listener_val == "x") { listener_val = 0; }
-
-        switch (comp_subtype) {
-            case 'mdl1':
-                comp_val = $('#'+comp_div_id+'_main').val();
-            break;
-        }
+        comp_val = $('#'+comp_div_id+'_main').val();
 
         if ((($.now() - listener_time) > 6000) && (comp_val != listener_val)) { // no change at all and val still not same as listener, so set the widget back to the listener val
             console.log('setting slider to: '+listener_val);
@@ -143,32 +138,25 @@
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-    function switch_check_action_fired(comp_subtype,comp_div_id) {
+    function switch_check_action_fired(comp_div_id) {
 
-        listener_time = $('#'+comp_div_id+' .listener_time').val();
-        listener_val = $('#'+comp_div_id+' .listener_value').val();
-        if (listener_val == "x") { listener_val = 0; }
+      listener_time = $('#'+comp_div_id+' .listener_time').val();
+      listener_val = $('#'+comp_div_id+' .listener_value').val();
+      if (listener_val == "x") { listener_val = 'off'; }
+      comp_val = $('#'+comp_div_id+'_l').is('.is-checked'); // logical true or false
 
-        switch (comp_subtype) {
-            case 'mdl1':
-                comp_val = $('#'+comp_div_id+'_l').is('.is-checked'); // logical true or false
-            break;
-        }
-
-        if ((($.now() - listener_time) > 6000) && (comp_val != level_to_truefalse(listener_val))) { // no change at all and val still not same as listener, so set the widget back to the listener val
-            console.log('setting slider to: '+listener_val);
-            $('#'+comp_div_id+' .listener_value').val(listener_val); // update the switch by faking a change on listener. need to do it this way so it wont fire any event.
-            $('#'+comp_div_id+' .listener_value').trigger('change');
-        }
-        else {
-            //console.log("something happened");
-        }
+      if ((($.now() - listener_time) > 6000) && (comp_val != level_to_truefalse(listener_val))) { // no change at all and val still not same as listener, so set the widget back to the listener val
+        console.log('setting slider to: '+listener_val);
+        $('#'+comp_div_id+' .listener_value').val(listener_val); // update the switch by faking a change on listener. need to do it this way so it wont fire any event.
+        $('#'+comp_div_id+' .listener_value').trigger('change');
+      }
+      else {
+        //console.log("something happened");
+      }
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-    function slider_value_changed(comp_val,comp_subtype,comp_div_id,widget_command) {
-
-  //console.log('got here');
+    function slider_value_changed(comp_div_id, comp_command, state_key, comp_val, wgt_id) {
 
         $('#'+comp_div_id+'_label').html(comp_val+'%');
         if (comp_val == 0) { $('#'+comp_div_id+'_icon').removeClass('is-active'); }
@@ -182,8 +170,8 @@
             (comp_val != val_by_listener)) { // and it was a user action
 
             // fire the action and reset the last set by listener
-            console.log('widget command: '+widget_command+' --> widget value/s: '+comp_val);
-            var surl = '/api/core/run_command/?z='+get_rand_ext()+'&cmd='+widget_command+'&set_val='+comp_val;
+            console.log('widget command: '+comp_command+' --> widget value/s: '+comp_val);
+            var surl = '/api/core/run_command/?cmd='+comp_command+'&set_key='+state_key+'&set_val='+comp_val+'&wgt='+wgt_id+'&z='+get_rand_ext();
             $.get(surl, function(data, status){
                 //console.log(surl);
             });
@@ -194,7 +182,7 @@
             },2000 ); // send a ping or two to ensure the websocket it working if nothing is moving on its own within 2 secs
 
             setTimeout(function() {
-                slider_check_action_fired(comp_subtype,comp_div_id);
+                slider_check_action_fired(comp_div_id);
             },6000 ); // worry if 6s after firing the action nothing actually happened
 
         }
@@ -205,54 +193,54 @@
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-    function switch_value_changed(comp_val,comp_subtype,comp_div_id,widget_command) {
+    function switch_value_changed(comp_div_id, comp_command, state_key, comp_val, wgt_id) {
 
-        if (comp_val == false) {
-            label_val = 'OFF';
-            $('#'+comp_div_id+'_icon').removeClass('is-active');
-        }
-        else { 
-            label_val = 'ON';
-            $('#'+comp_div_id+'_icon').addClass('is-active');
-        }
-        $('#'+comp_div_id+'_label').html(label_val);
+      if (comp_val == false) {
+          label_val = 'OFF';
+          $('#'+comp_div_id+'_icon').removeClass('is-active');
+      }
+      else { 
+          label_val = 'ON';
+          $('#'+comp_div_id+'_icon').addClass('is-active');
+      }
+      $('#'+comp_div_id+'_label').html(label_val);
 
-        listener_val = $('#'+comp_div_id+' .listener_value').val();
-        listener_time = $('#'+comp_div_id+' .listener_time').val();
-        val_by_listener = $('#'+comp_div_id+' .value_by_listener').val();
+      listener_val = $('#'+comp_div_id+' .listener_value').val();
+      listener_time = $('#'+comp_div_id+' .listener_time').val();
+      val_by_listener = $('#'+comp_div_id+' .value_by_listener').val();
 
-        if ((comp_val != level_to_truefalse(listener_val)) && // fire action if its different
-            (comp_val != val_by_listener)) { // and it was a user action
-            // fire the action and reset the last set by listener
-            console.log('widget command: '+widget_command+' --> widget value/s: '+truefalse_to_level(comp_val));
-            var surl = '/api/core/run_command/?z='+get_rand_ext()+'&cmd='+widget_command+'&set_val='+truefalse_to_level(comp_val);
-            $.get(surl, function(data, status){
-            });
-            $('#'+comp_div_id+' .value_by_listener').val('x');
+      if ((comp_val != level_to_truefalse(listener_val)) && // fire action if its different
+          (comp_val != val_by_listener)) { // and it was a user action
+          // fire the action and reset the last set by listener
+          console.log('widget command: '+comp_command+' --> widget value/s: '+truefalse_to_level(comp_val));
+          var surl = '/api/core/run_command/?cmd='+comp_command+'&set_key='+state_key+'&set_val='+truefalse_to_level(comp_val)+'&wgt='+wgt_id+'&z='+get_rand_ext();
+          $.get(surl, function(data, status){
+          });
+          $('#'+comp_div_id+' .value_by_listener').val('x');
 
-            setTimeout(function() {
-                switch_check_action_fired(comp_subtype,comp_div_id);
-            },6000 ); // worry if 6s after firing the action nothing actually happened
-        }
+          setTimeout(function() {
+              switch_check_action_fired(comp_div_id);
+          },6000 ); // worry if 6s after firing the action nothing actually happened
+      }
 
-        updated_time_elem = $('#'+comp_div_id+' .updated_time');
-        updated_time_elem.val($.now()); // update the timestamp regardless of user or listener related change
-        updated_time_elem.trigger('change');
+      updated_time_elem = $('#'+comp_div_id+' .updated_time');
+      updated_time_elem.val($.now()); // update the timestamp regardless of user or listener related change
+      updated_time_elem.trigger('change');
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
     function listener_val_changed(comp_div_id) {
 
-        listener_val = $('#'+comp_div_id+' .listener_value').val();
-        $('#'+comp_div_id+'_listener_label').html(listener_val+'%');
+      listener_val = $('#'+comp_div_id+' .listener_value').val();
+      $('#'+comp_div_id+'_listener_label').html(listener_val);
 
-        listener_time_elem = $('#'+comp_div_id+' .listener_time');
-        listener_time_elem.val($.now());
-        listener_time_elem.trigger('change');
+      listener_time_elem = $('#'+comp_div_id+' .listener_time');
+      listener_time_elem.val($.now());
+      listener_time_elem.trigger('change');
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-    function slider_mdl1_listener_time_changed(comp_div_id) {
+    function slider_listener_time_changed(comp_div_id) {
 
         listener_val = $('#'+comp_div_id+' .listener_value').val();
         listener_time = $('#'+comp_div_id+' .listener_time').val();
@@ -265,8 +253,6 @@
         // but dont bother if its already the same
         if (((listener_time - updated_time > 6000) || (comp_val == val_by_listener))     
           && (listener_val != comp_val)) {
-
-            console.log('261: ' + comp_div_id);
 
             $('#'+comp_div_id+' .value_by_listener').val(listener_val);
             $('#'+comp_div_id+' .value_by_listener').trigger('change');
@@ -286,9 +272,9 @@
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-    function switch_mdl1_listener_time_changed(comp_div_id) {       
+    function switch_listener_time_changed(comp_div_id) {       
 
-        listener_val = $('#'+comp_div_id+' .listener_value').val(); // number 0-100
+        listener_val = $('#'+comp_div_id+' .listener_value').val(); // on or off
         listener_time = $('#'+comp_div_id+' .listener_time').val();
         updated_time = $('#'+comp_div_id+' .updated_time').val();
         val_by_listener = $('#'+comp_div_id+' .value_by_listener').val(); // logical true or false
@@ -300,10 +286,6 @@
         // but dont bother if its already the same
         if (((listener_time - updated_time > 6000) || (comp_val == txt_to_logical(val_by_listener))) 
           && (level_to_truefalse(listener_val) != comp_val))  {
-
-            // update the widget value by listener
- //           $('#'+comp_div_id+' .value_by_listener').val(level_to_truefalse(listener_val));
- //           $('#'+comp_div_id+' .value_by_listener').trigger('change');
 
             val_by_listener_elem = $('#'+comp_div_id+' .value_by_listener');
             val_by_listener_elem.val(level_to_truefalse(listener_val));
@@ -327,63 +309,37 @@
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-    function slider_adjust(comp_subtype,comp_div_id,set_to) {
+    function slider_adjust(comp_div_id,set_to) {
 
-        switch (comp_subtype) {
-            case 'mdl1':
-                comp_val = $('#'+comp_div_id+'_main').val();
-            break;
-        }
+      comp_val = $('#'+comp_div_id+'_main').val();
 
-        if ((set_to == "plus") && (comp_val < 100)) {
-            new_val = parseInt(comp_val)+1;
-        }
-        else if ((set_to == "minus") && (comp_val > 0)) {
-            new_val = parseInt(comp_val)-1;
-        }
-        else if ((set_to == "toggle") && (comp_val == 0)) {
-            new_val = 100;
-        }
-        else if ((set_to == "toggle") && (comp_val > 0)) {
-            new_val = 0;
-        }
-        else {
-            new_val = parseInt(set_to);
-        }
+      if ((set_to == "plus") && (comp_val < 100)) { new_val = parseInt(comp_val)+1; }
+      else if ((set_to == "minus") && (comp_val > 0)) { new_val = parseInt(comp_val)-1; }
+      else if ((set_to == "toggle") && (comp_val == 0)) { new_val = 100; }
+      else if ((set_to == "toggle") && (comp_val > 0)) { new_val = 0; }
+      else { new_val = parseInt(set_to); }
 
-        // now update the slider
-        switch (comp_subtype) {
-            case 'mdl1':
-                $('#'+comp_div_id+'_main')[0].MaterialSlider.change(new_val);
-                $('#'+comp_div_id+'_main').trigger('change'); // the label wont update unless we trigger this
-            break;
-        }
+      // now update the slider
+      $('#'+comp_div_id+'_main')[0].MaterialSlider.change(new_val);
+      $('#'+comp_div_id+'_main').trigger('change'); // the label wont update unless we trigger this
+
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
     //function adjust_switch(component_div_id,set_to) {
-    function switch_adjust(comp_subtype,comp_div_id,set_to) {
+    function switch_adjust(comp_div_id,set_to) {
 
-        switch (comp_subtype) {
-            case 'mdl1':
-                comp_val = $('#'+comp_div_id+'_l').is('.is-checked'); // logical true or false
-            break;
-        }
+      comp_val = $('#'+comp_div_id+'_l').is('.is-checked'); // logical true or false
+      new_val = comp_val;
 
-        new_val = comp_val;
-
-        switch (comp_subtype) {
-            case 'mdl1':
-                if ((set_to == "toggle") && (comp_val == false)) {
-                    $('#'+comp_div_id+'_l')[0].MaterialSwitch.on();
-                    $('#'+comp_div_id+'_main').trigger('change'); // the label wont update unless we trigger this
-                }
-                else if ((set_to == "toggle") && (comp_val == true)) {
-                    $('#'+comp_div_id+'_l')[0].MaterialSwitch.off();
-                    $('#'+comp_div_id+'_main').trigger('change'); // the label wont update unless we trigger this
-                }
-            break;
-        }
+      if ((set_to == "toggle") && (comp_val == false)) {
+        $('#'+comp_div_id+'_l')[0].MaterialSwitch.on();
+        $('#'+comp_div_id+'_main').trigger('change'); // the label wont update unless we trigger this
+      }
+      else if ((set_to == "toggle") && (comp_val == true)) {
+        $('#'+comp_div_id+'_l')[0].MaterialSwitch.off();
+        $('#'+comp_div_id+'_main').trigger('change'); // the label wont update unless we trigger this
+      }
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
@@ -399,14 +355,14 @@
 //////////////////////////////////////////////////////////////
     function level_to_truefalse(level) {
         output = false;
-        if (level >0) { output = true; }
+        if (level.toLowerCase() == 'on') { output = true; }
         return output;
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
     function truefalse_to_level(truefalse) {
-        output = 0;
-        if (truefalse == true) { output = 100; }
+        output = 'off';
+        if (truefalse == true) { output = 'on'; }
         return output;
     }
 //////////////////////////////////////////////////////////////
@@ -502,7 +458,10 @@
         // generate widgets in group
         $.each(val1, function(key2,val2) {
           w_conf = widgets_conf[val2];
-          elems += widgets[w_conf['widget']](page_num, key2, val2, w_conf);
+          w_conf['page_num'] = page_num
+          w_conf['item_num'] = key2
+          w_conf['widget_id'] = val2
+          elems += widgets[w_conf['widget']](w_conf);
         });
 
         elems += '  </div>\n';
@@ -511,3 +470,12 @@
       });
       $('#widget-elems').html(elems);
     }
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+    function safe_class(str) {
+      return str.replace('.', '__');
+    }
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+

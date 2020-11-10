@@ -7,37 +7,36 @@
 //////////////////////////////////////////////////////////////
   var widgets = {
 
-    dimmer_1 : function(page_num, item_num, widget_id, widget_obj) {
+    dimmer_1 : function(wgt_obj) {
 
-      widget_div_id = page_num + '_' + item_num + '_' + widget_id;
-      comp_div_id = widget_div_id + '_slider';
-      listener_type = 'slider_mdl1';
+      wgt_div_id = wgt_obj['page_num'] + '_' + wgt_obj['item_num'] + '_' + wgt_obj['widget_id'];
+      comp_div_id = wgt_div_id + '_slider';
 
       ret_str  = '<div class="cvcard mdl-cell mdl-cell--8-col mdl-cell--6-col-desktop">\n';
       ret_str += ' <div class="label_row">\n';
-      ret_str += '   <span>' + widget_obj['label'] + '</span>\n';
+      ret_str += '   <span>' + wgt_obj['label'] + '</span>\n';
       ret_str += '   <span id="' + comp_div_id + '_label" class="level_label">0%</span>\n';
       ret_str += '   <button class="mdl-button mdl-js-button mdl-button--fab" onclick="toggle_faves(\'' + comp_div_id + '\');"><i class="material-icons">keyboard_arrow_down</i></button>\n';
       ret_str += ' </div>\n';
       ret_str += ' <div class="interface_row">\n';
-      ret_str += '   <span>' + widget_obj['devices'][0] + ' | </span>\n';
+      ret_str += '   <span>' + wgt_obj['devices'][0] + ' | </span>\n';
       ret_str += '   <span id="' + comp_div_id + '_listener_label" class="mdl_dimmer_listener_label">0%</span>\n';
       ret_str += ' </div>\n';
       ret_str += ' <div class="icon_row">\n';
-      ret_str += '   <button id="' + comp_div_id + '_icon" class="widget_icon mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="slider_adjust(\'mdl1\',\'' + comp_div_id + '\',\'toggle\');"><i class="material-icons">lightbulb_outline</i></button>\n';
+      ret_str += '   <button id="' + comp_div_id + '_icon" class="widget_icon mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="slider_adjust(\'' + comp_div_id + '\',\'toggle\');"><i class="material-icons">lightbulb_outline</i></button>\n';
       ret_str += '   <div id="' + comp_div_id + '" class="component_container slider_mdl1">';
 
-      ret_str += get_slider_mdl1(comp_div_id, widget_obj);
-      ret_str += get_listener(comp_div_id, widget_obj, listener_type, 'brightness');
+      ret_str += get_slider_1(comp_div_id, wgt_obj, 'brightness');
+      ret_str += get_listener_1(comp_div_id, wgt_obj, 'slider', 'brightness');
 
       ret_str += '   </div>\n';
       ret_str += ' </div>\n';
 
       ret_str += ' <div id="' + comp_div_id + '_faves" class="faves_row">\n';
-      ret_str += '   <button class="f1 mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="slider_adjust(\'mdl1\',\'' + comp_div_id + '\',\'minus\');"><i class="material-icons">remove</i></button>\n';
-      ret_str += '   <button class="f2 mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="slider_adjust(\'mdl1\',\'' + comp_div_id + '\',\'' + widget_obj['fave_1'] + '\');"><span>' + widget_obj['fave_1'] + '%</span></button>\n';
-      ret_str += '   <button class="f4 mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="slider_adjust(\'mdl1\',\'' + comp_div_id + '\',\'plus\');"><i class="material-icons">add</i></button>\n';
-      ret_str += '   <button class="f3 mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="slider_adjust(\'mdl1\',\'' + comp_div_id + '\',\'' + widget_obj['fave_2'] + '\');"><span>' + widget_obj['fave_2'] + '%</span></button>\n';
+      ret_str += '   <button class="f1 mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="slider_adjust(\'' + comp_div_id + '\',\'minus\');"><i class="material-icons">remove</i></button>\n';
+      ret_str += '   <button class="f2 mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="slider_adjust(\'' + comp_div_id + '\',\'' + wgt_obj['fave_1'] + '\');"><span>' + wgt_obj['fave_1'] + '%</span></button>\n';
+      ret_str += '   <button class="f4 mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="slider_adjust(\'' + comp_div_id + '\',\'plus\');"><i class="material-icons">add</i></button>\n';
+      ret_str += '   <button class="f3 mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="slider_adjust(\'' + comp_div_id + '\',\'' + wgt_obj['fave_2'] + '\');"><span>' + wgt_obj['fave_2'] + '%</span></button>\n';
       ret_str += ' </div>\n';
 
       ret_str += '</div>\n';
@@ -45,28 +44,27 @@
       return ret_str;
     },
 
-    switch_1 : function(page_num, item_num, widget_id, widget_obj) {
+    switch_1 : function(wgt_obj) {
 
-      widget_div_id = page_num + '_' + item_num + '_' + widget_id;
-      comp_div_id = widget_div_id + '_toggle';
-      listener_type = 'switch_mdl1';
+      wgt_div_id = wgt_obj['page_num'] + '_' + wgt_obj['item_num'] + '_' + wgt_obj['widget_id'];
+      comp_div_id = wgt_div_id + '_toggle';
 
       ret_str  = '<div class="cvcard mdl-cell mdl-cell--8-col mdl-cell--6-col-desktop">\n';
       ret_str += ' <div class="label_row">\n';
-      ret_str += '   <span>' + widget_obj['label'] + '</span>\n';
+      ret_str += '   <span>' + wgt_obj['label'] + '</span>\n';
       ret_str += '   <span id="' + comp_div_id + '_label" class="level_label">OFF</span>\n';
       ret_str += '   <button class="mdl-button mdl-js-button mdl-button--fab" onclick="toggle_faves(\'' + comp_div_id + '\');"><i class="material-icons">keyboard_arrow_down</i></button>\n';
       ret_str += ' </div>\n';
       ret_str += ' <div class="interface_row">\n';
-      ret_str += '   <span>' + widget_obj['devices'][0] + ' | </span>\n';
-      ret_str += '   <span id="' + comp_div_id + '_listener_label" class="mdl_dimmer_listener_label">0%</span>\n';
+      ret_str += '   <span>' + wgt_obj['devices'][0] + ' | </span>\n';
+      ret_str += '   <span id="' + comp_div_id + '_listener_label" class="mdl_dimmer_listener_label">off</span>\n';
       ret_str += ' </div>\n';
       ret_str += ' <div class="icon_row">\n';
-      ret_str += '   <button id="' + comp_div_id + '_icon" class="widget_icon mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="switch_adjust(\'mdl1\',\'' + comp_div_id + '\',\'toggle\');"><i class="material-icons">lightbulb_outline</i></button>\n';
+      ret_str += '   <button id="' + comp_div_id + '_icon" class="widget_icon mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" onclick="switch_adjust(\'' + comp_div_id + '\',\'toggle\');"><i class="material-icons">lightbulb_outline</i></button>\n';
       ret_str += '   <div id="' + comp_div_id + '" class="component_container slider_mdl1">';
 
-      ret_str += get_switch_mdl1(comp_div_id, widget_obj);
-      ret_str += get_listener(comp_div_id, widget_obj, listener_type);
+      ret_str += get_switch_1(comp_div_id, wgt_obj, 'power');
+      ret_str += get_listener_1(comp_div_id, wgt_obj, 'switch', 'power');
 
       ret_str += '   </div>\n';
       ret_str += ' </div>\n';

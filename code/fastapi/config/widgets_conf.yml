@@ -1,42 +1,171 @@
 
-wgt0100:
-  label: 'Downstairs Lights'
+wgt0001:
   widget: 'dimmer_1'
+  label: 'Master Bedroom Lights'
   devices:
-    - 'cgate.kitchen_lights' # listener is the first one
-    - 'cgate.dining_lights'
-    - 'cgate.lounge_lights'
+    - 'cgate.master_bedroom_lights' # listener is the first one in the list
   command_params:
     ramp_time: 4
   fave_1: 15
   fave_2: 40
   groups:
-    - Lights
-    - Scenes
+    - 'Lights'
+    - 'Upstairs'
 
-wgt0101:
-  label: 'Lounge Lights'
+wgt0002:
   widget: 'dimmer_1'
+  label: 'Nia''s Bedroom Lights'
   devices:
-    - 'cgate.lounge_lights'
-  command_params:
-    ramp_time: 4
+    - 'cgate.nias_bedroom_lights'
   fave_1: 15
   fave_2: 40
   groups:
-    - Lights
-    - Downstairs
+    - 'Lights'
+    - 'Upstairs'
 
-wgt0101:
+wgt0003:
+  widget: 'dimmer_1'
+  label: 'Study Lights'
+  devices:
+    - 'cgate.study_lights'
+  fave_1: 15
+  fave_2: 40
+  groups:
+    - 'Lights'
+
+wgt0102':
+  widget: 'switch_1'
+  label: 'Ensuite Lights'
+  devices:
+    - cgate.ensuite_lights'
+  groups:
+    - 'Lights'
+    - 'Upstairs'
+
+wgt0103:
+  widget: 'switch_1'
+  label: 'Ensuite Fan'
+  devices:
+    - 'cgate.ensuite_fan'
+  groups:
+    - 'Devices'
+    - 'Upstairs'
+
+wgt0104:
+  widget: 'switch_1'
+  label: 'Ensuite Ceiling Heat'
+  devices:
+    - 'cgate.ensuite_ceiling_heat'
+  groups:
+    - 'Devices'
+    - 'Upstairs'
+
+wgt0004:
+  widget: 'dimmer_1'
   label: 'Dining Lights'
-  widget: 'dimmer_1'
   devices:
     - 'cgate.dining_lights'
-  command_params:
-    ramp_time: 4
   fave_1: 15
   fave_2: 40
   groups:
-    - Lights
-    - Downstairs
+    - 'Lights'
+    - 'Downstairs'
 
+wgt0005:
+  widget: 'dimmer_1'
+  label: 'Lounge Lights'
+  devices:
+    - 'cgate.lounge_lights'
+  fave_1: 15
+  fave_2: 40
+  groups:
+    - 'Lights'
+    - 'Downstairs'
+
+wgt0006:
+  widget: 'dimmer_1'
+  label: 'Kitchen Lights'
+  devices:
+    - 'cgate.kitchen_lights'
+  fave_1: 15
+  fave_2: 40
+  groups:
+    - 'Lights'
+    - 'Downstairs'
+
+wgt0007:
+  widget: 'dimmer_1'
+  label: 'Entrance Lights'
+  devices:
+    - 'cgate.entrance_lights'
+  fave_1: 15
+  fave_2: 40
+  groups:
+    - 'Lights'
+    - 'Downstairs'
+
+wgt0008:
+  widget: 'dimmer_1'
+  label: 'Dim Downstairs'
+  devices:
+    - 'cgate.kitchen_lights'
+    - 'cgate.dining_lights'
+    - 'cgate.lounge_lights'
+  fave_1: 20
+  fave_2: 50
+  groups:
+    - 'Lights'
+    - 'Scenes'
+    - 'Downstairs'
+
+wgt0009:
+  widget: 'switch_1'
+  label: 'Bathroom Lights'
+  devices:
+    - 'cgate.bathroom_lights'
+  groups:
+    - 'Lights'
+    - 'Downstairs'
+
+wgt0010:
+  widget: 'switch_1'
+  label: 'Bathroom Fan'
+  devices:
+    - 'cgate.bathroom_fan'
+  groups:
+    - 'Devices'
+    - 'Downstairs'
+
+wgt0011:
+  widget: 'switch_1'
+  label: 'Bathroom Ceiling Heat'
+  devices:
+    - 'cgate.bathroom_ceiling_heat'
+  groups:
+    - 'Devices'
+    - 'Downstairs'
+
+wgt0012:
+  widget: 'switch_1'
+  label: 'Front Door Light'
+  devices:
+    - 'cgate.front_door_light'
+  groups:
+    - 'Lights'
+    - 'Downstairs'
+
+wgt0101:
+  widget: 'switch_1'
+  label: 'Master LED Strip'
+  devices:
+    - 'cgate.master_led_strip'
+  groups:
+    - 'Isolators'
+
+wgt0105:
+  widget: 'switch_1'
+  label: 'Stairs LED Strip'
+  devices:
+    - 'cgate.stairs_led_strip'
+  groups:
+    - 'Isolators'

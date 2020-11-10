@@ -15,23 +15,27 @@ class Cgate:
     if ('brightness' in data):
       resp = self.SetBrightness(data)
       ret_val.append(resp)
+    if ('power' in data):
+      resp = self.SetPower(data)
+      ret_val.append(resp)
     return ret_val
 
 
   def SetBrightness(self, data):
     level = round(int(data['brightness']) * (255/100))
-    msg = 'ramp //' + self.DeviceIdToCgateId(data['address']) + ' ' + str(level) + ' ' + str(data['ramp_time']) + 's'
+    if ('ramp_time' in data):
+      ramp_time = data['ramp_time']
+    else:
+      ramp_time = self.conf['ramp_time']
+    msg = 'ramp //' + self.DeviceIdToCgateId(data['address']) + ' ' + str(level) + ' ' + str(ramp_time) + 's'
     resp_text = self.Send(msg)
     ret_val = { msg : self.CgateToJson(resp_text) }
     return ret_val
 
 
   def SetPower(self, data):
-    if (int(data['set_val']) == 100):
-      level = 'on'
-    else:
-      level = 'off'
-    msg = level + ' //' + self.DeviceIdToCgateId(data['device_id'])
+    level = str(data['power']).lower()
+    msg = level + ' //' + self.DeviceIdToCgateId(data['address'])
     resp_text = self.Send(msg)
     ret_val = { msg : self.CgateToJson(resp_text) }
     return ret_val
@@ -95,8 +99,9 @@ class Cgate:
     for k, v in devices_conf[self.conf['interface']].items():
       ret_val[k] = {}
       ret_val[k]['address'] = v['address']
-      ret_val[k]['level'] = ifx_vals[v['address']]['level']
-      ret_val[k]['brightness'] = ifx_vals[v['address']]['level']      
+      if ('level' in ifx_vals[v['address']]):
+        ret_val[k]['brightness'] = ifx_vals[v['address']]['level'] 
+        ret_val[k]['power'] = self.LevelToPower(ifx_vals[v['address']]['level'])    
     return ret_val
 
 
@@ -171,4 +176,11 @@ class Cgate:
   def DeviceIdToCgateId(self, device_id):
     resp = device_id.replace('_', '/')
     return resp
+
+
+  def LevelToPower(self, level):
+    pwr = 'off'
+    if (int(level) > 0):
+      pwr = 'on'
+    return pwr
 

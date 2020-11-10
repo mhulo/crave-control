@@ -1,19 +1,61 @@
 
 
 cgate:
-  nia_bedroom_lights:
-    address: NET1_254_56_1
+  master_bedroom_lights:
+    address: 'NET1_254_56_0'
 
-  kitchen_lights:
-    address: NET1_254_56_15
+  nias_bedroom_lights:
+    address: 'NET1_254_56_3'
+
+  study_lights:
+    address: 'NET1_254_56_5'
+
+  ensuite_lights:
+    address: 'NET1_254_56_2'
+
+  master_led_strip:
+    address: 'NET1_254_56_17'
+
+  ensuite_fan:
+    address: 'NET1_254_56_1'
+
+  ensuite_ceiling_heat:
+    address: 'NET1_254_56_11'
+
+  stairs_led_strip:
+    address: 'NET1_254_56_6'
 
   dining_lights:
-    address: NET1_254_56_8
+    address: 'NET1_254_56_8'
 
   lounge_lights:
-    address: NET1_254_56_9
+    address: 'NET1_254_56_9'
+
+  kitchen_lights:
+    address: 'NET1_254_56_15'
+
+  entrance_lights:
+    address: 'NET1_254_56_16'
+
+  bathroom_lights:
+    address: 'NET1_254_56_12'
+
+  bathroom_fan:
+    address: 'NET1_254_56_18'
+
+  bathroom_ceiling_heat:
+    address: 'NET1_254_56_21'
+
+  front_door_light:
+    address: 'NET1_254_56_24'
 
 
+hue:
+  stairs_led_strip:
+    address: '2'
+
+  bedroom_led_strip:
+    address: '3'
 
 
 
