@@ -55,7 +55,7 @@
             //console.log('ws data: ' + ev.data);
             var state_data = JSON.parse(ev.data); // daemon via websocket sends json data
             $.each(state_data, function(key1,val1){
-              if (typeof val1 === 'string') {
+              if (typeof val1 == 'string') {
                 if (key1 == 'message') {
                   console.log(key1 + ': ' + val1);
                 }
@@ -65,7 +65,6 @@
                   $.each(val2, function(key3,val3){
                     device_id = key1+'__'+key2+'__'+key3;
                     if (($('.'+device_id).length) && ($('.'+device_id).val() != val3)) { // if the value exists and is different to the network
-                      //console.log(device_id+' updated to '+val3);
                       $('.'+device_id).val(val3); // update it
                       $('.'+device_id).trigger('change');
                     }
@@ -168,6 +167,10 @@
 
         if ((comp_val != listener_val) && // fire action if its different
             (comp_val != val_by_listener)) { // and it was a user action
+
+            //console.log('comp_val='+comp_val);
+            //console.log('listener_val='+listener_val);
+            //console.log('val_by_listener='+val_by_listener);
 
             // fire the action and reset the last set by listener
             console.log('widget command: '+comp_command+' --> widget value/s: '+comp_val);
@@ -309,20 +312,27 @@
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-    function slider_adjust(comp_div_id,set_to) {
+    function slider_adjust(wgt_id, comp_div_id, set_to) {
 
       comp_val = $('#'+comp_div_id+'_main').val();
+      if (set_to == "toggle") {
+        if (comp_val == 0) { new_val = 'on'; }
+        else { new_val = 'off'; }
+        console.log('widget command: set_power --> widget value/s: '+new_val);
+        var surl = '/api/core/run_command/?cmd=set_widget_val&set_key=power&set_val='+new_val+'&wgt='+wgt_id+'&z='+get_rand_ext();
+        $.get(surl, function(data, status){
+            //console.log(surl);
+        });
+      }
+      else {
+        if ((set_to == "plus") && (comp_val < 100)) { new_val = parseInt(comp_val)+1; }
+        else if ((set_to == "minus") && (comp_val > 0)) { new_val = parseInt(comp_val)-1; }
+        else { new_val = parseInt(set_to); }
 
-      if ((set_to == "plus") && (comp_val < 100)) { new_val = parseInt(comp_val)+1; }
-      else if ((set_to == "minus") && (comp_val > 0)) { new_val = parseInt(comp_val)-1; }
-      else if ((set_to == "toggle") && (comp_val == 0)) { new_val = 100; }
-      else if ((set_to == "toggle") && (comp_val > 0)) { new_val = 0; }
-      else { new_val = parseInt(set_to); }
-
-      // now update the slider
-      $('#'+comp_div_id+'_main')[0].MaterialSlider.change(new_val);
-      $('#'+comp_div_id+'_main').trigger('change'); // the label wont update unless we trigger this
-
+        // now update the slider
+        $('#'+comp_div_id+'_main')[0].MaterialSlider.change(new_val);
+        $('#'+comp_div_id+'_main').trigger('change'); // the label wont update unless we trigger this
+      }
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////

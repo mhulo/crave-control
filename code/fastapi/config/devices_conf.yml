@@ -54,7 +54,7 @@ hue:
   stairs_led_strip:
     address: '2'
 
-  bedroom_led_strip:
+  master_led_strip:
     address: '3'
 
 

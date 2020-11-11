@@ -100,8 +100,8 @@ class Cgate:
       ret_val[k] = {}
       ret_val[k]['address'] = v['address']
       if ('level' in ifx_vals[v['address']]):
-        ret_val[k]['brightness'] = ifx_vals[v['address']]['level'] 
-        ret_val[k]['power'] = self.LevelToPower(ifx_vals[v['address']]['level'])    
+        ret_val[k]['power'] = self.LevelToPower(ifx_vals[v['address']]['level'])
+        ret_val[k]['brightness'] = round(int(ifx_vals[v['address']]['level']) * (100/255))   
     return ret_val
 
 
@@ -162,8 +162,8 @@ class Cgate:
           pos2 = row.index(':')
           pos3 = row.index('L=')+2
           row_id = row[pos1:pos2].replace('/', '_')
-          row_level = round(int(row[pos3:]) * (100/255))
-          if (row_level > 100): row_level = 100
+          row_level = int(row[pos3:])
+          if (row_level > 255): row_level = 255
           if (row_level < 0): row_level = 0
           resp[row_id] = {}
           resp[row_id]['level'] = str(row_level)

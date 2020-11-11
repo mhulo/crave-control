@@ -49,17 +49,22 @@
     });
 
     $('#hue_start').click(function() {
-      $.ajax({url: "/api/hue/start", success: function(result){
-        alert(result);
+      $.ajax({url: "/api/hue/start/", success: function(result){
+        alert(JSON.stringify(result));
        }});
     });
     $('#hue_stop').click(function() {
-      $.ajax({url: "/api/hue/stop", success: function(result){
-        alert(result);
+      $.ajax({url: "/api/hue/stop/", success: function(result){
+        alert(JSON.stringify(result));
        }});
     });
-    $('#hue_levels').click(function() {
-      $.ajax({url: "/api/hue/levels", success: function(result){
+    $('#hue_status').click(function() {
+      $.ajax({url: "/api/hue/status/", success: function(result){
+        alert(JSON.stringify(result));
+       }});
+    });
+    $('#hue_state').click(function() {
+      $.ajax({url: "/api/hue/state/", success: function(result){
         alert(JSON.stringify(result));
        }});
     });
@@ -95,8 +100,8 @@
       <td>Philips Hue [hue]</td>
       <td align="center"><button id="hue_start">Start</button></td>
       <td align="center"><button id="hue_stop">Stop</button></td>
-      <td align="center"></td>
-      <td align="center"><button id="hue_levels">State</button></td>
+      <td align="center"><button id="hue_status">Status</button></td>
+      <td align="center"><button id="hue_state">State</button></td>
     </tr>
   </table>
 

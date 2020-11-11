@@ -33,11 +33,35 @@ wgt0003:
   groups:
     - 'Lights'
 
-wgt0102':
+wgt0200:
+  widget: 'dimmer_1'
+  label: 'Master LED Strip'
+  devices:
+    - 'hue.master_led_strip'
+  fave_1: 20
+  fave_2: 50
+  groups:
+    - 'Lights'
+    - 'Upstairs'
+    - 'Hue'
+
+wgt0201:
+  widget: 'dimmer_1'
+  label: 'Stairs LED Strip'
+  devices:
+    - 'hue.stairs_led_strip'
+  fave_1: 20
+  fave_2: 50
+  groups:
+    - 'Lights'
+    - 'Upstairs'
+    - 'Hue'
+
+wgt0102:
   widget: 'switch_1'
   label: 'Ensuite Lights'
   devices:
-    - cgate.ensuite_lights'
+    - 'cgate.ensuite_lights'
   groups:
     - 'Lights'
     - 'Upstairs'

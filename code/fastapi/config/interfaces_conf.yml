@@ -5,7 +5,7 @@ core:
   module_name: 'core'
 
 
-### Clipsal C-Gate  #########################################
+### Clipsal C-Gate for C-Bus ##################################
 cgate:
   active: true
   module_name: 'cgate'
@@ -15,8 +15,16 @@ cgate:
   project: 'NET1' # cgate project name as set up in cgate config xml file
   network: '254' # the number of your network for this interface
   app: '56' # the app for the lighting network - will expand to other apps in future
-  event_timeout: .001
+  event_timeout: .001 #seconds
   command_timeout: 1
   ramp_time: 4
+
+
+### Philips Hue #########################################
+hue:
+  active: true
+  module_name: 'hue'
+  bridge_url: 'http://192.168.2.223/api/nA54rAAXRvvNMoSuOPcxE9y7gzhH9qVzdo5Of2M0/' # full url of the hue bridge
+  poll_time: 1 #seconds
 
 

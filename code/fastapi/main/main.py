@@ -18,6 +18,7 @@ for k, v in interfaces_conf.items():
 # commented out below because middleware breaks background
 # tasks due to a starlette bug at the time of writing
 # could use asyncio.create_task instead of background_task
+#
 # set the interface name as ifx in state based on the path
 #@app.middleware('http')
 #async def add_xx(request: Request, call_next):

@@ -7,6 +7,7 @@ import copy
 import functools
 import inspect
 import yaml
+import requests
 
 from time import gmtime, strftime, sleep, mktime, time
 from datetime import datetime

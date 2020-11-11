@@ -5,14 +5,14 @@ from modules.cgate.cgate import *
 router = APIRouter()
 
 
-async def background_start(r):
+async def background_cgate_start(r):
   ifx = get_ifx(r)
   await Cgate(ifx).Start()
 
 
 @router.get('/start/')
 async def cgate_start(request: Request, background_tasks: BackgroundTasks):
-  background_tasks.add_task(background_start, request)
+  background_tasks.add_task(background_cgate_start, request)
   resp = { 'message' : 'cgate daemon: started' }
   return resp
 
