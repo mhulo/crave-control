@@ -1,0 +1,6 @@
+# install mkcert
+brew install mkcert
+mkcert -install
+
+# create keys
+mkcert -key-file localhost.key -cert-file localhost.crt localhost

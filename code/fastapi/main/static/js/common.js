@@ -32,10 +32,20 @@
     function get_live_status() {        
 
         // get a refreshed set of values for the given interface
-
         //create a new websocket object.
-        var client_id = Date.now()
-        socket_uri = 'ws://' + location.hostname + ':8888/api/core/wss/' + client_id + '/'; 
+        var wss = {}
+        wss['id'] = Date.now()
+        wss['host'] = location.hostname
+        if (location.protocol == 'https:') {
+          wss['protocol'] = 'wss';
+          wss['port'] = '';
+        }
+        else {
+          wss['protocol'] = 'ws';
+          wss['port'] = ':' + location.port;
+        }
+
+        socket_uri = wss['protocol'] + '://' + wss['host'] + wss['port'] + '/api/core/wss/' + wss['id'] + '/'; 
         ws_sockets = new WebSocket(socket_uri);
 
         ws_sockets.onopen = function(ev) { // connection is open 
