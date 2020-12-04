@@ -18,5 +18,4 @@ RUN pip install --upgrade pip \
     && rm /usr/bin/mysql*
 
 # run main server
-# this is now driven by the docker-compose 'command'
-#CMD ["uvicorn", "main.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "main.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

@@ -25,7 +25,7 @@ class Cgate:
     level = round(int(data['brightness']) * (255/100))
     if ('ramp_time' in data):
       ramp_time = data['ramp_time']
-    else:
+    else: 
       ramp_time = self.conf['ramp_time']
     msg = 'ramp //' + self.DeviceIdToCgateId(data['address']) + ' ' + str(level) + ' ' + str(ramp_time) + 's'
     resp_text = self.Send(msg)

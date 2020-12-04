@@ -39,7 +39,7 @@ services:
         - "9090:9090" # php
       depends_on:
         - python
-        #- vue
+        - vue
       networks:
         - frontend
         - backend
@@ -61,18 +61,21 @@ services:
         - backend
 
 ### Vue ##############################################
-#
-#    vue:
-#      build: ../code/vue
-#      volumes:
-#        - ../code/vue:/app:cached
-#        - /app/node_modules
-#      working_dir: /app
-#      ports:
-#        - "4000:4000"
-#      networks:
-#        - frontend
-#        - backend
+
+    vue:
+      build: ../code/vue/
+      command: npm run serve
+      volumes:
+        - ../code/vue/:/vue:cached
+        - /vue/app/node_modules
+      working_dir: /vue/app
+      ports:
+        - "4000:4000"
+        - "4001:8000" # vue-cli ui type: vue ui --headless --host 0.0.0.0
+        - "4002:3000" # json-server type: json-server --watch --host 0.0.0.0 db.json
+      networks:
+        - frontend
+        - backend
 
 ### Redis DB ################################################
 
