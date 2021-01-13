@@ -1,27 +1,21 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import EventCreate from '../views/EventCreate.vue'
-import EventList from '../views/EventList.vue'
-import EventShow from '../views/EventShow.vue'
+import WidgetList from '../views/WidgetList.vue'
+import WidgetShow from '../views/WidgetShow.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'event-list',
-    component: EventList
+    name: 'widget-list',
+    component: WidgetList
   },
   {
-    path: '/event/:id',
-    name: 'event-show',
-    component: EventShow,
+    path: '/widget/:id',
+    name: 'widget-show',
+    component: WidgetShow,
     props: true
-  },
-  {
-    path: '/event/create',
-    name: 'event-create',
-    component: EventCreate
   }
 ]
 

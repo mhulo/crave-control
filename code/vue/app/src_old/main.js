@@ -1,19 +1,13 @@
 import Vue from 'vue'
-import upperFirst from 'lodash/upperFirst'
-import camelCase from 'lodash/camelCase'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import BaseIcon from '@/components/BaseIcon'
-import vuetify from './plugins/vuetify';
-
-Vue.component('BaseIcon', BaseIcon)
-
-Vue.config.productionTip = false
+import upperFirst from 'lodash/upperFirst'
+import camelCase from 'lodash/camelCase'
 
 const requireComponent = require.context(
   './components',
-  false,
+  false,   // look in subfolders
   /Base[A-Z]\w+\.(vue|js)$/
 )
 
@@ -21,15 +15,16 @@ requireComponent.keys().forEach(fileName => {
   const componentConfig = requireComponent(fileName)
 
   const componentName = upperFirst(
-    camelCase(fileName.replace(/^\.\/(.*)\.\w+$/, '$1'))
+    camelCase(fileName.split('/').pop().replace(/\.\w+$/, ''))
   )
 
   Vue.component(componentName, componentConfig.default || componentConfig)
 })
 
+Vue.config.productionTip = false
+
 new Vue({
   router,
   store,
-  vuetify,
   render: h => h(App)
 }).$mount('#app')

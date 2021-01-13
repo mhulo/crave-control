@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import ApiService from '../services/ApiService.js'
 
 Vue.use(Vuex)
 
@@ -15,28 +16,23 @@ export default new Vuex.Store({
       'food',
       'community'
     ],
-    events: [
-      { id: 1, title: '...', organiser: '...' },
-      { id: 2, title: '...', organiser: '...' },
-      { id: 3, title: '...', organiser: '...' },
-      { id: 4, title: '...', organiser: '...' }
-    ]
+    events: []
   },
-  mutations: {},
-  actions: {},
-  getters: {
-    catLength: state => {
-      return state.categories.length
-    },
-    dontTodos: state => {
-      return state.todos.filter(todo => todo.done)
-    },
-    activeTodosCount: state => {
-      return state.todos.filter(todo => !todo.done).length
-    },
-    getEventById: (state) => (id) => {
-      return state.events.find(event => event.id === id)
+  mutations: {
+    ADD_EVENT(state, event) {
+      state.events.push(event)
     }
   },
-  modules: {}
+  actions: {
+    createEvent({ commit }, event) {
+      return EventService.postEvent(event).then(() => {
+        commit('ADD_EVENT', event)
+      })
+    }
+  },
+  getters: {
+    getEventById: state => id => {
+      return state.events.find(event => event.id === id)
+    }
+  }
 })
