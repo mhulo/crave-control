@@ -1,6 +1,6 @@
 <template>
   <div class="stl2">
-    <div class="stl1">{{ widget.label }}</div>
+    <div class="stl1">switch: {{ widget.label }}</div>
     <div>{{ widget.devices[0] }} [{{ id }}]</div>
     <div>{{ deviceData }}</div>
     <div>Slider: {{ newVal }}</div>
@@ -59,7 +59,7 @@ export default {
 <style scoped>
 .stl1 {
   font-size: 15px;
-  color: blue;
+  color: green;
 }
 
 .stl2 {

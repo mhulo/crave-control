@@ -6,39 +6,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    widgets: {
-      "wgt0002": {
-        "widget": "dimmer_1",
-        "label": "Nia's Bedroom Lights",
-        "devices": [
-          "cgate.nias_bedroom_lights"
-        ],
-        "fave_1": 15,
-        "fave_2": 40,
-        "groups": [
-        "Lights",
-        "Upstairs"
-        ]
-      },
-      "wgt0003": {
-        "widget": "dimmer_1",
-        "label": "Study Lights",
-        "devices": [
-        "cgate.study_lights"
-        ],
-        "fave_1": 15,
-        "fave_2": 40,
-        "groups": [
-        "Lights"
-        ]
-      }
-    },
+    widgets: {},
     devices: {}
   },
   mutations: {
-    ADD_WIDGET(state, widget) {
-      state.widgets.push(widget)
-    },
     SET_WIDGETS(state, widgets_data) {
       state.widgets = widgets_data
     },
@@ -80,7 +51,6 @@ export default new Vuex.Store({
         }
       }
       return deviceData
-    },
-
+    }
   }
 })
