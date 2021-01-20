@@ -19,7 +19,7 @@
     function spawn_listener_interfaces() {        
 
         // this is where it spawns a listener for each interface needed
-        // based on the interfaces that the widgets on the page need
+        // based on the interfaces that the cards on the page need
 
         //$.each(listner_addresses_arr, function(i,field) {
         //    console.log(field+' interface spawned');
@@ -134,7 +134,7 @@
             break;
         }
 
-        if ((($.now() - listener_time) > 6000) && (comp_val != listener_val)) { // no change at all and val still not same as listener, so set the widget back to the listener val
+        if ((($.now() - listener_time) > 6000) && (comp_val != listener_val)) { // no change at all and val still not same as listener, so set the card back to the listener val
             console.log('setting slider to: '+listener_val);
             $('#'+comp_div_id+' .listener_value').val(listener_val); // update the slider by faking a change on listener. need to do it this way so it wont fire any event.
             $('#'+comp_div_id+' .listener_value').trigger('change');
@@ -157,7 +157,7 @@
             break;
         }
 
-        if ((($.now() - listener_time) > 6000) && (comp_val != level_to_truefalse(listener_val))) { // no change at all and val still not same as listener, so set the widget back to the listener val
+        if ((($.now() - listener_time) > 6000) && (comp_val != level_to_truefalse(listener_val))) { // no change at all and val still not same as listener, so set the card back to the listener val
             console.log('setting slider to: '+listener_val);
             $('#'+comp_div_id+' .listener_value').val(listener_val); // update the switch by faking a change on listener. need to do it this way so it wont fire any event.
             $('#'+comp_div_id+' .listener_value').trigger('change');
@@ -168,7 +168,7 @@
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-    function slider_value_changed(comp_val,comp_subtype,comp_div_id,widget_command) {
+    function slider_value_changed(comp_val,comp_subtype,comp_div_id,card_command) {
 
 	//console.log('got here');
 
@@ -184,8 +184,8 @@
             (comp_val != val_by_listener)) { // and it was a user action
 
             // fire the action and reset the last set by listener
-            console.log('widget command: '+widget_command+' --> widget value/s: '+comp_val);
-            var surl = '/api/command/run/?z='+get_rand_ext()+'&cmd='+widget_command+'&set_val='+comp_val;
+            console.log('card command: '+card_command+' --> card value/s: '+comp_val);
+            var surl = '/api/command/run/?z='+get_rand_ext()+'&cmd='+card_command+'&set_val='+comp_val;
             $.get(surl, function(data, status){
                 //console.log(surl);
             });
@@ -207,7 +207,7 @@
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-    function switch_value_changed(comp_val,comp_subtype,comp_div_id,widget_command) {
+    function switch_value_changed(comp_val,comp_subtype,comp_div_id,card_command) {
 
         if (comp_val == false) {
             label_val = 'OFF';
@@ -226,8 +226,8 @@
         if ((comp_val != level_to_truefalse(listener_val)) && // fire action if its different
             (comp_val != val_by_listener)) { // and it was a user action
             // fire the action and reset the last set by listener
-            console.log('widget command: '+widget_command+' --> widget value/s: '+truefalse_to_level(comp_val));
-            var surl = '/api/command/run/?z='+get_rand_ext()+'&cmd='+widget_command+'&set_val='+truefalse_to_level(comp_val);
+            console.log('card command: '+card_command+' --> card value/s: '+truefalse_to_level(comp_val));
+            var surl = '/api/command/run/?z='+get_rand_ext()+'&cmd='+card_command+'&set_val='+truefalse_to_level(comp_val);
             $.get(surl, function(data, status){
             });
             $('#'+comp_div_id+' .value_by_listener').val('x');
@@ -267,8 +267,8 @@
             break;
         }
 
-        // if the widget was not updated for over 6sec
-        // or if the widget val was last set by the listener - still safe to update
+        // if the card was not updated for over 6sec
+        // or if the card val was last set by the listener - still safe to update
         // but dont bother if its already the same
         if (((listener_time - updated_time > 6000) || (comp_val == val_by_listener))     
           && (listener_val != comp_val)) {
@@ -276,7 +276,7 @@
             $('#'+comp_div_id+' .value_by_listener').val(listener_val);
             $('#'+comp_div_id+' .value_by_listener').trigger('change');
 
-            // update the actual widget itself
+            // update the actual card itself
             switch (comp_subtype) {
                 case 'mdl1':
                     $('#'+comp_div_id+'_main')[0].MaterialSlider.change(listener_val);
@@ -289,7 +289,7 @@
             }
         }
 
-        if (listener_val != comp_val) { // ie if listener and widget are different for any reason at this point try again soon
+        if (listener_val != comp_val) { // ie if listener and card are different for any reason at this point try again soon
             setTimeout(function() {
                 listener_time_elem = $('#'+comp_div_id+' .listener_time');
                 listener_time_elem.val($.now());
@@ -312,13 +312,13 @@
             break;
         }
 
-        // if the widget was not updated for over 6sec
-        // or if the widget val was last set by the listener - still safe to update
+        // if the card was not updated for over 6sec
+        // or if the card val was last set by the listener - still safe to update
         // but dont bother if its already the same
         if (((listener_time - updated_time > 6000) || (comp_val == txt_to_logical(val_by_listener))) 
           && (level_to_truefalse(listener_val) != comp_val))  {
 
-            // update the widget value by listener
+            // update the card value by listener
  //           $('#'+comp_div_id+' .value_by_listener').val(level_to_truefalse(listener_val));
  //           $('#'+comp_div_id+' .value_by_listener').trigger('change');
 
@@ -326,7 +326,7 @@
             val_by_listener_elem.val(level_to_truefalse(listener_val));
             val_by_listener_elem.trigger('change');
 
-            // update the actual widget itself
+            // update the actual card itself
             switch (comp_subtype) {
                 case 'mdl1':
                     if (level_to_truefalse(listener_val) == true) {  $('#'+comp_div_id+'_l')[0].MaterialSwitch.on(); }
@@ -337,7 +337,7 @@
 
         }
 
-        if (level_to_truefalse(listener_val) != comp_val) { // ie if listener and widget are different for any reason at this point try again soon
+        if (level_to_truefalse(listener_val) != comp_val) { // ie if listener and card are different for any reason at this point try again soon
             setTimeout(function() {
                 listener_time_elem = $('#'+comp_div_id+' .listener_time');
                 listener_time_elem.val($.now());

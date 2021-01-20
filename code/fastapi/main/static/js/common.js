@@ -136,7 +136,7 @@
         if (listener_val == "x") { listener_val = 0; }
         comp_val = $('#'+comp_div_id+'_main').val();
 
-        if ((($.now() - listener_time) > 6000) && (comp_val != listener_val)) { // no change at all and val still not same as listener, so set the widget back to the listener val
+        if ((($.now() - listener_time) > 6000) && (comp_val != listener_val)) { // no change at all and val still not same as listener, so set the card back to the listener val
             console.log('setting slider to: '+listener_val);
             $('#'+comp_div_id+' .listener_value').val(listener_val); // update the slider by faking a change on listener. need to do it this way so it wont fire any event.
             $('#'+comp_div_id+' .listener_value').trigger('change');
@@ -154,7 +154,7 @@
       if (listener_val == "x") { listener_val = 'off'; }
       comp_val = $('#'+comp_div_id+'_l').is('.is-checked'); // logical true or false
 
-      if ((($.now() - listener_time) > 6000) && (comp_val != level_to_truefalse(listener_val))) { // no change at all and val still not same as listener, so set the widget back to the listener val
+      if ((($.now() - listener_time) > 6000) && (comp_val != level_to_truefalse(listener_val))) { // no change at all and val still not same as listener, so set the card back to the listener val
         console.log('setting slider to: '+listener_val);
         $('#'+comp_div_id+' .listener_value').val(listener_val); // update the switch by faking a change on listener. need to do it this way so it wont fire any event.
         $('#'+comp_div_id+' .listener_value').trigger('change');
@@ -183,7 +183,7 @@
             //console.log('val_by_listener='+val_by_listener);
 
             // fire the action and reset the last set by listener
-            console.log('widget command: '+comp_command+' --> widget value/s: '+comp_val);
+            console.log('card command: '+comp_command+' --> card value/s: '+comp_val);
             var surl = '/api/core/run_command/?cmd='+comp_command+'&set_key='+state_key+'&set_val='+comp_val+'&wgt='+wgt_id+'&z='+get_rand_ext();
             $.get(surl, function(data, status){
                 //console.log(surl);
@@ -225,7 +225,7 @@
       if ((comp_val != level_to_truefalse(listener_val)) && // fire action if its different
           (comp_val != val_by_listener)) { // and it was a user action
           // fire the action and reset the last set by listener
-          console.log('widget command: '+comp_command+' --> widget value/s: '+truefalse_to_level(comp_val));
+          console.log('card command: '+comp_command+' --> card value/s: '+truefalse_to_level(comp_val));
           var surl = '/api/core/run_command/?cmd='+comp_command+'&set_key='+state_key+'&set_val='+truefalse_to_level(comp_val)+'&wgt='+wgt_id+'&z='+get_rand_ext();
           $.get(surl, function(data, status){
           });
@@ -261,8 +261,8 @@
         val_by_listener = $('#'+comp_div_id+' .value_by_listener').val();
         comp_val = $('#'+comp_div_id+'_main').val();
 
-        // if the widget was not updated for over 6sec
-        // or if the widget val was last set by the listener - still safe to update
+        // if the card was not updated for over 6sec
+        // or if the card val was last set by the listener - still safe to update
         // but dont bother if its already the same
         if (((listener_time - updated_time > 6000) || (comp_val == val_by_listener))     
           && (listener_val != comp_val)) {
@@ -270,12 +270,12 @@
             $('#'+comp_div_id+' .value_by_listener').val(listener_val);
             $('#'+comp_div_id+' .value_by_listener').trigger('change');
 
-            // update the actual widget itself
+            // update the actual card itself
             $('#'+comp_div_id+'_main')[0].MaterialSlider.change(listener_val);
             $('#'+comp_div_id+'_main').trigger('change'); // the label wont update unless we trigger this
         }
 
-        if (listener_val != comp_val) { // ie if listener and widget are different for any reason at this point try again soon
+        if (listener_val != comp_val) { // ie if listener and card are different for any reason at this point try again soon
             setTimeout(function() {
                 listener_time_elem = $('#'+comp_div_id+' .listener_time');
                 listener_time_elem.val($.now());
@@ -294,8 +294,8 @@
 
         comp_val = $('#'+comp_div_id+'_l').is('.is-checked'); // logical true or false
 
-        // if the widget was not updated for over 6sec
-        // or if the widget val was last set by the listener - still safe to update
+        // if the card was not updated for over 6sec
+        // or if the card val was last set by the listener - still safe to update
         // but dont bother if its already the same
         if (((listener_time - updated_time > 6000) || (comp_val == txt_to_logical(val_by_listener))) 
           && (level_to_truefalse(listener_val) != comp_val))  {
@@ -304,7 +304,7 @@
             val_by_listener_elem.val(level_to_truefalse(listener_val));
             val_by_listener_elem.trigger('change');
 
-            // update the actual widget itself
+            // update the actual card itself
 
             if (level_to_truefalse(listener_val) == true) {  $('#'+comp_div_id+'_l')[0].MaterialSwitch.on(); }
             else {  $('#'+comp_div_id+'_l')[0].MaterialSwitch.off(); }
@@ -312,7 +312,7 @@
 
         }
 
-        if (level_to_truefalse(listener_val) != comp_val) { // ie if listener and widget are different for any reason at this point try again soon
+        if (level_to_truefalse(listener_val) != comp_val) { // ie if listener and card are different for any reason at this point try again soon
             setTimeout(function() {
                 listener_time_elem = $('#'+comp_div_id+' .listener_time');
                 listener_time_elem.val($.now());
@@ -328,8 +328,8 @@
       if (set_to == "toggle") {
         if (comp_val == 0) { new_val = 'on'; }
         else { new_val = 'off'; }
-        console.log('widget command: set_power --> widget value/s: '+new_val);
-        var surl = '/api/core/run_command/?cmd=set_widget_val&set_key=power&set_val='+new_val+'&wgt='+wgt_id+'&z='+get_rand_ext();
+        console.log('card command: set_power --> card value/s: '+new_val);
+        var surl = '/api/core/run_command/?cmd=set_card_val&set_key=power&set_val='+new_val+'&wgt='+wgt_id+'&z='+get_rand_ext();
         $.get(surl, function(data, status){
             //console.log(surl);
         });
@@ -425,7 +425,7 @@
       layout += '    <div class="leftside">';
       layout += '      <ul class="mdl-list" id="left-list"></ul>';
       layout += '    </div>';
-      layout += '    <div class="rightside" id="widget-elems">';
+      layout += '    <div class="rightside" id="card-elems">';
       layout += '    </div>';
       layout += '  </main>';
       layout += '</div>';
@@ -433,10 +433,10 @@
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-    function generate_comps(widgets_conf) {
+    function generate_comps(cards_conf) {
       // generate the sections
       sections = {};
-      $.each(widgets_conf, function(key1,val1) {
+      $.each(cards_conf, function(key1,val1) {
         $.each(val1['groups'], function(key2,val2) {
           if (!(val2 in sections)) { sections[val2] = []; }
           sections[val2].push(key1);
@@ -466,7 +466,7 @@
       });
       $('#top-list').html(top_groups);
 
-      // generate the pages with widgets
+      // generate the pages with cards
       elems = '';
       page_num = 0;
       $.each(sections, function(key1,val1) {
@@ -475,20 +475,20 @@
         elems += '<section class="mdl-layout__tab-panel ' + actv + '" id="scroll-tab-' + page_num + '">';
         elems += '  <div class="mdl-grid">';
 
-        // generate widgets in group
+        // generate cards in group
         $.each(val1, function(key2,val2) {
-          w_conf = widgets_conf[val2];
+          w_conf = cards_conf[val2];
           w_conf['page_num'] = page_num
           w_conf['item_num'] = key2
-          w_conf['widget_id'] = val2
-          elems += widgets[w_conf['widget']](w_conf);
+          w_conf['card_id'] = val2
+          elems += cards[w_conf['card']](w_conf);
         });
 
         elems += '  </div>\n';
         elems += '</section>\n\n';
         page_num++;
       });
-      $('#widget-elems').html(elems);
+      $('#card-elems').html(elems);
     }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////

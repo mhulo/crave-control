@@ -1,20 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import WidgetList from '../views/WidgetList.vue'
-import WidgetShow from '../views/WidgetShow.vue'
+import CardList from '../views/CardList.vue'
+import Vuetify from '../views/Vuetify.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'widget-list',
-    component: WidgetList
+    name: 'card-list',
+    component: CardList
   },
   {
-    path: '/widget/:id',
-    name: 'widget-show',
-    component: WidgetShow,
+    path: '/vuetify/',
+    name: 'vuetify-hello',
+    component: Vuetify,
     props: true
   }
 ]

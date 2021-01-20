@@ -1,6 +1,6 @@
 
 wgt0001:
-  widget: 'dimmer_1'
+  card: 'dimmer_1'
   label: 'Master Bedroom Lights'
   devices:
     - 'cgate.master_bedroom_lights' # listener is the first one in the list
@@ -13,7 +13,7 @@ wgt0001:
     - 'Upstairs'
 
 wgt0002:
-  widget: 'dimmer_1'
+  card: 'dimmer_1'
   label: 'Nia''s Bedroom Lights'
   devices:
     - 'cgate.nias_bedroom_lights'
@@ -24,7 +24,7 @@ wgt0002:
     - 'Upstairs'
 
 wgt0003:
-  widget: 'dimmer_1'
+  card: 'dimmer_1'
   label: 'Study Lights'
   devices:
     - 'cgate.study_lights'
@@ -34,7 +34,7 @@ wgt0003:
     - 'Lights'
 
 wgt5003:
-  widget: 'dimmer_1'
+  card: 'dimmer_1'
   label: 'Study Lights 2'
   devices:
     - 'cgate.study_lights'
@@ -44,7 +44,7 @@ wgt5003:
     - 'Lights'
 
 wgt0200:
-  widget: 'dimmer_1'
+  card: 'dimmer_1'
   label: 'Master LED Strip'
   devices:
     - 'hue.master_led_strip'
@@ -56,7 +56,7 @@ wgt0200:
     - 'Hue'
 
 wgt0201:
-  widget: 'dimmer_1'
+  card: 'dimmer_1'
   label: 'Stairs LED Strip'
   devices:
     - 'hue.stairs_led_strip'
@@ -68,7 +68,7 @@ wgt0201:
     - 'Hue'
 
 wgt0102:
-  widget: 'switch_1'
+  card: 'switch_1'
   label: 'Ensuite Lights'
   devices:
     - 'cgate.ensuite_lights'
@@ -77,7 +77,7 @@ wgt0102:
     - 'Upstairs'
 
 wgt0103:
-  widget: 'switch_1'
+  card: 'switch_1'
   label: 'Ensuite Fan'
   devices:
     - 'cgate.ensuite_fan'
@@ -86,7 +86,7 @@ wgt0103:
     - 'Upstairs'
 
 wgt0104:
-  widget: 'switch_1'
+  card: 'switch_1'
   label: 'Ensuite Ceiling Heat'
   devices:
     - 'cgate.ensuite_ceiling_heat'
@@ -95,7 +95,7 @@ wgt0104:
     - 'Upstairs'
 
 wgt0004:
-  widget: 'dimmer_1'
+  card: 'dimmer_1'
   label: 'Dining Lights'
   devices:
     - 'cgate.dining_lights'
@@ -106,7 +106,7 @@ wgt0004:
     - 'Downstairs'
 
 wgt0005:
-  widget: 'dimmer_1'
+  card: 'dimmer_1'
   label: 'Lounge Lights'
   devices:
     - 'cgate.lounge_lights'
@@ -117,7 +117,7 @@ wgt0005:
     - 'Downstairs'
 
 wgt0006:
-  widget: 'dimmer_1'
+  card: 'dimmer_1'
   label: 'Kitchen Lights'
   devices:
     - 'cgate.kitchen_lights'
@@ -128,7 +128,7 @@ wgt0006:
     - 'Downstairs'
 
 wgt0007:
-  widget: 'dimmer_1'
+  card: 'dimmer_1'
   label: 'Entrance Lights'
   devices:
     - 'cgate.entrance_lights'
@@ -139,7 +139,7 @@ wgt0007:
     - 'Downstairs'
 
 wgt0008:
-  widget: 'dimmer_1'
+  card: 'dimmer_1'
   label: 'Dim Downstairs'
   devices:
     - 'cgate.kitchen_lights'
@@ -153,7 +153,7 @@ wgt0008:
     - 'Downstairs'
 
 wgt0009:
-  widget: 'switch_1'
+  card: 'switch_1'
   label: 'Bathroom Lights'
   devices:
     - 'cgate.bathroom_lights'
@@ -162,7 +162,7 @@ wgt0009:
     - 'Downstairs'
 
 wgt0010:
-  widget: 'switch_1'
+  card: 'switch_1'
   label: 'Bathroom Fan'
   devices:
     - 'cgate.bathroom_fan'
@@ -171,7 +171,7 @@ wgt0010:
     - 'Downstairs'
 
 wgt0011:
-  widget: 'switch_1'
+  card: 'switch_1'
   label: 'Bathroom Ceiling Heat'
   devices:
     - 'cgate.bathroom_ceiling_heat'
@@ -180,7 +180,7 @@ wgt0011:
     - 'Downstairs'
 
 wgt0012:
-  widget: 'switch_1'
+  card: 'switch_1'
   label: 'Front Door Light'
   devices:
     - 'cgate.front_door_light'
@@ -189,7 +189,7 @@ wgt0012:
     - 'Downstairs'
 
 wgt0101:
-  widget: 'switch_1'
+  card: 'switch_1'
   label: 'Master LED Strip'
   devices:
     - 'cgate.master_led_strip'
@@ -197,7 +197,7 @@ wgt0101:
     - 'Isolators'
 
 wgt0105:
-  widget: 'switch_1'
+  card: 'switch_1'
   label: 'Stairs LED Strip'
   devices:
     - 'cgate.stairs_led_strip'

@@ -44,7 +44,7 @@
     {
       // takes $device_id, $dim_value, $ramp_time
       // if $dim_value is null in the config params, then it will use the
-      // input from the widget which is how you can achieve group dimming
+      // input from the card which is how you can achieve group dimming
 
       // issue a get command and get the status of the whole network for lighting
       $result_msg = $this->cgate->messageSend($this->cgate->get_all_msg);
@@ -56,7 +56,7 @@
     {
       // takes $device_id, $set_value, $ramp_time
       // if $set_value is null in the config params, then it will use the
-      // input from the widget which is how you can achieve scene dimming
+      // input from the card which is how you can achieve scene dimming
 
       $send_msg = 'RAMP //' . $this->cgate->deviceIdTocgateId($q->device_id) . ' ' . round((($q->set_val/100)*255),0) . ' ' . $q->ramp_time . 's';
       $result_msg = $this->cgate->messageSend($send_msg);
@@ -67,7 +67,7 @@
     {
       // takes $device_id
       // if $set_value is null in the config params, then it will use the
-      // input from the widget which is how you can achieve discrete on/off
+      // input from the card which is how you can achieve discrete on/off
 
       if ($q->set_val == '100') { $msg_val = 'ON'; }
       else { $msg_val = 'OFF'; }

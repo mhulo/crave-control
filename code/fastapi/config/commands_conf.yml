@@ -1,8 +1,8 @@
 
-set_widget_val:
-  description: 'set widget val'
+set_card_val:
+  description: 'set card val'
   actions:
-    - method: 'core@SetWidgetVal'
+    - method: 'core@SetCardVal'
       params: null
 
 cmd0001:

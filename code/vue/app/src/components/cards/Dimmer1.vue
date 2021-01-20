@@ -1,11 +1,12 @@
 <template>
   <div class="stl2">
-    <div class="stl1">dimmer1 :: {{ widget.label }} :: {{ compVals[compKeys(0)] }}</div>
-    <div>{{ widget.devices[0] }} [{{ widgetId }}]</div>
-    <Slider1 
-      :key="widgetId" 
-      :widget="widget" 
-      :deviceName="widget.devices[0]" 
+    <div class="stl1">{{ card.label }} :: {{ compVals[compKeys(0)] }}%</div>
+    <div>{{ card.devices[0] }} | {{ deviceData.brightness }}</div>
+    <v-icon :color="'black'">mdi-lightbulb-outline</v-icon>
+    <Slider1
+      :key="cardId"
+      :card="card"
+      :deviceName="card.devices[0]"
       :compKey="compKeys(0)"
       :ref="compKeys(0)"
       @updated="handleUpdate"
@@ -18,18 +19,18 @@
 
 <script>
 import ApiService from '@/services/ApiService.js'
-import Slider1 from '@/components/Slider1.vue'
+import Slider1 from '@/components/widgets/Slider1.vue'
 
 export default {
   components: {
     Slider1
   },
   props: {
-    widget: Object
+    card: Object
   },
   data() {
     return {
-      widgetId: this.$vnode.key,
+      cardId: this.$vnode.key,
       compVals: {
         brightness: 0
       }
@@ -50,6 +51,13 @@ export default {
       this.$refs[key].compVal ++
       this.$refs[key].compChange()
     }
+  },
+  computed: {
+    deviceData() {
+      return {
+        'brightness': this.$store.getters.getDeviceByName(this.card.devices[0]).brightness
+      }
+    }
   }
 }
 </script>
@@ -63,6 +71,6 @@ export default {
 .stl2 {
   font-size: 13px;
   color: black;
-  border: 1px black solid;
+  border: 1px blue solid;
 }
 </style>

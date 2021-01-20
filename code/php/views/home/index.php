@@ -1,24 +1,24 @@
 <?php 
 
-  require_once "/code/modules/core/widgets.php";
-  require_once "/code/modules/core/widgetComponents.php";
+  require_once "/code/modules/core/cards.php";
+  require_once "/code/modules/core/cardComponents.php";
   require_once "/code/config/websocket_config.php";
 
   $interfaces_arr = array();
   $groups_arr = array();
   $sections_arr = array();
 
-  $widgets_json_file = "/code/config/widgets_config.json";
-  $widgets_conf_obj = json_decode(file_get_contents($widgets_json_file), true);
+  $cards_json_file = "/code/config/cards_config.json";
+  $cards_conf_obj = json_decode(file_get_contents($cards_json_file), true);
   $json_err = json_last_error_msg();
   if ($json_err != 'No error'){
-    echo "error with file: ". $widgets_json_file . '<br>';
+    echo "error with file: ". $cards_json_file . '<br>';
     echo $json_err;
     exit();
   }
 
-  // use the widgets config json to create an interfaces array, a groups array and a sections array with what widgets are in each group
-  foreach ($widgets_conf_obj as $id => $params) {
+  // use the cards config json to create an interfaces array, a groups array and a sections array with what cards are in each group
+  foreach ($cards_conf_obj as $id => $params) {
 
       $interfaces_arr[] = $params['listener_interface'];
       foreach ($params['groups'] as $group) {
@@ -49,16 +49,16 @@
 
   $sects_str = "";
   $pagenum = 0;
-  foreach ($sections_arr as $group => $group_widgets) {
+  foreach ($sections_arr as $group => $group_cards) {
       if ($pagenum == 0) { $sects_str .= "          <section class=\"mdl-layout__tab-panel is-active\" id=\"scroll-tab-" . $pagenum . "\">"; }
       else { $sects_str .= "          <section class=\"mdl-layout__tab-panel\" id=\"scroll-tab-" . $pagenum . "\">"; }
       $sects_str .= "            <div class=\"mdl-grid\">";
 
-      foreach ($group_widgets as $widget_id) {
+      foreach ($group_cards as $card_id) {
 
-          $widget_obj = new crave_widget($pagenum,$widget_id,$widgets_conf_obj);
-          $call_func = "get_" . $widgets_conf_obj[$widget_id]['ui_type'];
-          $sects_str .= $widget_obj->$call_func();
+          $card_obj = new crave_card($pagenum,$card_id,$cards_conf_obj);
+          $call_func = "get_" . $cards_conf_obj[$card_id]['ui_type'];
+          $sects_str .= $card_obj->$call_func();
 
       }
 
@@ -102,7 +102,7 @@
 
     <script src="https://code.getmdl.io/1.3.0/material.min.js"></script> <!-- for mdl -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> <!-- for jquery -->
-    <script src="/public/js/widget_refresh_functions.js"></script>
+    <script src="/public/js/card_refresh_functions.js"></script>
     <script>
         $(document).ready(function(){
 

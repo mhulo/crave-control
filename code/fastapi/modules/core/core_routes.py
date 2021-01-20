@@ -26,9 +26,9 @@ async def core_run_command(request: Request):
   return resp
 
 
-@router.get("/widgets_conf/")
-def core_widgets_conf():
-  return modules['core'].WidgetsConf()
+@router.get("/cards_conf/")
+def core_cards_conf():
+  return modules['core'].CardsConf()
 
 
 @router.get("/event/start/")

@@ -2,8 +2,8 @@
   <v-app>
     <v-main>
       <div>crave control</div><br>
-      <div v-for="(val, idx) in $store.state.widgets" :key="idx+'_wrapper'">
-        <component :is="val.widget" :key="idx" :widget="val"/>
+      <div v-for="(val, idx) in $store.state.cards" :key="idx+'_wrapper'">
+        <component :is="val.card" :key="idx" :card="val"/>
         <br/>
       </div>
     </v-main>
@@ -27,28 +27,28 @@ export default {
       this.$store.dispatch('fetchDevices')
       setTimeout(() => { this.UpdateDevices() }, 1500)
     },
-    ImportWidgets() {
-      Object.entries(this.$store.state.widgets).forEach(([k, v]) => {
-        let i = v['widget']
+    ImportCards() {
+      Object.entries(this.$store.state.cards).forEach(([k, v]) => {
+        let i = v['card']
         if (!this.imported.includes(i)) {
-          this.$options.components[i] = () => import('@/components/widgets/' + upperFirst(camelCase(i)) + '.vue')
+          this.$options.components[i] = () => import('@/components/cards/' + upperFirst(camelCase(i)) + '.vue')
           this.imported.push(i)
         }
       })
     },
   },
   computed: {
-    widgetData() {
-      return this.$store.state.widgets
+    cardData() {
+      return this.$store.state.cards
     }
   },
   watch: {
-    widgetData()  {
-      this.ImportWidgets()
+    cardData()  {
+      this.ImportCards()
     }
   },
   created() {
-    this.$store.dispatch('fetchWidgets')
+    this.$store.dispatch('fetchCards')
     this.UpdateDevices()
   }
 }

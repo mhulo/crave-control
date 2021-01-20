@@ -6,23 +6,23 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    widgets: {},
+    cards: {},
     devices: {}
   },
   mutations: {
-    SET_WIDGETS(state, widgets_data) {
-      state.widgets = widgets_data
+    SET_CARDS(state, cards_data) {
+      state.cards = cards_data
     },
     SET_DEVICES(state, devices_data) {
       state.devices = devices_data
     }
   },
   actions: {
-    fetchWidgets({ commit, state }) {
-      ApiService.getApi('/core/widgets_conf/')
+    fetchCards({ commit, state }) {
+      ApiService.getApi('/core/cards_conf/')
         .then(response => {
-          if (JSON.stringify(response.data) != JSON.stringify(state.widgets)) {
-            commit('SET_WIDGETS', response.data)
+          if (JSON.stringify(response.data) != JSON.stringify(state.cards)) {
+            commit('SET_CARDS', response.data)
           }
         })
         .catch(error => {

@@ -7,18 +7,20 @@ Request.state = MainState()
 app = FastAPI(debug=True)
 
 origins = [
-    "https://localhost",
-    "http://localhost",
-    "http://localhost:4000",
-    "http://localhost:8888",
+  "https://localhost",
+  "http://localhost",
+  "http://localhost:8888"
 ]
 
+origins_regex = "http://192.168.*"
+
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+  CORSMiddleware,
+  allow_origins=origins,
+  allow_origin_regex=origins_regex,
+  allow_credentials=True,
+  allow_methods=["*"],
+  allow_headers=["*"],
 )
 
 

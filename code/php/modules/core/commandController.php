@@ -24,7 +24,7 @@
       $res = '';
       foreach ($command[$_GET['cmd']]['actions'] as $action) { // iterate through all the actions in the command
         $r = [];
-        $r['params'] = $_GET; // the params that come from the widget
+        $r['params'] = $_GET; // the params that come from the card
         foreach ($action['params'] as $key => $value) { // override any params from the command
           $r['params'][$key] = $value;
         }

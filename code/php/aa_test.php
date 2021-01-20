@@ -1,4 +1,4 @@
-<?php require_once "src/widgets.php"; ?>
+<?php require_once "src/cards.php"; ?>
 <?php require_once "config/websocket_config.php"; ?>
 <!doctype html>
 <html lang="en">
@@ -11,7 +11,7 @@
 
     <script src="https://code.getmdl.io/1.3.0/material.min.js"></script> <!-- for mdl -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> <!-- for jquery -->
-    <script src="public/js/widget_refresh_functions.js"></script>
+    <script src="public/js/card_refresh_functions.js"></script>
     <script>
 
         function get_live_status(interface,refr) {        

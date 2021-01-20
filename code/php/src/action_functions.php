@@ -7,7 +7,7 @@
 	*/
 ?>
 <?php
-    // --- this is where you start inserting all the action functions for all the various widgets --- //
+    // --- this is where you start inserting all the action functions for all the various cards --- //
     // --- many will use basic dim or on/off functions but there is endless possibilities for scenes --- //
 
 

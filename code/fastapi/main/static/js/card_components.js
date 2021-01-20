@@ -27,11 +27,11 @@
 
     var cmd = '';
     if ('command' in comp_obj) { cmd = comp_obj['command']; }
-    else { cmd = 'set_widget_val'; }
+    else { cmd = 'set_card_val'; }
 
     ret_str  = '<p class="component_value_elem">\n';
     ret_str += '  <input id="' + comp_div_id + '_main" class="component_value mdl-slider mdl-js-slider slider_mdl1" type="range" min="0" max="100" value="0" tabindex="0"';
-    ret_str += ' onchange="slider_value_changed(\'' + comp_div_id + '\',\'' + cmd + '\',\'' + state_key + '\',this.value,\'' + comp_obj['widget_id'] + '\');"';
+    ret_str += ' onchange="slider_value_changed(\'' + comp_div_id + '\',\'' + cmd + '\',\'' + state_key + '\',this.value,\'' + comp_obj['card_id'] + '\');"';
     ret_str += ' >\n';
     ret_str += '</p>\n';
 
@@ -43,11 +43,11 @@
 
     var cmd = '';
     if ('command' in comp_obj) { cmd = comp_obj['command']; }
-    else { cmd = 'set_widget_val'; }
+    else { cmd = 'set_card_val'; }
 
     ret_str  = '<label id="' + comp_div_id + '_l" for="' + comp_div_id + '_main" class="mdl-switch mdl-js-switch">\n';
-    ret_str += ' <input id="' + comp_div_id + '_main" type="checkbox" class="widget_value switch_mdl1 mdl-switch__input"';
-    ret_str += ' onchange="switch_value_changed(\'' + comp_div_id + '\',\'' + cmd + '\',\'' + state_key + '\',this.checked,\'' + comp_obj['widget_id'] + '\');"';
+    ret_str += ' <input id="' + comp_div_id + '_main" type="checkbox" class="card_value switch_mdl1 mdl-switch__input"';
+    ret_str += ' onchange="switch_value_changed(\'' + comp_div_id + '\',\'' + cmd + '\',\'' + state_key + '\',this.checked,\'' + comp_obj['card_id'] + '\');"';
     ret_str += ' >\n';
     ret_str += '</label>\n';
 

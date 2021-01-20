@@ -1,7 +1,7 @@
 <template>
   <div class="stl2">
-    <div class="stl1">switch: {{ widget.label }}</div>
-    <div>{{ widget.devices[0] }} [{{ id }}]</div>
+    <div class="stl1">switch: {{ card.label }}</div>
+    <div>{{ card.devices[0] }} [{{ id }}]</div>
     <div>{{ deviceData }}</div>
     <div>Slider: {{ newVal }}</div>
     <v-slider
@@ -22,7 +22,7 @@ import { mapState } from 'vuex'
 
 export default {
   props: {
-    widget: Object
+    card: Object
   },
   data() {
     return {
@@ -34,21 +34,21 @@ export default {
   methods: {
     handleChange() {
       if (this.newVal != this.oldVal) {
-        console.log('widget ' + this.widget.id + ' -> ' + this.newVal)
+        console.log('card ' + this.card.id + ' -> ' + this.newVal)
         this.oldVal = this.newVal
       }
     }
   },
   computed: {
     deviceData() {
-      return this.$store.getters.getDeviceByName(this.widget.devices[0])
+      return this.$store.getters.getDeviceByName(this.card.devices[0])
     }
 
   },
   watch: {
     deviceData(newData, oldData)  {
       if (JSON.stringify(newData) != JSON.stringify(oldData)) {
-        //console.log(this.widget.label + ' watch change')
+        //console.log(this.card.label + ' watch change')
         this.newVal = this.deviceData.brightness
       }
     }

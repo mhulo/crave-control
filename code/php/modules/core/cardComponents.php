@@ -2,30 +2,30 @@
 
     class crave_component
     {
-        public $widget_div_id;
+        public $card_div_id;
         public $val_type;
-        public $widget_command;
+        public $card_command;
         public $listener_interface;
         public $listener_id;
 
         /**
-         * Creates the base crave_component object which can then the various methods to insert all the widget components on the pages in html.
+         * Creates the base crave_component object which can then the various methods to insert all the card components on the pages in html.
          *
-         * @param string $widget_div_id Takes the id of the widget div so that the components be named and addressed based off that eg. "1_w0001".
-         * @param string $widget_command Takes the id of the command as specified in the widgets_config.json file eg. "command_1".
-         * @param string $listener_interface Takes the name of the listener_interface for this widget eg. "cgate".
-         * @param string $listener_id Takes the name of the listener_id for the widget eg. "HOME1_254_56_12".
+         * @param string $card_div_id Takes the id of the card div so that the components be named and addressed based off that eg. "1_w0001".
+         * @param string $card_command Takes the id of the command as specified in the cards_config.json file eg. "command_1".
+         * @param string $listener_interface Takes the name of the listener_interface for this card eg. "cgate".
+         * @param string $listener_id Takes the name of the listener_id for the card eg. "HOME1_254_56_12".
          */
-        public function __construct($widget_div_id,$widget_command,$listener_interface,$listener_id)
+        public function __construct($card_div_id,$card_command,$listener_interface,$listener_id)
         {
-            $this->widget_div_id = $widget_div_id;
-            $this->widget_command = $widget_command;
+            $this->card_div_id = $card_div_id;
+            $this->card_command = $card_command;
             $this->listener_interface = $listener_interface;
             $this->listener_id = $listener_id;
         }
 
         /**
-         * Creates the base crave_component object which can then the various methods to insert all the widget components on the pages in html.
+         * Creates the base crave_component object which can then the various methods to insert all the card components on the pages in html.
          *
          * @param string $comp_type Takes name of the component type that is being inserted eg. "dimmer" or "switch".
          * @param string $comp_subtype Takes name of the component subtype that is being inserted eg. "mdl1" or "mdc".
@@ -38,7 +38,7 @@
             // eg. comp_type = slider or switch
             // eg. comp_subtype = mdl1 or mdc1 (ie. material design lite or material design components)
 
-            $comp_div_id = $this->widget_div_id . "_" . $comp_id;
+            $comp_div_id = $this->card_div_id . "_" . $comp_id;
 
             $ret_str  = "    <input value=\"x\" class=\"hdn_lst listener_value " . $this->listener_interface . "__" . $this->listener_id . "__" . $val_type . "\"";
             $ret_str .= " onchange=\"listener_val_changed('" . $comp_div_id . "');\"";
@@ -53,7 +53,7 @@
         }
 
         /**
-         * Creates the html string for the specific crave_component which will be inserted by the widget.
+         * Creates the html string for the specific crave_component which will be inserted by the card.
          *
          * @param object $comp_id Takes the unique id of the component so that the divs in the generated html will have unique ids eg. "c01"
          * @param object $val_type Takes the name type of value this component will be working with and listening to eg. "level" or "set_temp"
@@ -61,11 +61,11 @@
          */
         public function get_slider_mdl1($comp_id,$val_type)
         {
-            $comp_div_id = $this->widget_div_id . "_" . $comp_id;
+            $comp_div_id = $this->card_div_id . "_" . $comp_id;
 
             $ret_str  = "    <p class=\"component_value_elem\">\n";
             $ret_str .= "        <input id=\"" . $comp_div_id . "_main\" class=\"component_value mdl-slider mdl-js-slider slider_mdl1\" type=\"range\" min=\"0\" max=\"100\" value=\"0\" tabindex=\"0\"";
-            $ret_str .= " onchange=\"slider_value_changed(this.value,'mdl1','" . $comp_div_id . "','" . $this->widget_command . "');\"";
+            $ret_str .= " onchange=\"slider_value_changed(this.value,'mdl1','" . $comp_div_id . "','" . $this->card_command . "');\"";
             $ret_str .= " >\n";
             $ret_str .= "     </p>\n";
             $ret_str .= $this->get_listener("slider", "mdl1", $comp_id, $val_type);
@@ -74,7 +74,7 @@
         }
 
         /**
-         * Creates the html string for the specific crave_component which will be inserted by the widget.
+         * Creates the html string for the specific crave_component which will be inserted by the card.
          *
          * @param object $comp_id Takes the unique id of the component so that the divs in the generated html will have unique ids eg. "c01"
          * @param object $val_type Takes the name type of value this component will be working with and listening to eg. "level" or "set_temp"
@@ -82,11 +82,11 @@
          */
         public function get_switch_mdl1($comp_id,$val_type)
         {
-            $comp_div_id = $this->widget_div_id . "_" . $comp_id;
+            $comp_div_id = $this->card_div_id . "_" . $comp_id;
 
             $ret_str  = "    <label id=\"" . $comp_div_id . "_l\" for=\"" . $comp_div_id . "_main\" class=\"mdl-switch mdl-js-switch\">\n";
-            $ret_str .= "        <input id=\"" . $comp_div_id . "_main\" type=\"checkbox\" class=\"widget_value switch_mdl1 mdl-switch__input\"";
-            $ret_str .= " onchange=\"switch_value_changed(this.checked, 'mdl1', '" . $comp_div_id . "', '" . $this->widget_command . "');\"";
+            $ret_str .= "        <input id=\"" . $comp_div_id . "_main\" type=\"checkbox\" class=\"card_value switch_mdl1 mdl-switch__input\"";
+            $ret_str .= " onchange=\"switch_value_changed(this.checked, 'mdl1', '" . $comp_div_id . "', '" . $this->card_command . "');\"";
             $ret_str .= " >\n";
             $ret_str .= "    </label>\n";
             $ret_str .= $this->get_listener("switch", "mdl1", $comp_id, $val_type);

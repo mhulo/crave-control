@@ -243,12 +243,12 @@ p {
   border-radius: 20px;
 }
 
-.widget_icon.is-active {
+.card_icon.is-active {
   border: 1px rgba(254,254,254,1) solid;
   color: rgba(254,254,254,1);
 }
 
-.widget_icon .material-icons {
+.card_icon .material-icons {
   /*padding: 3px 0px 0px 3px;*/
   font-size: 20px;
 }

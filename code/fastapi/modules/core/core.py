@@ -50,8 +50,8 @@ class Core:
     return ret_val
 
 
-  def WidgetsConf(self):
-    return widgets_conf
+  def CardsConf(self):
+    return cards_conf
 
 
 
