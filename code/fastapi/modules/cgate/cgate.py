@@ -99,9 +99,10 @@ class Cgate:
     for k, v in devices_conf[self.conf['interface']].items():
       ret_val[k] = {}
       ret_val[k]['address'] = v['address']
-      if ('level' in ifx_vals[v['address']]):
-        ret_val[k]['power'] = self.LevelToPower(ifx_vals[v['address']]['level'])
-        ret_val[k]['brightness'] = round(int(ifx_vals[v['address']]['level']) * (100/255))   
+      if (v['address'] in ifx_vals):
+        if ('level' in ifx_vals[v['address']]):
+          ret_val[k]['power'] = self.LevelToPower(ifx_vals[v['address']]['level'])
+          ret_val[k]['brightness'] = round(int(ifx_vals[v['address']]['level']) * (100/255))   
     return ret_val
 
 

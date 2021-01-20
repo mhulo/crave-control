@@ -2,7 +2,10 @@
   <v-app>
     <v-main>
       <div>crave control</div><br>
-      <component :is="val.widget" v-for="(val, idx) in $store.state.widgets" :key="idx" :widget="val"/>
+      <div v-for="(val, idx) in $store.state.widgets" :key="idx+'_wrapper'">
+        <component :is="val.widget" :key="idx" :widget="val"/>
+        <br/>
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -22,13 +25,13 @@ export default {
   methods: {
     UpdateDevices() {
       this.$store.dispatch('fetchDevices')
-      setTimeout(() => { this.UpdateDevices() }, 1000)
+      setTimeout(() => { this.UpdateDevices() }, 1500)
     },
     ImportWidgets() {
       Object.entries(this.$store.state.widgets).forEach(([k, v]) => {
         let i = v['widget']
         if (!this.imported.includes(i)) {
-          this.$options.components[i] = () => import('@/components/' + upperFirst(camelCase(i)) + '.vue')
+          this.$options.components[i] = () => import('@/components/widgets/' + upperFirst(camelCase(i)) + '.vue')
           this.imported.push(i)
         }
       })

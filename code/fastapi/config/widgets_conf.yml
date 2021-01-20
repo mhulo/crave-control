@@ -33,6 +33,16 @@ wgt0003:
   groups:
     - 'Lights'
 
+wgt5003:
+  widget: 'dimmer_1'
+  label: 'Study Lights 2'
+  devices:
+    - 'cgate.study_lights'
+  fave_1: 15
+  fave_2: 40
+  groups:
+    - 'Lights'
+
 wgt0200:
   widget: 'dimmer_1'
   label: 'Master LED Strip'
