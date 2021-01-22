@@ -1,13 +1,10 @@
 <template>
   <div class="stl3">
-    <v-slider
+    <v-switch
       v-model="compVal"
       @change="compChange()"
-      max="100"
-      min="0"
-      thumb-label
     >
-    </v-slider>
+    </v-switch>
   </div>
 </template>
 
@@ -22,10 +19,14 @@ export default {
   },
   data() {
     return {
-      compVal: 0,
-      compOldVal: 0,
+      compVal: false,
+      compOldVal: false,
       compChgTs: 0,
-      cardId: this.$vnode.key
+      cardId: this.$vnode.key,
+      compStates: {
+        'on': true,
+        'off': false
+      }
     }
   },
   methods: {
@@ -33,21 +34,30 @@ export default {
       if (this.compVal != this.compOldVal) {
         this.compOldVal = this.compVal
         this.compChgTs = Date.now()
-        this.$emit('updated', { 'key': this.compKey, 'val': this.compVal })
-        console.log('command: ' + this.compCmd + ' --> card value/s: ' + this.compVal);
-        let cmdUrl = '/core/run_command/?cmd=' + this.compCmd + '&set_key=' + this.compKey + '&set_val=' + this.compVal + '&wgt=' + this.cardId + '&z=123'
+        this.$emit('updated', { 'key': this.compKey, 'val': this.prettyVal })
+        console.log('command: ' + this.compCmd + ' --> card value/s: ' + this.prettyVal);
+        let cmdUrl = '/core/run_command/?cmd=' + this.compCmd + '&set_key=' + this.compKey + '&set_val=' + this.prettyVal + '&wgt=' + this.cardId + '&z=123'
         ApiService.getApi(cmdUrl)
         setTimeout(() => { this.deviceChange() }, 6000)
       }
     },
     deviceChange() {
       if ((Date.now() - this.compChgTs) > 6000) {
-        this.compVal = this.deviceData[this.compKey]
-        this.$emit('updated', { 'key': this.compKey, 'val': this.compVal })
+        this.compVal = this.toLogical(this.deviceData[this.compKey])
+        this.$emit('updated', { 'key': this.compKey, 'val': this.prettyVal })
       }
+    },
+    toPretty(val) {
+      return Object.keys(this.compStates).find(key => this.compStates[key] === val)
+    },
+    toLogical(val) {
+      return this.compStates[val]
     }
   },
   computed: {
+    prettyVal() {
+      return this.toPretty(this.compVal)
+    },
     deviceData() {
       return this.$store.getters.getDeviceByName(this.deviceName)
     },
@@ -82,6 +92,6 @@ export default {
 .stl3 {
   font-size: 13px;
   color: black;
-  padding: 0px 20px 0px 20px;
+  padding-left: 20px;
 }
 </style>

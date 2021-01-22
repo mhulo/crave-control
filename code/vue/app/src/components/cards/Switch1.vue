@@ -1,55 +1,58 @@
 <template>
   <div class="stl2">
-    <div class="stl1">switch: {{ card.label }}</div>
-    <div>{{ card.devices[0] }} [{{ id }}]</div>
-    <div>{{ deviceData }}</div>
-    <div>Slider: {{ newVal }}</div>
-    <v-slider
-      key="slider1"
-      v-model="newVal"
-      @change="handleChange()"
-      max="100"
-      min="0"
-      thumb-label
-      prepend-icon="mdi-volume-high"
-    >
-    </v-slider>
+    <div class="stl1">{{ card.label }} :: {{ compVals[compKeys(0)] }}</div>
+    <div>{{ card.devices[0] }} | {{ deviceData.brightness }}</div>
+    <v-icon :color="'black'">mdi-lightbulb-outline</v-icon>
+    <Toggle1
+      :key="cardId"
+      :card="card"
+      :deviceName="card.devices[0]"
+      :compKey="compKeys(0)"
+      :ref="compKeys(0)"
+      @updated="handleUpdate"
+    />
+    <v-btn icon elevation="2" color="'blue'" @click="toggle(compKeys(0))">
+      <v-icon >mdi-swap-horizontal</v-icon>
+    </v-btn>
+    <br>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import ApiService from '@/services/ApiService.js'
+import Toggle1 from '@/components/widgets/Toggle1.vue'
 
 export default {
+  components: {
+    Toggle1
+  },
   props: {
     card: Object
   },
   data() {
     return {
-      newVal: 0,
-      oldVal: 0,
-      id: this.$vnode.key
-    }
-  },
-  methods: {
-    handleChange() {
-      if (this.newVal != this.oldVal) {
-        console.log('card ' + this.card.id + ' -> ' + this.newVal)
-        this.oldVal = this.newVal
+      cardId: this.$vnode.key,
+      compVals: {
+        power: 'off'
       }
     }
   },
+  methods: {
+    compKeys(idx) {
+      return Object.keys(this.compVals)[idx]
+    },
+    handleUpdate(update) {
+      this.compVals[update.key] = update.val
+    },
+    toggle(key) {
+      this.$refs[key].compVal = !(this.$refs[key].compVal)
+      this.$refs[key].compChange()
+    },
+  },
   computed: {
     deviceData() {
-      return this.$store.getters.getDeviceByName(this.card.devices[0])
-    }
-
-  },
-  watch: {
-    deviceData(newData, oldData)  {
-      if (JSON.stringify(newData) != JSON.stringify(oldData)) {
-        //console.log(this.card.label + ' watch change')
-        this.newVal = this.deviceData.brightness
+      return {
+        'brightness': this.$store.getters.getDeviceByName(this.card.devices[0]).power
       }
     }
   }
@@ -65,5 +68,6 @@ export default {
 .stl2 {
   font-size: 13px;
   color: black;
+  border: 1px green solid;
 }
 </style>

@@ -11,8 +11,12 @@
       :ref="compKeys(0)"
       @updated="handleUpdate"
     />
-    <v-icon :color="'blue'" @click="decrement(compKeys(0))">mdi-minus</v-icon>
-    <v-icon :color="'blue'" @click="increment(compKeys(0))">mdi-plus</v-icon>
+    <v-btn icon elevation="2" color="'blue'" @click="decrement(compKeys(0))">
+      <v-icon >mdi-minus</v-icon>
+    </v-btn>
+    <v-btn icon elevation="2" color="'blue'" @click="increment(compKeys(0))">
+      <v-icon >mdi-plus</v-icon>
+    </v-btn>
     <br>
   </div>
 </template>

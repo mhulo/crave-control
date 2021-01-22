@@ -6,23 +6,18 @@ Request.state = MainState()
 
 app = FastAPI(debug=True)
 
-origins = [
-  "https://localhost",
-  "http://localhost",
-  "http://localhost:8888"
-]
-
-origins_regex = "http://192.168.*"
+hosts = ['localhost', '192.168.2.19', '192.168.2.237']
+origins = []
+for host in hosts:
+  origins += ['https://' + host, 'http://' + host + ':4000']
 
 app.add_middleware(
   CORSMiddleware,
   allow_origins=origins,
-  allow_origin_regex=origins_regex,
   allow_credentials=True,
   allow_methods=["*"],
   allow_headers=["*"],
 )
-
 
 # autoload routers for active modules in modules_conf
 for k, v in interfaces_conf.items():
