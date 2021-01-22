@@ -1,7 +1,7 @@
 <template>
   <div class="stl2">
-    <div class="stl1">{{ card.label }} :: {{ compVals[compKeys(0)] }}</div>
-    <div>{{ card.devices[0] }} | {{ deviceData.brightness }}</div>
+    <div class="stl1">{{ card.label }} :: {{ compVals[compKeys(0)].toUpperCase() }}</div>
+    <div>{{ card.devices[0] }} | {{ deviceData[compKeys(0)] }}</div>
     <v-icon :color="'black'">mdi-lightbulb-outline</v-icon>
     <Toggle1
       :key="cardId"
@@ -52,7 +52,7 @@ export default {
   computed: {
     deviceData() {
       return {
-        'brightness': this.$store.getters.getDeviceByName(this.card.devices[0]).power
+        'power': this.$store.getters.getDeviceByName(this.card.devices[0]).power
       }
     }
   }

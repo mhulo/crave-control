@@ -34,8 +34,8 @@
         // get a refreshed set of values for the given interface
         //create a new websocket object.
         var wss = {}
-        wss['id'] = Date.now()
-        wss['host'] = location.hostname
+        wss['id'] = Date.now();
+        wss['host'] = location.hostname;
         if (location.protocol == 'https:') {
           wss['protocol'] = 'wss';
           wss['port'] = '';

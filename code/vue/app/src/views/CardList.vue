@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
       <div>crave control</div><br>
-      <div v-for="(val, idx) in $store.state.cards" :key="idx+'_wrapper'">
+      <div v-for="(val, idx) in this.cards" :key="idx+'_wrapper'">
         <component :is="val.card" :key="idx" :card="val"/>
         <br/>
       </div>
@@ -13,13 +13,14 @@
 <script>
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import ApiService from '@/services/ApiService.js'
+import WsService from '@/services/WsService.js'
 
 export default {
   components: {},
   data() {
     return {
-      imported: []
+      imported: [],
+      cards: {}
     }
   },
   methods: {
@@ -38,18 +39,21 @@ export default {
     },
   },
   computed: {
-    cardData() {
+    stateCards() {
       return this.$store.state.cards
     }
   },
   watch: {
-    cardData()  {
+    stateCards()  {
       this.ImportCards()
+      this.cards = this.stateCards
     }
   },
   created() {
-    this.$store.dispatch('fetchCards')
-    this.UpdateDevices()
+    this.$store.dispatch('updateCards')
+  },
+  mounted() {
+    WsService.reConnect()
   }
 }
 </script>

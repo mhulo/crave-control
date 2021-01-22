@@ -43,8 +43,10 @@ export default {
     },
     deviceChange() {
       if ((Date.now() - this.compChgTs) > 6000) {
-        this.compVal = this.toLogical(this.deviceData[this.compKey])
-        this.$emit('updated', { 'key': this.compKey, 'val': this.prettyVal })
+        if (this.compKey in this.deviceData) {
+          this.compVal = this.toLogical(this.deviceData[this.compKey])
+          this.$emit('updated', { 'key': this.compKey, 'val': this.prettyVal })
+        }
       }
     },
     toPretty(val) {

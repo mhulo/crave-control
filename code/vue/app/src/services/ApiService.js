@@ -10,11 +10,11 @@ const apiClient = axios.create({
 export default {
    getApi(endpoint) {
     return apiClient.get(endpoint)
-  },
-  getApi2(endpoint) {
-    return apiClient.get(endpoint)
-      .then(result => {
-        return Promise.resolve(result);
-    });
   }
+  //getApi2(endpoint) {
+  //  return apiClient.get(endpoint)
+  //    .then(result => {
+  //      return Promise.resolve(result);
+  //  });
+  //}
 }

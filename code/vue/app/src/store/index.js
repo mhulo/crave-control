@@ -18,7 +18,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    fetchCards({ commit, state }) {
+    updateCards({ commit, state }) {
       ApiService.getApi('/core/cards_conf/')
         .then(response => {
           if (JSON.stringify(response.data) != JSON.stringify(state.cards)) {
@@ -29,16 +29,10 @@ export default new Vuex.Store({
           console.log('api error:', error.response)
         })
     },
-    fetchDevices({ commit, state }) {
-      ApiService.getApi('/core/event/state/')
-        .then(response => {
-          if (JSON.stringify(response.data) != JSON.stringify(state.devices)) {
-            commit('SET_DEVICES', response.data)
-          }
-        })
-        .catch(error => {
-          console.log('api error:', error.response)
-        })
+    updateDevices({ commit, state }, devices) {
+      if (JSON.stringify(devices) != JSON.stringify(state.devices)) {
+        commit('SET_DEVICES', devices)
+      }
     }
   },
   getters: {

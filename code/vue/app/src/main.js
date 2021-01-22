@@ -2,10 +2,10 @@ import Vue from 'vue'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 import App from './App.vue'
-import router from './router'
-import store from './store'
+import router from '@/router'
+import store from '@/store'
 import BaseIcon from '@/components/BaseIcon'
-import vuetify from './plugins/vuetify';
+import vuetify from '@/plugins/vuetify';
 
 Vue.component('BaseIcon', BaseIcon)
 
