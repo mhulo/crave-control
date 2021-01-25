@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import CardList from '../views/CardList.vue'
-import Vuetify from '../views/Vuetify.vue'
+import Vuetify from '@/views/Vuetify.vue'
+import CardList from '@/views/CardList.vue'
+import Layout from '@/views/Layout.vue'
 
 Vue.use(VueRouter)
 
@@ -10,6 +11,11 @@ const routes = [
     path: '/',
     name: 'card-list',
     component: CardList
+  },
+  {
+    path: '/layout/',
+    name: 'layout',
+    component: Layout,
   },
   {
     path: '/vuetify/',

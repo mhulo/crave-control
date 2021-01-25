@@ -1,13 +1,11 @@
 <template>
-  <v-app>
-    <v-main>
-      <div>crave control</div><br>
-      <div v-for="(val, idx) in this.cards" :key="idx+'_wrapper'">
-        <component :is="val.card" :key="idx" :card="val"/>
-        <br/>
-      </div>
-    </v-main>
-  </v-app>
+  <v-main>
+    <div>crave control</div><br>
+    <div v-for="(val, idx) in this.cards" :key="idx+'_wrapper'">
+      <component :is="val.card" :key="idx" :card="val"/>
+      <br/>
+    </div>
+  </v-main>
 </template>
 
 <script>

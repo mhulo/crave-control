@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <v-app-bar
       app
       color="primary"
@@ -40,11 +40,11 @@
     <v-main>
       <HelloWorld/>
     </v-main>
-  </v-app>
+  </div>
 </template>
 
 <script>
-import HelloWorld from '@/components/HelloWorld';
+import HelloWorld from '@/components/HelloWorld.vue';
 
 export default {
   name: 'App',
