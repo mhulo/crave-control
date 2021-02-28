@@ -8,7 +8,7 @@ const apiClient = axios.create({
 })
 
 export default {
-   getApi(endpoint) {
+  getApi(endpoint) {
     return apiClient.get(endpoint)
   }
   //getApi2(endpoint) {

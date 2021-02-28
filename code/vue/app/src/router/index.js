@@ -1,21 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuetify from '@/views/Vuetify.vue'
-import CardList from '@/views/CardList.vue'
 import Layout from '@/views/Layout.vue'
+import Layout1 from '@/views/Layout1.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'card-list',
-    component: CardList
-  },
-  {
-    path: '/layout/',
-    name: 'layout',
-    component: Layout,
+    path: '/layout1/',
+    name: 'layout1',
+    component: Layout1,
   },
   {
     path: '/vuetify/',

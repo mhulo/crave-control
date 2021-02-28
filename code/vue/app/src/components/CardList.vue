@@ -1,11 +1,11 @@
 <template>
-  <v-main>
-    <div>crave control</div><br>
+  <div id="card-list">
     <div v-for="(val, idx) in this.cards" :key="idx+'_wrapper'">
-      <component :is="val.card" :key="idx" :card="val"/>
+      <!--<component :is="val.card" :key="idx" :card="val"/>-->
+      <div :key="idx">stuff</div>
       <br/>
     </div>
-  </v-main>
+  </div>
 </template>
 
 <script>
@@ -22,10 +22,6 @@ export default {
     }
   },
   methods: {
-    UpdateDevices() {
-      this.$store.dispatch('fetchDevices')
-      setTimeout(() => { this.UpdateDevices() }, 1500)
-    },
     ImportCards() {
       Object.entries(this.$store.state.cards).forEach(([k, v]) => {
         let i = v['card']
@@ -34,6 +30,7 @@ export default {
           this.imported.push(i)
         }
       })
+      this.cards = this.stateCards
     },
   },
   computed: {
@@ -42,16 +39,24 @@ export default {
     }
   },
   watch: {
-    stateCards()  {
+    stateCards() {
       this.ImportCards()
-      this.cards = this.stateCards
     }
   },
   created() {
+    console.log('cards created')
+    WsService.reConnect()
+    this.ImportCards()
     this.$store.dispatch('updateCards')
   },
   mounted() {
-    WsService.reConnect()
+    console.log('cards mounted')
   }
 }
 </script>
+
+<style>
+  #card-list {
+    background: red;
+  }
+</style>

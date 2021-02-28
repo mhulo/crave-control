@@ -35,10 +35,16 @@ export default {
     this.wsConn.onmessage = ((ev) => {
 
       if (ev.data == 'pong') {
-          //console.log(ev.data+' received');
-      }
+        //console.log(ev.data+' received');
+      } 
       else {
-        store.dispatch('updateDevices', JSON.parse(ev.data))
+        let data = JSON.parse(ev.data)
+        if ('message' in data) {
+          console.log('message: ' + ev.data);
+        }
+        else {
+          store.dispatch('updateDevices', data)
+        }
       }
     })
 
