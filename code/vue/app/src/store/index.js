@@ -25,12 +25,16 @@ export default new Vuex.Store({
         'active': ''
       },
       {
-        'text': 'Things',
+        'text': 'Battery',
         'icon': 'mdi-battery-outline',
         'active': ''
       }
     ],
-    popupKey: null,
+    popupData: {
+      'show': false,
+      'source' : null,
+      'key' : null
+    }
   },
   mutations: {
     SET_VAL(state, set_data) {
@@ -41,6 +45,12 @@ export default new Vuex.Store({
     },
     SET_DEVICES(state, devices_data) {
       state.devices = devices_data
+    },
+    SET_NAV(state, nav_data) {
+      state.navData = nav_data
+    },
+    SET_POPUP(state, popup_data) {
+      state.popupData = popup_data
     }
   },
   actions: {
@@ -60,12 +70,21 @@ export default new Vuex.Store({
         commit('SET_DEVICES', devices)
       }
     },
+    updateNav({ commit, state }, navKey) {
+      let navData = [...state.navData]
+      navData.forEach(val => { val.active = '' })
+      navData.[navKey].active = 'active'
+      commit('SET_NAV', navData)
+    },
+    updatePopup({ commit, state }, popup) {
+      commit('SET_POPUP', popup)
+    },
     updateVal({ commit, state }, data) {
       commit('SET_VAL', { 'obj' : data.obj,  'val' : data.val })
     },
   },
   getters: {
-    getDeviceByName: state => name => {
+    deviceByName: state => name => {
       var deviceData = {}
       var deviceCode = name.split('.')
       if (deviceCode[0] in state.devices) {
@@ -74,6 +93,9 @@ export default new Vuex.Store({
         }
       }
       return deviceData
+    },
+    navIndex: state => {
+      return state.navData.findIndex(nav => nav.active == 'active')
     }
   }
 })

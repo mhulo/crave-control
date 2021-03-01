@@ -51,7 +51,7 @@ export default {
   },
   computed: {
     deviceData() {
-      return this.$store.getters.getDeviceByName(this.deviceName)
+      return this.$store.getters.deviceByName(this.deviceName)
     },
     compCmd() {
       if ('command' in this.card) {

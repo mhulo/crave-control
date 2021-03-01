@@ -61,7 +61,7 @@ export default {
       return this.toPretty(this.compVal)
     },
     deviceData() {
-      return this.$store.getters.getDeviceByName(this.deviceName)
+      return this.$store.getters.deviceByName(this.deviceName)
     },
     compCmd() {
       if ('command' in this.card) {

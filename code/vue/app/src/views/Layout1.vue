@@ -11,13 +11,13 @@
         <div class="infobar">infobar</div>
       </div>
       <div class="right-container">
-        <div class="headerbar" v-show="!oLarge">&lt; crave control &gt;</div>
+        <div class="headerbar" v-show="!oLarge">&lt; logo &gt;</div>
         <div class="infobar" v-show="!oLarge">infobar</div>
         <div class="cards">
           <CardList/>
         </div>
         <transition name="slide-popup">
-          <div class="popup-area" v-show="popupKey && !oLarge">popup: {{ popupKey }}</div>
+          <div class="popup-area" v-show="popupData.show && !oLarge">popup: {{ popupData.key }}</div>
         </transition>
         <div class="bottom-nav" v-show="!oLarge">
           <BottomNav/>
@@ -52,9 +52,9 @@ export default {
       this.oWidth = document.getElementById('outer-container').offsetWidth
       if (this.oWidth >= 940) { 
         this.oLarge = true
-        if (this.popupKey != null) {
-          this.$store.dispatch('updateVal', { 'obj' : 'popupKey', 'val' : null })
-        }
+        //if (this.popupKey != null) {
+        //  this.$store.dispatch('updateVal', { 'obj' : 'popupKey', 'val' : null })
+        //}
       }
       else {
         this.oLarge = false
@@ -62,9 +62,9 @@ export default {
     }
   },
   computed: {
-    popupKey() {
-      return this.$store.state.popupKey
-    },
+    popupData() {
+      return this.$store.state.popupData
+    }
   },
   watch: {},
   created() {

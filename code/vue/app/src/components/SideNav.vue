@@ -1,10 +1,9 @@
 <template>
   <div id="side-nav-outer">
     <div id="side-nav-inner">
-      <!--<div class="link-bg" :style="bgTransform"></div>-->
       <div class="link-div" v-for="(link, key) in navData" :key="'side_'+key">
-        <button :class="'nav-button ' + link.active" v-on:click="handleNavClick(key)">
-          <v-icon class="nav-icon">{{ link.icon }}</v-icon>
+        <button v-ripple :class="'nav-button ' + link.active" v-on:click="handleNavClick(key)">
+          <v-icon class="side-nav-icon">{{ link.icon }}</v-icon>
         </button>
       </div>
     </div>
@@ -20,17 +19,8 @@ export default {
     return {}
   },
   methods: {
-    handleNavClick(navKey) {
-      let navData = [...this.$store.state.navData]
-      if (navData.[navKey].text == this.$store.state.popupKey) {
-        this.$store.dispatch('updateVal', { 'obj' : 'popupKey', 'val' : null })
-      }
-      else {
-        navData.forEach(val => { val.active = '' })
-        navData.[navKey].active = 'active'
-        this.$store.dispatch('updateVal', { 'obj' : 'navData', 'val' : navData })
-        this.$store.dispatch('updateVal', { 'obj' : 'popupKey', 'val' : navData.[navKey].text })
-      }
+    handleNavClick(navIndex) {
+      this.$store.dispatch('updateNav', navIndex)
     }
   },
   computed: {
@@ -83,7 +73,7 @@ export default {
   -ms-transition: background-color 0.3s linear;
   transition: background-color 0.3s linear;
 }
-i.v-icon.nav-icon {
+i.v-icon.side-nav-icon {
   color: #9386ea;
   width: 40px;
   height: 44px;

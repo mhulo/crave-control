@@ -52,7 +52,7 @@ export default {
   computed: {
     deviceData() {
       return {
-        'power': this.$store.getters.getDeviceByName(this.card.devices[0]).power
+        'power': this.$store.getters.deviceByName(this.card.devices[0]).power
       }
     }
   }

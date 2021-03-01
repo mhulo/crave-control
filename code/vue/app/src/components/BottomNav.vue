@@ -4,7 +4,7 @@
       <div class="bottom-link-bg" :style="bgTransform"></div>
       <div v-for="(link, key) in bottomNavData" :key="'bottom+'+key">
         <a :class="'bottom-link-container ' + link.active" v-on:click="handleNavClick(key)">
-          <v-icon class="nav-icon">{{ link.icon }}</v-icon>
+          <v-icon class="bottom-nav-icon">{{ link.icon }}</v-icon>
           <span class="link-text">{{ link.text }}</span>
         </a>
       </div>
@@ -21,17 +21,18 @@ export default {
     return {}
   },
   methods: {
-    handleNavClick(navKey) {
-      let newNavData = [...this.$store.state.navData]
-      if (newNavData.[navKey].text == this.$store.state.popupKey) {
-        this.$store.dispatch('updateVal', { 'obj' : 'popupKey', 'val' : null })
+    handleNavClick(navIndex) {
+      let popupShow = true
+      if ((navIndex == this.navIndex) && (this.$store.state.popupData.show == true)) {
+        popupShow = false
       }
-      else {
-        newNavData.forEach(val => { val.active = '' })
-        newNavData.[navKey].active = 'active'
-        this.$store.dispatch('updateVal', { 'obj' : 'navData', 'val' : newNavData })
-        this.$store.dispatch('updateVal', { 'obj' : 'popupKey', 'val' : newNavData.[navKey].text })
+      let popupData = {
+        'show': popupShow,
+        'source' : 'nav',
+        'key' : this.navData.[navIndex].text
       }
+      this.$store.dispatch('updatePopup', popupData)
+      this.$store.dispatch('updateNav', navIndex)
     }
   },
   computed: {
@@ -39,7 +40,7 @@ export default {
       return this.$store.state.navData
     },
     navIndex() {
-      let rawIndex = this.navData.findIndex(nav => nav.active == 'active')
+      let rawIndex = this.$store.getters.navIndex
       return (rawIndex < 2) ? rawIndex : 2
     },
     bottomNavData() {
@@ -90,7 +91,7 @@ a {
 .bottom-link-container {
   font-size: 24px;
 }
-i.v-icon.nav-icon {
+i.v-icon.bottom-nav-icon {
   color: #9386ea;
   width: 40px;
   height: 44px;
@@ -111,7 +112,7 @@ i.v-icon.nav-icon {
   padding-top: 12px;
   z-index: 1;
 }
-a.active .nav-icon {
+a.active .v-icon.bottom-nav-icon {
   color: white;
   transform: translateX(7px);
 }
@@ -123,11 +124,11 @@ a.active .link-text {
 .bottom-link-bg {
   position: absolute;
   left: 5px;
-  top: 7px;
+  top: 8px;
   background: #5e4ecb;
   border-radius: 18px;
   width: 90px;
-  height: 36px;
+  height: 35px;
   z-index: 0;
   transition: 0.4s cubic-bezier(0.7, 0, 0.38, 0.86) all;
 }

@@ -59,7 +59,7 @@ export default {
   computed: {
     deviceData() {
       return {
-        'brightness': this.$store.getters.getDeviceByName(this.card.devices[0]).brightness
+        'brightness': this.$store.getters.deviceByName(this.card.devices[0]).brightness
       }
     }
   }
