@@ -8,32 +8,31 @@ export default new Vuex.Store({
   state: {
     cards: {},
     devices: {},
-    navData: [
-      {
-        'text': 'Zones',
-        'icon': 'mdi-floor-plan',
-        'active': 'active'
+    nav: {
+      primary: [
+        {
+          'text': 'Zones',
+          'icon': 'mdi-view-dashboard-outline'
+        },
+        {
+          'text': 'Groups',
+          'icon': 'mdi-flip-to-front'
+        },
+        {
+          'text': 'Lights',
+          'icon': 'mdi-lightbulb-outline'
+        },
+        {
+          'text': 'Battery',
+          'icon': 'mdi-battery-outline'
+        }
+      ],
+      selected: {
+        'primary': {
+          'index' : 0
+        }
       },
-      {
-        'text': 'Groups',
-        'icon': 'mdi-rhombus-split',
-        'active': ''
-      },
-      {
-        'text': 'Lights',
-        'icon': 'mdi-lightbulb-outline',
-        'active': ''
-      },
-      {
-        'text': 'Battery',
-        'icon': 'mdi-battery-outline',
-        'active': ''
-      }
-    ],
-    popupData: {
-      'show': false,
-      'source' : null,
-      'key' : null
+      popup: false
     }
   },
   mutations: {
@@ -46,11 +45,11 @@ export default new Vuex.Store({
     SET_DEVICES(state, devices_data) {
       state.devices = devices_data
     },
-    SET_NAV(state, nav_data) {
-      state.navData = nav_data
+    SET_NAV_SELECTED(state, selected_data) {
+      state.nav.selected = selected_data
     },
-    SET_POPUP(state, popup_data) {
-      state.popupData = popup_data
+    SET_NAV_POPUP(state, popup_data) {
+      state.nav.popup = popup_data
     }
   },
   actions: {
@@ -70,14 +69,13 @@ export default new Vuex.Store({
         commit('SET_DEVICES', devices)
       }
     },
-    updateNav({ commit, state }, navKey) {
-      let navData = [...state.navData]
-      navData.forEach(val => { val.active = '' })
-      navData.[navKey].active = 'active'
-      commit('SET_NAV', navData)
+    updateNavSelected({ commit, state }, data) {
+      let selected = state.nav.selected
+      selected.[data['key']].index = data['val']
+      commit('SET_NAV_SELECTED', selected)
     },
-    updatePopup({ commit, state }, popup) {
-      commit('SET_POPUP', popup)
+    updateNavPopup({ commit, state }, data) {
+      commit('SET_NAV_POPUP', data)
     },
     updateVal({ commit, state }, data) {
       commit('SET_VAL', { 'obj' : data.obj,  'val' : data.val })
@@ -93,9 +91,6 @@ export default new Vuex.Store({
         }
       }
       return deviceData
-    },
-    navIndex: state => {
-      return state.navData.findIndex(nav => nav.active == 'active')
     }
   }
 })

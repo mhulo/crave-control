@@ -1,7 +1,7 @@
 <template>
   <div id="side-nav-outer">
     <div id="side-nav-inner">
-      <div class="link-div" v-for="(link, key) in navData" :key="'side_'+key">
+      <div class="link-div" v-for="(link, key) in navButtons" :key="'side_'+key">
         <button v-ripple :class="'nav-button ' + link.active" v-on:click="handleNavClick(key)">
           <v-icon class="side-nav-icon">{{ link.icon }}</v-icon>
         </button>
@@ -20,12 +20,17 @@ export default {
   },
   methods: {
     handleNavClick(navIndex) {
-      this.$store.dispatch('updateNav', navIndex)
+      this.$store.dispatch('updateNavSelected', { key: 'primary', val: navIndex })
     }
   },
   computed: {
-    navData() {
-      return this.$store.state.navData
+    navButtons() {
+      let primary = [...this.$store.state.nav.primary]
+      let selected = {...this.$store.state.nav.selected}
+      return primary.map((x, idx) => {
+        (idx == selected.primary.index) ? x['active'] = 'active' : x['active'] = ''
+        return x
+      })
     }
   },
   watch: {},
@@ -40,7 +45,7 @@ export default {
   flex: 1 1 auto;
   overflow-y: auto;
   border: 0px;
-  padding-top: 10px;
+  padding-top: 18px;
 }
 #side-nav-inner {
   position: relative;
@@ -50,7 +55,7 @@ export default {
 }
 .link-div {
   padding-left: 7px;
-  padding-bottom: 15px;
+  padding-bottom: 18px;
   font-size: 24px;
   border: 0px green solid;
 

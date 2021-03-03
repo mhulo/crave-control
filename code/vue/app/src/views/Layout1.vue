@@ -17,7 +17,7 @@
           <CardList/>
         </div>
         <transition name="slide-popup">
-          <div class="popup-area" v-show="popupData.show && !oLarge">popup: {{ popupData.key }}</div>
+          <div class="popup-area" v-show="nav.popup && !oLarge">popup: {{ nav.selected.primary.index }}</div>
         </transition>
         <div class="bottom-nav" v-show="!oLarge">
           <BottomNav/>
@@ -62,16 +62,13 @@ export default {
     }
   },
   computed: {
-    popupData() {
-      return this.$store.state.popupData
+    nav() {
+      return this.$store.state.nav
     }
   },
   watch: {},
-  created() {
-    console.log('layout created')
-  },
+  created() {},
   mounted() {
-    console.log('layout mounted')
     this.updateSizes()
     window.addEventListener('resize', this.updateSizes)
   }

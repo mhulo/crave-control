@@ -2,7 +2,7 @@
   <div id="bottom-nav-outer">
     <div id="bottom-nav-inner">
       <div class="bottom-link-bg" :style="bgTransform"></div>
-      <div v-for="(link, key) in bottomNavData" :key="'bottom+'+key">
+      <div v-for="(link, key) in navButtons" :key="'bottom+'+key">
         <a :class="'bottom-link-container ' + link.active" v-on:click="handleNavClick(key)">
           <v-icon class="bottom-nav-icon">{{ link.icon }}</v-icon>
           <span class="link-text">{{ link.text }}</span>
@@ -22,38 +22,30 @@ export default {
   },
   methods: {
     handleNavClick(navIndex) {
-      let popupShow = true
-      if ((navIndex == this.navIndex) && (this.$store.state.popupData.show == true)) {
-        popupShow = false
-      }
-      let popupData = {
-        'show': popupShow,
-        'source' : 'nav',
-        'key' : this.navData.[navIndex].text
-      }
-      this.$store.dispatch('updatePopup', popupData)
-      this.$store.dispatch('updateNav', navIndex)
+      let popup = (
+        (navIndex == this.navIndex) && 
+        (this.$store.state.nav.popup == true)
+        ) ?  false : true
+
+      this.$store.dispatch('updateNavSelected', { key: 'primary', val: navIndex })
+      this.$store.dispatch('updateNavPopup', popup)
     }
   },
   computed: {
-    navData() {
-      return this.$store.state.navData
-    },
     navIndex() {
-      let rawIndex = this.$store.getters.navIndex
+      let rawIndex = this.$store.state.nav.selected.primary.index
       return (rawIndex < 2) ? rawIndex : 2
     },
-    bottomNavData() {
-      let moreActive = (this.navIndex < 2) ? '' : 'active'
-      let moreData = {
+    navButtons() {
+      let more = {
         'text': 'More',
         'icon': 'mdi-dots-horizontal',
-        'active': moreActive
       }
-      return [
-        ...this.$store.state.navData.slice(0, 2),
-        moreData
-      ]
+      let primary = [...this.$store.state.nav.primary.slice(0, 2), more]
+      return primary.map((x, idx) => {
+        (idx == this.navIndex) ? x['active'] = 'active' : x['active'] = ''
+        return x
+      })
     },
     bgTransform() {
       return `transform: translateX(${100 * this.navIndex}px)`

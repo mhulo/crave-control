@@ -44,13 +44,11 @@ export default {
     }
   },
   created() {
-    console.log('cards created')
     WsService.reConnect()
     this.ImportCards()
     this.$store.dispatch('updateCards')
   },
   mounted() {
-    console.log('cards mounted')
   }
 }
 </script>
