@@ -2,10 +2,10 @@
   <div id="bottom-nav-outer">
     <div id="bottom-nav-inner">
       <div class="bottom-link-bg" :style="bgTransform"></div>
-      <div v-for="(link, key) in navButtons" :key="'bottom+'+key">
-        <a :class="'bottom-link-container ' + link.active" v-on:click="handleNavClick(key)">
-          <v-icon class="bottom-nav-icon">{{ link.icon }}</v-icon>
-          <span class="link-text">{{ link.text }}</span>
+      <div v-for="(item, key) in navButtons" :key="'bottom_'+key">
+        <a :class="'bottom-link-container ' + item.active" v-on:click="handleNavClick(key)">
+          <v-icon class="bottom-nav-icon">{{ item.icon }}</v-icon>
+          <span class="link-text">{{ item.name }}</span>
         </a>
       </div>
     </div>
@@ -38,7 +38,7 @@ export default {
     },
     navButtons() {
       let more = {
-        'text': 'More',
+        'name': 'More',
         'icon': 'mdi-dots-horizontal',
       }
       let primary = [...this.$store.state.nav.primary.slice(0, 2), more]

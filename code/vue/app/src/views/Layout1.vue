@@ -2,25 +2,27 @@
   <v-main>
     <div id="outer-container">
       <div class="left-container" v-show="oLarge">
-        <SideNav/>
+        <NavPrimarySide/>
       </div>
       <div class="middle-container" v-show="oLarge">
         <div class="headerbar">&lt; logo &gt;</div>
-        <div class="titlebar">titlebar</div>
-        <div class="things">things</div>
+        <div class="titlebar">{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
+        <div class="things">
+          <NavSecondarySide/>
+        </div>
         <div class="infobar">infobar</div>
       </div>
       <div class="right-container">
         <div class="headerbar" v-show="!oLarge">&lt; logo &gt;</div>
-        <div class="infobar" v-show="!oLarge">infobar</div>
+        <div class="titlebar" v-show="!oLarge">{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
         <div class="cards">
           <CardList/>
         </div>
         <transition name="slide-popup">
-          <div class="popup-area" v-show="nav.popup && !oLarge">popup: {{ nav.selected.primary.index }}</div>
+          <div class="popup-area" v-show="nav.popup && !oLarge"><MainPopup/></div>
         </transition>
         <div class="bottom-nav" v-show="!oLarge">
-          <BottomNav/>
+          <NavPrimaryBottom/>
         </div>
       </div>
     </div>
@@ -28,15 +30,19 @@
 </template>
 
 <script>
-import BottomNav from '@/components/BottomNav.vue'
-import SideNav from '@/components/SideNav.vue'
-import CardList from '@/components/CardList.vue'
+import NavPrimarySide from '@/components/layout1/NavPrimarySide.vue'
+import NavPrimaryBottom from '@/components/layout1/NavPrimaryBottom.vue'
+import NavSecondarySide from '@/components/layout1/NavSecondarySide.vue'
+import MainPopup from '@/components/layout1/MainPopup.vue'
+import CardList from '@/components/layout1/CardList.vue'
 
 export default {
   props: {},
   components: {
-    BottomNav,
-    SideNav,
+    NavPrimarySide,
+    NavPrimaryBottom,
+    NavSecondarySide,
+    MainPopup,
     CardList
   },
   data() {
@@ -50,15 +56,7 @@ export default {
     updateSizes() {
       this.oHeight = document.getElementById('outer-container').offsetHeight
       this.oWidth = document.getElementById('outer-container').offsetWidth
-      if (this.oWidth >= 940) { 
-        this.oLarge = true
-        //if (this.popupKey != null) {
-        //  this.$store.dispatch('updateVal', { 'obj' : 'popupKey', 'val' : null })
-        //}
-      }
-      else {
-        this.oLarge = false
-      }
+      this.oLarge = (this.oWidth >= 940) ? true : this.oLarge = false
     }
   },
   computed: {
@@ -141,6 +139,7 @@ export default {
     bottom: 50px;
     width: 100%;
     height: calc(100% - 90px);
+    overflow-x: auto;
     background: lightgreen;
   }
   .titlebar {
@@ -164,6 +163,8 @@ export default {
   .things {
     width: 100%;
     flex-grow: 1;
+    height: 10px;
+    overflow-x: auto;
     background: lightgreen;
   }
   .bottom-nav {

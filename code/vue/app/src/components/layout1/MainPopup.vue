@@ -1,11 +1,10 @@
 <template>
-  <div id="side-nav-outer">
-    <div id="side-nav-inner">
-      <div class="link-div" v-for="(link, key) in navButtons" :key="'side_'+key">
-        <button v-ripple :class="'nav-button ' + link.active" v-on:click="handleNavClick(key)">
-          <v-icon class="side-nav-icon">{{ link.icon }}</v-icon>
-        </button>
-      </div>
+  <div id="popup-outer">
+    <div>popup: {{ nav.selected.primary.name }}</div>
+    <div v-for="(item, key) in navButtons" :key="'secondary_'+key">
+    <button v-ripple :class="'nav-button-sec ' + item.active" v-on:click="handleNavClick(key)">
+      {{ item.name }}
+    </button>
     </div>
   </div>
 </template>
@@ -20,17 +19,15 @@ export default {
   },
   methods: {
     handleNavClick(navIndex) {
-      this.$store.dispatch('updateNavSelected', { key: 'primary', val: navIndex })
+      this.$store.dispatch('updateNavSelected', { key: 'secondary', val: navIndex })
     }
   },
   computed: {
+    nav() {
+      return this.$store.state.nav
+    },
     navButtons() {
-      let primary = [...this.$store.state.nav.primary]
-      let selected = {...this.$store.state.nav.selected}
-      return primary.map((x, idx) => {
-        (idx == selected.primary.index) ? x['active'] = 'active' : x['active'] = ''
-        return x
-      })
+      return this.$store.getters.navSecondary
     }
   },
   watch: {},
@@ -39,11 +36,9 @@ export default {
 </script>
 
 <style>
-#side-nav-outer {
+#popup-outer {
   width: 100%;
-  height: 10px;
-  flex: 1 1 auto;
-  overflow-y: auto;
+  height: 100%;
   border: 0px;
   padding-top: 18px;
 }
@@ -60,19 +55,19 @@ export default {
   border: 0px green solid;
 
 }
-.nav-button {
+.nav-button-sec {
   display: flex;
   align-items: center;
   height: 36px;
-  width: 36px;
+  width: 200px;
   overflow: hidden;
-  border-radius: 100%;
+  margin-bottom: 10px;
   background: orange;
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;
   transition: background-color 0.3s linear;
 }
-.nav-button.active, .nav-button:hover {
+.nav-button-sec.active, .nav-button-sec:hover {
   background: red;
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;

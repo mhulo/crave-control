@@ -10,7 +10,9 @@ wgt0001:
   fave_2: 40
   groups:
     - 'Lights'
-    - 'Upstairs'
+  zones:
+    - 'All Upstairs'
+    - 'Master Bedroom'
 
 wgt0002:
   card: 'dimmer_1'
@@ -21,7 +23,9 @@ wgt0002:
   fave_2: 40
   groups:
     - 'Lights'
-    - 'Upstairs'
+  zones:
+    - 'All Upstairs'
+    - 'Nia''s Bedroom'
 
 wgt0003:
   card: 'dimmer_1'
@@ -32,6 +36,9 @@ wgt0003:
   fave_2: 40
   groups:
     - 'Lights'
+  zones:
+    - 'All Upstairs'
+    - 'Study'
 
 wgt5003:
   card: 'dimmer_1'
@@ -42,6 +49,9 @@ wgt5003:
   fave_2: 40
   groups:
     - 'Lights'
+  zones:
+    - 'All Upstairs'
+    - 'Study'
 
 wgt0200:
   card: 'dimmer_1'
@@ -52,8 +62,10 @@ wgt0200:
   fave_2: 50
   groups:
     - 'Lights'
-    - 'Upstairs'
     - 'Hue'
+  zones:
+    - 'All Upstairs'
+    - 'Master Bedroom'
 
 wgt0201:
   card: 'dimmer_1'
@@ -64,8 +76,9 @@ wgt0201:
   fave_2: 50
   groups:
     - 'Lights'
-    - 'Upstairs'
     - 'Hue'
+  zones:
+    - 'All Upstairs'
 
 wgt0102:
   card: 'switch_1'
@@ -74,7 +87,9 @@ wgt0102:
     - 'cgate.ensuite_lights'
   groups:
     - 'Lights'
-    - 'Upstairs'
+  zones:
+    - 'All Upstairs'
+    - 'Master Bedroom'
 
 wgt0103:
   card: 'switch_1'
@@ -83,7 +98,9 @@ wgt0103:
     - 'cgate.ensuite_fan'
   groups:
     - 'Devices'
-    - 'Upstairs'
+  zones:
+    - 'All Upstairs'
+    - 'Master Bedroom'
 
 wgt0104:
   card: 'switch_1'
@@ -92,7 +109,9 @@ wgt0104:
     - 'cgate.ensuite_ceiling_heat'
   groups:
     - 'Devices'
-    - 'Upstairs'
+  zones:
+    - 'All Upstairs'
+    - 'Master Bedroom'
 
 wgt0004:
   card: 'dimmer_1'
@@ -103,7 +122,9 @@ wgt0004:
   fave_2: 40
   groups:
     - 'Lights'
-    - 'Downstairs'
+  zones:
+    - 'All Downstairs'
+    - 'Living Area'
 
 wgt0005:
   card: 'dimmer_1'
@@ -114,7 +135,9 @@ wgt0005:
   fave_2: 40
   groups:
     - 'Lights'
-    - 'Downstairs'
+  zones:
+    - 'All Downstairs'
+    - 'Living Area'
 
 wgt0006:
   card: 'dimmer_1'
@@ -125,7 +148,9 @@ wgt0006:
   fave_2: 40
   groups:
     - 'Lights'
-    - 'Downstairs'
+  zones:
+    - 'All Downstairs'
+    - 'Living Area'
 
 wgt0007:
   card: 'dimmer_1'
@@ -136,7 +161,9 @@ wgt0007:
   fave_2: 40
   groups:
     - 'Lights'
-    - 'Downstairs'
+  zones:
+    - 'All Downstairs'
+    - 'Entrance'
 
 wgt0008:
   card: 'dimmer_1'
@@ -150,7 +177,9 @@ wgt0008:
   groups:
     - 'Lights'
     - 'Scenes'
-    - 'Downstairs'
+  zones:
+    - 'All Downstairs'
+    - 'Living Area'
 
 wgt0009:
   card: 'switch_1'
@@ -159,7 +188,9 @@ wgt0009:
     - 'cgate.bathroom_lights'
   groups:
     - 'Lights'
-    - 'Downstairs'
+  zones:
+    - 'All Downstairs'
+    - 'Bathroom'
 
 wgt0010:
   card: 'switch_1'
@@ -168,7 +199,9 @@ wgt0010:
     - 'cgate.bathroom_fan'
   groups:
     - 'Devices'
-    - 'Downstairs'
+  zones:
+    - 'All Downstairs'
+    - 'Bathroom'
 
 wgt0011:
   card: 'switch_1'
@@ -177,7 +210,10 @@ wgt0011:
     - 'cgate.bathroom_ceiling_heat'
   groups:
     - 'Devices'
-    - 'Downstairs'
+  zones:
+    - 'Hue'
+    - 'All Downstairs'
+    - 'Bathroom'
 
 wgt0012:
   card: 'switch_1'
@@ -186,7 +222,9 @@ wgt0012:
     - 'cgate.front_door_light'
   groups:
     - 'Lights'
-    - 'Downstairs'
+  zones:
+    - 'All Downstairs'
+    - 'Entrance'
 
 wgt0101:
   card: 'switch_1'

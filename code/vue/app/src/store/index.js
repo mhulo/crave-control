@@ -11,25 +11,30 @@ export default new Vuex.Store({
     nav: {
       primary: [
         {
-          'text': 'Zones',
+          'name': 'Zones',
           'icon': 'mdi-view-dashboard-outline'
         },
         {
-          'text': 'Groups',
+          'name': 'Groups',
           'icon': 'mdi-flip-to-front'
         },
         {
-          'text': 'Lights',
+          'name': 'Lights',
           'icon': 'mdi-lightbulb-outline'
         },
         {
-          'text': 'Battery',
+          'name': 'Battery',
           'icon': 'mdi-battery-outline'
         }
       ],
       selected: {
         'primary': {
-          'index' : 0
+          'index' : 0,
+          'name' : 'Zones'
+        },
+        'secondary': {
+          'index' : 0,
+          'name' : ['','']
         }
       },
       popup: false
@@ -53,11 +58,13 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    updateCards({ commit, state }) {
+    updateCards({ commit, state, dispatch }) {
       ApiService.getApi('/core/cards_conf/')
         .then(response => {
           if (JSON.stringify(response.data) != JSON.stringify(state.cards)) {
             commit('SET_CARDS', response.data)
+            dispatch('updateNavSelected', { key: 'primary', val: 0 })
+            dispatch('updateNavSelected', { key: 'secondary', val: 0 })
           }
         })
         .catch(error => {
@@ -69,9 +76,17 @@ export default new Vuex.Store({
         commit('SET_DEVICES', devices)
       }
     },
-    updateNavSelected({ commit, state }, data) {
+    updateNavSelected({ commit, state, getters }, data) {
+      let key = data['key']
+      let idx = data['val']
       let selected = state.nav.selected
-      selected.[data['key']].index = data['val']
+      selected.[key].index = idx
+      selected.[key].name = (key == 'primary') ?
+        state.nav.primary[idx].name :
+        [
+          state.nav.selected.primary.name,
+          getters.navSecondary[idx].name
+        ]
       commit('SET_NAV_SELECTED', selected)
     },
     updateNavPopup({ commit, state }, data) {
@@ -83,14 +98,36 @@ export default new Vuex.Store({
   },
   getters: {
     deviceByName: state => name => {
-      var deviceData = {}
-      var deviceCode = name.split('.')
+      let deviceData = {}
+      let deviceCode = name.split('.')
       if (deviceCode[0] in state.devices) {
         if (deviceCode[1] in state.devices[deviceCode[0]]) {
           deviceData = state.devices[deviceCode[0]][deviceCode[1]]
         }
       }
       return deviceData
+    },
+    navSecondary: state => {
+      let things = []
+      let primary = state.nav.selected.primary.name
+      for (const x in state.cards) {
+        if (primary.toLowerCase() in state.cards.[x]) {
+          for (const y of state.cards.[x].[primary.toLowerCase()]) {
+            if (!(things.includes(y))) { things.push(y) }
+          }
+        }
+      }
+      things.sort()
+      return things.map((x, idx) => {
+        let active = (
+          (primary == state.nav.selected.secondary.name[0]) &&
+          (x == state.nav.selected.secondary.name[1])
+         ) ? 'active' : ''
+        return  {
+          'name': x,
+          'active': active
+        }
+      })
     }
   }
 })
