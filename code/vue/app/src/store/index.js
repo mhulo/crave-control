@@ -1,15 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import ApiService from '@/services/ApiService.js'
+import WsService from '@/services/WsService.js'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    socket: {
+      'started': false,
+      'connected': false
+    },
     cards: {},
     devices: {},
     nav: {
-      primary: [
+      'primary': [
         {
           'name': 'Zones',
           'icon': 'mdi-view-dashboard-outline'
@@ -27,22 +32,27 @@ export default new Vuex.Store({
           'icon': 'mdi-battery-outline'
         }
       ],
-      selected: {
+      'selected': {
         'primary': {
           'index' : 0,
-          'name' : 'Zones'
+          'name' : ''
         },
         'secondary': {
           'index' : 0,
           'name' : ['','']
         }
       },
-      popup: false
+      'popup': false
     }
   },
   mutations: {
     SET_VAL(state, set_data) {
-      state.[set_data['obj']] = set_data['val']
+      state.[set_data['key']] = set_data['val']
+    },
+    SET_SOCKET(state, socket_data) {
+      for(let x in socket_data) {
+        state.socket.[x] = socket_data[x]
+      }
     },
     SET_CARDS(state, cards_data) {
       state.cards = cards_data
@@ -58,6 +68,15 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    startSocket({ commit, state }) {
+      if (!state.socket.started) {
+        commit('SET_SOCKET', { 'started': true })
+        WsService.manage()
+      }
+    },
+    updateSocket({ commit }, socket) {
+      commit('SET_SOCKET', socket)
+    },
     updateCards({ commit, state, dispatch }) {
       ApiService.getApi('/core/cards_conf/')
         .then(response => {
@@ -89,11 +108,11 @@ export default new Vuex.Store({
         ]
       commit('SET_NAV_SELECTED', selected)
     },
-    updateNavPopup({ commit, state }, data) {
+    updateNavPopup({ commit }, data) {
       commit('SET_NAV_POPUP', data)
     },
-    updateVal({ commit, state }, data) {
-      commit('SET_VAL', { 'obj' : data.obj,  'val' : data.val })
+    updateVal({ commit }, data) {
+      commit('SET_VAL', { 'key' : data.obj,  'val' : data.val })
     },
   },
   getters: {

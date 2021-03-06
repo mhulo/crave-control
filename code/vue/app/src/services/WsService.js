@@ -1,7 +1,8 @@
 import store from '@/store'
 
 export default {
-  wsConn: null,
+  ws: null,
+  count: 0,
   connect() {
     let wsParams = {}
     wsParams['id'] = Date.now()
@@ -22,53 +23,61 @@ export default {
       wsParams['id'] + '/'
     )
 
-    console.log('attempting websocket connection..')
-    this.wsConn = new WebSocket(wsUrl)
+    console.log('websocket connecting..')
+    this.ws = new WebSocket(wsUrl)
 
-    // connection is open
-    this.wsConn.onopen = ((ev) => {  
-      console.log('websocket interface connected')
+    this.ws.onopen = ((ev) => {
+      console.log('websocket connected')
+      store.dispatch('updateSocket', { 'connected': true })
     })
 
-    // message received on websocket from server
-    // dispatch action to update state with new data
-    this.wsConn.onmessage = ((ev) => {
-
-      if (ev.data == 'pong') {
-        //console.log(ev.data+' received');
-      } 
-      else {
-        let data = JSON.parse(ev.data)
-        if ('message' in data) {
-          console.log('message: ' + ev.data);
-        }
-        else {
-          store.dispatch('updateDevices', data)
-        }
-      }
+    this.ws.onmessage = ((ev) => {
+      this.handleMessage(ev.data)
     })
 
-    this.wsConn.onerror = ((ev) => {
-      console.log('error on websocket interface')
-      this.wsConn = null
+    this.ws.onclose = ((ev) => {
+      console.log('websocket disconnected - code' + ev.code)
+      store.dispatch('updateSocket', { 'connected': false })
+      setTimeout(() => { this.connect() }, 3000)
     })
 
-    this.wsConn.onclose = ((ev) => {
-      console.log('disconnected from websocket interface')
-      this.wsConn = null
+    this.ws.onerror = ((ev) => {
+      console.log('websocket error')
+      this.ws.close()
     })
   },
-  reConnect() {
-    if (this.wsConn == null) {
-      this.connect()
-    }
-    else if (this.wsConn.readyState != 1) {
-      this.wsConn == null
-      this.connect()
+  handleMessage(data) {
+    if (data == 'pong') {
+      //pass
     }
     else {
-      this.wsConn.send('ping')
+      let jsonData = JSON.parse(data)
+      if ('message' in jsonData) {
+        console.log('message: ' + jsonData['message']);
+      }
+      else {
+        // message received on websocket from server
+        // dispatch action to update state with new data
+        store.dispatch('updateDevices', jsonData)
+      }
     }
-    setTimeout(() => { this.reConnect() }, 5000)
+  },
+  manage() {
+    if (this.ws == null) {
+      this.connect()
+    }
+    else if (this.ws.readyState != 1) {
+      this.connect()
+    }
+
+    if (this.count > 9) {
+      this.count = 0
+      this.ws.send('ping')
+    }
+
+    setTimeout(() => { this.manage() }, 3000)
+  },
+  getState() {
+    return (this.ws == null)? null : this.ws.readyState
   }
 }

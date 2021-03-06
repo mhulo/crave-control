@@ -1,8 +1,8 @@
 <template>
   <div id="card-list">
-    <div v-for="(val, idx) in this.cards" :key="idx+'_wrapper'">
-      <!--<component :is="val.card" :key="idx" :card="val"/>-->
-      <div :key="idx">stuff</div>
+    <div v-for="(val, idx) in filteredCards" :key="idx+'_wrapper'">
+      <component :is="val.card" :key="idx" :card="val"/>
+      <!--<div :key="idx">stuff</div>-->
       <br/>
     </div>
   </div>
@@ -11,7 +11,6 @@
 <script>
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import WsService from '@/services/WsService.js'
 
 export default {
   components: {},
@@ -36,6 +35,24 @@ export default {
   computed: {
     stateCards() {
       return this.$store.state.cards
+    },
+    filteredCards() {
+      let cards = this.$store.state.cards
+      let filters = this.$store.state.nav.selected.secondary.name
+      let filtered = {}
+      if (filters[1] != '') {
+        Object.entries(cards).forEach(([k, v]) => {
+          if (filters[0].toLowerCase() in v) {
+            if (v[filters[0].toLowerCase()].includes(filters[1])) {
+              filtered[k] = v
+            }
+          }
+        })
+      }
+      else {
+        filtered = cards
+      }
+      return filtered
     }
   },
   watch: {
@@ -44,7 +61,8 @@ export default {
     }
   },
   created() {
-    WsService.reConnect()
+    console.log('cards created')
+    this.$store.dispatch('startSocket')
     this.ImportCards()
     this.$store.dispatch('updateCards')
   },
@@ -55,6 +73,6 @@ export default {
 
 <style>
   #card-list {
-    background: red;
+    background: white;
   }
 </style>

@@ -32,6 +32,13 @@ def cgate_state(request: Request):
   return resp
 
 
+@router.get('/state_raw/')
+def cgate_state(request: Request):
+  ifx = get_ifx(request)
+  resp = Cgate(ifx).StateRaw()
+  return resp
+
+
 @router.get('/status/')  
 def cgate_status(request: Request):
   ifx = get_ifx(request)

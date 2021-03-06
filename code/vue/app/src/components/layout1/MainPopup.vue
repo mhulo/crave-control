@@ -1,6 +1,6 @@
 <template>
   <div id="popup-outer">
-    <div>popup: {{ nav.selected.primary.name }}</div>
+    <div>popup: {{ title }}</div>
     <div v-for="(item, key) in navButtons" :key="'secondary_'+key">
     <button v-ripple :class="'nav-button-sec ' + item.active" v-on:click="handleNavClick(key)">
       {{ item.name }}
@@ -20,11 +20,17 @@ export default {
   methods: {
     handleNavClick(navIndex) {
       this.$store.dispatch('updateNavSelected', { key: 'secondary', val: navIndex })
+      this.$store.dispatch('updateNavPopup', false)
     }
   },
   computed: {
     nav() {
       return this.$store.state.nav
+    },
+    title() {
+      return (this.nav.selected.primary.index < 2) ?
+        this.nav.selected.primary.name :
+        'More'
     },
     navButtons() {
       return this.$store.getters.navSecondary
@@ -38,9 +44,13 @@ export default {
 <style>
 #popup-outer {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction:column;
+  justify-content:flex-end;
   border: 0px;
   padding-top: 18px;
+  padding-bottom: 18px;
 }
 #side-nav-inner {
   position: relative;

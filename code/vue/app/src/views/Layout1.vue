@@ -1,27 +1,27 @@
 <template>
   <v-main>
     <div id="outer-container">
-      <div class="left-container" v-show="oLarge">
+      <div class="left-container" v-show="isLarge">
         <NavPrimarySide/>
       </div>
-      <div class="middle-container" v-show="oLarge">
+      <div class="middle-container" v-show="isLarge">
         <div class="headerbar">&lt; logo &gt;</div>
         <div class="titlebar">{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
         <div class="things">
           <NavSecondarySide/>
         </div>
-        <div class="infobar">infobar</div>
+        <div class="infobar">{{ socketState }}</div>
       </div>
       <div class="right-container">
-        <div class="headerbar" v-show="!oLarge">&lt; logo &gt;</div>
-        <div class="titlebar" v-show="!oLarge">{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
+        <div class="headerbar" v-show="!isLarge">&lt; logo &gt;</div>
+        <div class="titlebar" v-show="!isLarge">{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
         <div class="cards">
           <CardList/>
         </div>
         <transition name="slide-popup">
-          <div class="popup-area" v-show="nav.popup && !oLarge"><MainPopup/></div>
+          <div :class="'popup-area '+oStyle" v-show="nav.popup"><MainPopup/></div>
         </transition>
-        <div class="bottom-nav" v-show="!oLarge">
+        <div class="bottom-nav" v-show="!isLarge">
           <NavPrimaryBottom/>
         </div>
       </div>
@@ -49,19 +49,28 @@ export default {
     return {
       oHeight: 0,
       oWidth: 0,
-      oLarge: false
+      oStyle: 'small',
+      isLarge: false
     }
   },
   methods: {
     updateSizes() {
       this.oHeight = document.getElementById('outer-container').offsetHeight
       this.oWidth = document.getElementById('outer-container').offsetWidth
-      this.oLarge = (this.oWidth >= 940) ? true : this.oLarge = false
+      let oStylePrev = this.oStyle
+      this.oStyle = (this.oWidth >= 940) ? 'large' : 'small'
+      this.isLarge = (this.oStyle == 'large') ? true : false
+      if (oStylePrev != this.oStyle) {
+        this.$store.dispatch('updateNavPopup', false)
+      }
     }
   },
   computed: {
     nav() {
       return this.$store.state.nav
+    },
+    socketState() {
+      return this.$store.state.socket.connected ? 'connected' : 'disconnected'
     }
   },
   watch: {},
@@ -138,9 +147,13 @@ export default {
     position: absolute;
     bottom: 50px;
     width: 100%;
-    height: calc(100% - 90px);
+    height: calc(100% - 120px);
     overflow-x: auto;
     background: lightgreen;
+  }
+  .popup-area.large {
+    height: 100%;
+    bottom: 0px;
   }
   .titlebar {
     height: 30px;
