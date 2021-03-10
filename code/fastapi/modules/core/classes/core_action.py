@@ -8,23 +8,20 @@ class CoreAction:
     return { 'slept' : data['time_ms'] }
 
 
-  async def SetCardVal(self, data):
+  async def SetDeviceVal(self, data):
 
-    # grab the devices and command params from the cards_conf
+    # grab the devices and params
     # grab the devices module and address from devices_conf
     # for each device run SetDevice for given module/address
 
     act_meth = 'SetDevice'
-    card = cards_conf[data['wgt']]
     acts = []
-    for d in card['devices']:
+    
+    
+    for d in data['devices']:
       d_arr = d.split('.')
       device = devices_conf[d_arr[0]][d_arr[1]]
-      if ('command_params' in card):
-        params = to_dict(card['command_params'])
-      else:
-        params = {}
-      act_data = { 'device': d, **device, **params, data['set_key']: data['set_val']}
+      act_data = { 'device': d, **device, **data['params'] }
       act_mod = data['modules'][d_arr[0]]
       act_obj = getattr(act_mod, act_meth)
       is_async = inspect.iscoroutinefunction(act_obj)
@@ -41,14 +38,14 @@ class CoreAction:
       await asyncio.sleep(0.01)
 
     ret_val = {}
-    ret_val['label'] = card['label']
-    ret_val['command'] = data['cmd']
-    ret_val['card'] = data['wgt']
+    ret_val['cmd'] = data['cmd']
+    ret_val['act_data'] = act_data
     ret_val['sub_actions'] = acts
-    return ret_val
-
-    #ret_val['debug_data'] = { **card, **data }
+    
+    
+    #data['modules'] = None
     #return data
+    return ret_val
 
 
 

@@ -1,0 +1,41 @@
+
+zones:
+  - label: 'All Upstairs'
+    icon: 'mdi-stairs-up'
+
+  - label: 'Master Bedroom'
+    icon: 'mdi-power-plug-outline'
+
+  - label: 'Nia''s Bedroom'
+    icon: 'mdi-power-plug-outline'
+
+  - label: 'Study'
+    icon: 'mdi-power-plug-outline'
+
+  - label: 'All Downstairs'
+    icon: 'mdi-stairs-down'
+
+  - label: 'Living Area'
+    icon: 'mdi-power-plug-outline'
+
+  - label: 'Entrance'
+    icon: 'mdi-power-plug-outline'
+
+  - label: 'Bathroom'
+    icon: 'mdi-power-plug-outline'
+
+groups:
+  - label: 'Lights'
+    icon: 'mdi-power-plug-outline'
+
+  - label: 'Hue'
+    icon: 'mdi-power-plug-outline'
+
+  - label: 'Devices'
+    icon: 'mdi-power-plug-outline'
+
+  - label: 'Scenes'
+    icon:  'mdi-power-plug-outline'
+
+  - label: 'Isolators'
+    icon: 'mdi-power-plug-outline'

@@ -36,15 +36,28 @@ class Core:
   async def RunCommand(self, request, modules):
     ret_val = {}
     cmd = request.query_params['cmd']
+    data = request.query_params
     i = 1
-
+  
     for action in commands_conf[cmd]['actions']:
       method = action['method'].split('@')
+
       if ('params' in action):
-        action_params = to_dict(action['params'])
-      else:
-        action_params = {}
-      ret_val['action_'+str(i)] = await self.RunAction(modules, method[0], method[1], {**action_params, **request.query_params})
+        command_params = to_dict(action['params'])
+      if ('params' in request.query_params):
+        card_params = to_dict(request.query_params['params'])
+      if ('devices' in request.query_params):
+        devices = to_dict(request.query_params['devices'])
+
+      data = { 
+        'cmd': cmd,
+        'devices': devices,
+        'params' : {
+          **command_params,
+          **card_params
+        }
+      }
+      ret_val['action_'+str(i)] = await self.RunAction(modules, method[0], method[1], data)
       i += 1
 
     return ret_val
@@ -52,6 +65,10 @@ class Core:
 
   def CardsConf(self):
     return cards_conf
+
+
+  def IconsConf(self):
+    return icons_conf
 
 
 

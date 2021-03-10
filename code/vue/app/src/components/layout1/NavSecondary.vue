@@ -1,9 +1,10 @@
 <template>
   <div id="secondary-side-nav-outer">
     <div v-for="(item, key) in navButtons" :key="'secondary_'+key">
-    <button v-ripple :class="'nav-button-sec ' + item.active" v-on:click="handleNavClick(key)">
-      {{ item.name }}
-    </button>
+      <button v-ripple :class="'nav-button-sec ' + item.active" v-on:click="handleNavClick(key)">
+        <v-icon class="side-nav-icon">{{ item.icon }}</v-icon>
+        {{ item.name }}
+      </button>
     </div>
   </div>
 </template>
@@ -18,7 +19,8 @@ export default {
   },
   methods: {
     handleNavClick(navIndex) {
-      this.$store.dispatch('updateNavSelected', { key: 'secondary', val: navIndex })
+      this.$store.dispatch('updateNav', { key: 'secondary', val: navIndex })
+      this.$store.dispatch('updatePopup', { 'show' : false })
     }
   },
   computed: {
@@ -60,6 +62,7 @@ export default {
   width: 200px;
   overflow: hidden;
   margin-bottom: 10px;
+  font-size: 14px;
   background: orange;
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;

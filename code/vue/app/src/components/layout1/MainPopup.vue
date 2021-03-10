@@ -1,42 +1,67 @@
 <template>
   <div id="popup-outer">
-    <div>popup: {{ title }}</div>
-    <div v-for="(item, key) in navButtons" :key="'secondary_'+key">
-    <button v-ripple :class="'nav-button-sec ' + item.active" v-on:click="handleNavClick(key)">
-      {{ item.name }}
-    </button>
+    <div v-if="popup.type == 'nav'">
+      <div>popup: {{ title }} [{{ popup.component }}]</div>
+      <component :is="popup.component" key="popup_comp"/>
+    </div>
+    <div v-else-if="popup.type == 'card'">
+      <component :is="popup.component" key="popup_comp" :card="popup.params.card"/>
     </div>
   </div>
 </template>
 
 <script>
+import NavSecondary from '@/components/layout1/NavSecondary.vue'
 
 export default {
   props: {},
-  components: {},
+  components: {
+    NavSecondary
+  },
   data() {
-    return {}
+    return {
+      imported: [],
+      cards: {}
+    }
   },
   methods: {
-    handleNavClick(navIndex) {
-      this.$store.dispatch('updateNavSelected', { key: 'secondary', val: navIndex })
-      this.$store.dispatch('updateNavPopup', false)
-    }
+    importCards() {
+      Object.entries(this.$store.getters.cards).forEach(([k, v]) => {
+        let i = v['card']
+        if (!this.imported.includes(i)) {
+          this.$options.components[i] = () => import('@/components/cards/' + i + '.vue')
+          this.imported.push(i)
+        }
+      })
+      this.cards = this.stateCards
+    },
   },
   computed: {
-    nav() {
-      return this.$store.state.nav
+    stateCards() {
+      return this.$store.getters.cards
+    },
+    popup() {
+      return this.$store.state.popup
     },
     title() {
-      return (this.nav.selected.primary.index < 2) ?
-        this.nav.selected.primary.name :
-        'More'
-    },
-    navButtons() {
-      return this.$store.getters.navSecondary
+      let title = ''
+      if (this.popup.type == 'nav') {
+        let nav = this.$store.state.nav
+        title = (nav.selected.primary.index < 2) ?
+          nav.selected.primary.name :
+          'More'
+      }
+      return title
     }
   },
-  watch: {},
+  watch: {
+    stateCards() {
+      this.importCards()
+    }
+  },
+  created() {
+    this.importCards()
+  },
   mounted() {}
 }
 </script>
@@ -47,47 +72,15 @@ export default {
   min-height: 100%;
   display: flex;
   flex-direction:column;
-  justify-content:flex-end;
   border: 0px;
+}
+.large #popup-outer {
+  justify-content:center;
+  padding: 30px;
+} 
+.small #popup-outer {
+  justify-content:flex-end;
   padding-top: 18px;
   padding-bottom: 18px;
-}
-#side-nav-inner {
-  position: relative;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-.link-div {
-  padding-left: 7px;
-  padding-bottom: 18px;
-  font-size: 24px;
-  border: 0px green solid;
-
-}
-.nav-button-sec {
-  display: flex;
-  align-items: center;
-  height: 36px;
-  width: 200px;
-  overflow: hidden;
-  margin-bottom: 10px;
-  background: orange;
-  -webkit-transition: background-color 0.3s linear;
-  -ms-transition: background-color 0.3s linear;
-  transition: background-color 0.3s linear;
-}
-.nav-button-sec.active, .nav-button-sec:hover {
-  background: red;
-  -webkit-transition: background-color 0.3s linear;
-  -ms-transition: background-color 0.3s linear;
-  transition: background-color 0.3s linear;
-}
-i.v-icon.side-nav-icon {
-  color: #9386ea;
-  width: 40px;
-  height: 44px;
-  transform: translateX(0px);
-  transition: 0.4s ease all;
 }
 </style>

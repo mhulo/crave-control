@@ -1,31 +1,33 @@
 <template>
   <div id="card-list">
-    <div v-for="(val, idx) in filteredCards" :key="idx+'_wrapper'">
-      <component :is="val.card" :key="idx" :card="val"/>
-      <!--<div :key="idx">stuff</div>-->
-      <br/>
+    <div :class="'card-wrapper '+layoutCols" v-for="(val, key) in filteredCards" :key="key+'_wrapper'">
+      <component :is="val.card" :key="key" :card="val"/>
     </div>
   </div>
 </template>
 
 <script>
-import upperFirst from 'lodash/upperFirst'
-import camelCase from 'lodash/camelCase'
-
 export default {
   components: {},
   data() {
     return {
+      layoutCols: 'cols-1',
       imported: [],
       cards: {}
     }
   },
   methods: {
-    ImportCards() {
-      Object.entries(this.$store.state.cards).forEach(([k, v]) => {
+    updateSizes() {
+      let width = document.getElementById('card-list').offsetWidth
+      this.layoutCols = (width > 1300) ? 'cols-3'
+        : (width > 650) ? 'cols-2'
+        : 'cols-1'
+    },
+    importCards() {
+      Object.entries(this.$store.getters.cards).forEach(([k, v]) => {
         let i = v['card']
         if (!this.imported.includes(i)) {
-          this.$options.components[i] = () => import('@/components/cards/' + upperFirst(camelCase(i)) + '.vue')
+          this.$options.components[i] = () => import('@/components/cards/' + i + '.vue')
           this.imported.push(i)
         }
       })
@@ -34,10 +36,10 @@ export default {
   },
   computed: {
     stateCards() {
-      return this.$store.state.cards
+      return this.$store.getters.cards
     },
     filteredCards() {
-      let cards = this.$store.state.cards
+      let cards = this.$store.getters.cards
       let filters = this.$store.state.nav.selected.secondary.name
       let filtered = {}
       if (filters[1] != '') {
@@ -57,22 +59,42 @@ export default {
   },
   watch: {
     stateCards() {
-      this.ImportCards()
+      this.importCards()
     }
   },
   created() {
     console.log('cards created')
     this.$store.dispatch('startSocket')
-    this.ImportCards()
+    this.importCards()
     this.$store.dispatch('updateCards')
   },
   mounted() {
+    this.updateSizes()
+    window.addEventListener('resize', this.updateSizes)
+    //console.log(this.$store.getters.navSecondary)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.updateSizes)
   }
 }
 </script>
 
 <style>
   #card-list {
-    background: white;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0px 14px 14px 0px;
+  }
+  .card-wrapper {
+    width: 100%;
+    padding: 14px 0px 0px 14px;
+  }
+
+  .card-wrapper.cols-2 {
+      width: 50%;
+    }
+
+  .card-wrapper.cols-3 {
+      width: 33%;
   }
 </style>

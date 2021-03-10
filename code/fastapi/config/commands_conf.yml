@@ -1,8 +1,8 @@
 
-set_card_val:
-  description: 'set card val'
+set_device_val:
+  description: 'set device val'
   actions:
-    - method: 'core@SetCardVal'
+    - method: 'core@SetDeviceVal'
       params: null
 
 cmd0001:

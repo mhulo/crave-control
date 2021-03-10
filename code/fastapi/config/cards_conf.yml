@@ -1,5 +1,5 @@
 
-wgt0001:
+card0001:
   card: 'dimmer_1'
   label: 'Master Bedroom Lights'
   devices:
@@ -14,7 +14,7 @@ wgt0001:
     - 'All Upstairs'
     - 'Master Bedroom'
 
-wgt0002:
+card0002:
   card: 'dimmer_1'
   label: 'Nia''s Bedroom Lights'
   devices:
@@ -27,7 +27,7 @@ wgt0002:
     - 'All Upstairs'
     - 'Nia''s Bedroom'
 
-wgt0003:
+card0003:
   card: 'dimmer_1'
   label: 'Study Lights'
   devices:
@@ -53,7 +53,7 @@ wgt5003:
     - 'All Upstairs'
     - 'Study'
 
-wgt0200:
+card0200:
   card: 'dimmer_1'
   label: 'Master LED Strip'
   devices:
@@ -67,7 +67,7 @@ wgt0200:
     - 'All Upstairs'
     - 'Master Bedroom'
 
-wgt0201:
+card0201:
   card: 'dimmer_1'
   label: 'Stairs LED Strip'
   devices:
@@ -80,7 +80,7 @@ wgt0201:
   zones:
     - 'All Upstairs'
 
-wgt0102:
+card0102:
   card: 'switch_1'
   label: 'Ensuite Lights'
   devices:
@@ -91,7 +91,7 @@ wgt0102:
     - 'All Upstairs'
     - 'Master Bedroom'
 
-wgt0103:
+card0103:
   card: 'switch_1'
   label: 'Ensuite Fan'
   devices:
@@ -102,7 +102,7 @@ wgt0103:
     - 'All Upstairs'
     - 'Master Bedroom'
 
-wgt0104:
+card0104:
   card: 'switch_1'
   label: 'Ensuite Ceiling Heat'
   devices:
@@ -113,7 +113,7 @@ wgt0104:
     - 'All Upstairs'
     - 'Master Bedroom'
 
-wgt0004:
+card0004:
   card: 'dimmer_1'
   label: 'Dining Lights'
   devices:
@@ -126,7 +126,7 @@ wgt0004:
     - 'All Downstairs'
     - 'Living Area'
 
-wgt0005:
+card0005:
   card: 'dimmer_1'
   label: 'Lounge Lights'
   devices:
@@ -139,7 +139,7 @@ wgt0005:
     - 'All Downstairs'
     - 'Living Area'
 
-wgt0006:
+card0006:
   card: 'dimmer_1'
   label: 'Kitchen Lights'
   devices:
@@ -152,7 +152,7 @@ wgt0006:
     - 'All Downstairs'
     - 'Living Area'
 
-wgt0007:
+card0007:
   card: 'dimmer_1'
   label: 'Entrance Lights'
   devices:
@@ -165,7 +165,7 @@ wgt0007:
     - 'All Downstairs'
     - 'Entrance'
 
-wgt0008:
+card0008:
   card: 'dimmer_1'
   label: 'Dim Downstairs'
   devices:
@@ -181,7 +181,7 @@ wgt0008:
     - 'All Downstairs'
     - 'Living Area'
 
-wgt0009:
+card0009:
   card: 'switch_1'
   label: 'Bathroom Lights'
   devices:
@@ -192,7 +192,7 @@ wgt0009:
     - 'All Downstairs'
     - 'Bathroom'
 
-wgt0010:
+card0010:
   card: 'switch_1'
   label: 'Bathroom Fan'
   devices:
@@ -203,7 +203,7 @@ wgt0010:
     - 'All Downstairs'
     - 'Bathroom'
 
-wgt0011:
+card0011:
   card: 'switch_1'
   label: 'Bathroom Ceiling Heat'
   devices:
@@ -211,11 +211,10 @@ wgt0011:
   groups:
     - 'Devices'
   zones:
-    - 'Hue'
     - 'All Downstairs'
     - 'Bathroom'
 
-wgt0012:
+card0012:
   card: 'switch_1'
   label: 'Front Door Light'
   devices:
@@ -226,7 +225,7 @@ wgt0012:
     - 'All Downstairs'
     - 'Entrance'
 
-wgt0101:
+card0101:
   card: 'switch_1'
   label: 'Master LED Strip'
   devices:
@@ -234,7 +233,7 @@ wgt0101:
   groups:
     - 'Isolators'
 
-wgt0105:
+card0105:
   card: 'switch_1'
   label: 'Stairs LED Strip'
   devices:

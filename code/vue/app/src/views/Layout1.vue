@@ -1,27 +1,27 @@
 <template>
   <v-main>
     <div id="outer-container">
-      <div class="left-container" v-show="isLarge">
+      <div class="left-container" v-show="layoutSize == 'large'">
         <NavPrimarySide/>
       </div>
-      <div class="middle-container" v-show="isLarge">
+      <div class="middle-container" v-show="layoutSize == 'large'">
         <div class="headerbar">&lt; logo &gt;</div>
         <div class="titlebar">{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
         <div class="things">
-          <NavSecondarySide/>
+          <NavSecondary/>
         </div>
         <div class="infobar">{{ socketState }}</div>
       </div>
       <div class="right-container">
-        <div class="headerbar" v-show="!isLarge">&lt; logo &gt;</div>
-        <div class="titlebar" v-show="!isLarge">{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
+        <div class="headerbar" v-show="layoutSize == 'small'">&lt; logo &gt;</div>
+        <div class="titlebar" v-show="layoutSize == 'small'">{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
         <div class="cards">
           <CardList/>
         </div>
         <transition name="slide-popup">
-          <div :class="'popup-area '+oStyle" v-show="nav.popup"><MainPopup/></div>
+          <div :class="'popup-area '+layoutSize" v-show="popup.show"><MainPopup/></div>
         </transition>
-        <div class="bottom-nav" v-show="!isLarge">
+        <div class="bottom-nav" v-show="layoutSize == 'small'">
           <NavPrimaryBottom/>
         </div>
       </div>
@@ -32,7 +32,7 @@
 <script>
 import NavPrimarySide from '@/components/layout1/NavPrimarySide.vue'
 import NavPrimaryBottom from '@/components/layout1/NavPrimaryBottom.vue'
-import NavSecondarySide from '@/components/layout1/NavSecondarySide.vue'
+import NavSecondary from '@/components/layout1/NavSecondary.vue'
 import MainPopup from '@/components/layout1/MainPopup.vue'
 import CardList from '@/components/layout1/CardList.vue'
 
@@ -41,33 +41,28 @@ export default {
   components: {
     NavPrimarySide,
     NavPrimaryBottom,
-    NavSecondarySide,
+    NavSecondary,
     MainPopup,
     CardList
   },
   data() {
     return {
-      oHeight: 0,
-      oWidth: 0,
-      oStyle: 'small',
-      isLarge: false
+      layoutSize: 'small'
     }
   },
   methods: {
     updateSizes() {
-      this.oHeight = document.getElementById('outer-container').offsetHeight
-      this.oWidth = document.getElementById('outer-container').offsetWidth
-      let oStylePrev = this.oStyle
-      this.oStyle = (this.oWidth >= 940) ? 'large' : 'small'
-      this.isLarge = (this.oStyle == 'large') ? true : false
-      if (oStylePrev != this.oStyle) {
-        this.$store.dispatch('updateNavPopup', false)
-      }
+      let width = document.getElementById('outer-container').offsetWidth
+      this.layoutSize = (width > 940)? 'large' : 'small'
+      this.$store.dispatch('updatePopup', { 'show' : false })
     }
   },
   computed: {
     nav() {
       return this.$store.state.nav
+    },
+    popup() {
+      return this.$store.state.popup
     },
     socketState() {
       return this.$store.state.socket.connected ? 'connected' : 'disconnected'
@@ -78,6 +73,9 @@ export default {
   mounted() {
     this.updateSizes()
     window.addEventListener('resize', this.updateSizes)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.updateSizes)
   }
 }
 </script>
@@ -99,18 +97,16 @@ export default {
     transform: translateX(-100px);
   }
   .slide-popup-enter-active {
-    transition: all 0.5s ease-out;
-    max-height: 1000px;
+    transition: all 0.2s ease-out;
   }
   .slide-popup-leave-active {
     transition: all 0.2s ease-in;
-    max-height: 1000px;
   }
   .slide-popup-enter {
-    max-height: 50%;
+    transform: translateY(30px);
   }
   .slide-popup-leave-to {
-    max-height: 0%;
+    transform: translateY(30px);
   }
 
   #outer-container {
@@ -122,13 +118,15 @@ export default {
     flex-direction: column;
     height: 100%;
     width: 50px;
+    min-width: 50px;
     background: cyan; 
   }
   .middle-container {
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 300px;
+    width: 240px;
+    min-width: 240px;
     background: orange; 
   }
   .right-container {
@@ -145,13 +143,15 @@ export default {
   }
   .popup-area {
     position: absolute;
+    z-index: 1000;
     bottom: 50px;
     width: 100%;
     height: calc(100% - 120px);
     overflow-x: auto;
-    background: lightgreen;
+    background: green;
   }
   .popup-area.large {
+    width: calc(100% - 290px);
     height: 100%;
     bottom: 0px;
   }
@@ -183,6 +183,7 @@ export default {
   .bottom-nav {
     height: 50px;
     width: 100%;
+    z-index: 1100;
     background: yellow;
   }
 </style>

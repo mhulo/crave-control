@@ -75,6 +75,8 @@ export default {
       this.ws.send('ping')
     }
 
+    this.count ++
+
     setTimeout(() => { this.manage() }, 3000)
   },
   getState() {

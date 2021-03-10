@@ -31,6 +31,11 @@ def core_cards_conf():
   return modules['core'].CardsConf()
 
 
+@router.get("/icons_conf/")
+def core_icons_conf():
+  return modules['core'].IconsConf()
+
+
 @router.get("/event/start/")
 async def core_event_start(background_tasks: BackgroundTasks):
   background_tasks.add_task(modules['core'].event.Start)

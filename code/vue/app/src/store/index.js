@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import ApiService from '@/services/ApiService.js'
 import WsService from '@/services/WsService.js'
+import upperFirst from 'lodash/upperFirst'
+import camelCase from 'lodash/camelCase'
 
 Vue.use(Vuex)
 
@@ -12,23 +14,24 @@ export default new Vuex.Store({
       'connected': false
     },
     cards: {},
+    icons: {},
     devices: {},
     nav: {
       'primary': [
         {
-          'name': 'Zones',
+          'name': 'zones',
           'icon': 'mdi-view-dashboard-outline'
         },
         {
-          'name': 'Groups',
+          'name': 'groups',
           'icon': 'mdi-flip-to-front'
         },
         {
-          'name': 'Lights',
+          'name': 'lights',
           'icon': 'mdi-lightbulb-outline'
         },
         {
-          'name': 'Battery',
+          'name': 'battery',
           'icon': 'mdi-battery-outline'
         }
       ],
@@ -41,8 +44,13 @@ export default new Vuex.Store({
           'index' : 0,
           'name' : ['','']
         }
-      },
-      'popup': false
+      }
+    },
+    popup: {
+      'show': false,
+      'type': null,
+      'component': null,
+      'params' : {}
     }
   },
   mutations: {
@@ -60,11 +68,14 @@ export default new Vuex.Store({
     SET_DEVICES(state, devices_data) {
       state.devices = devices_data
     },
+    SET_ICONS(state, icons_data) {
+      state.icons = icons_data
+    },
     SET_NAV_SELECTED(state, selected_data) {
       state.nav.selected = selected_data
     },
     SET_NAV_POPUP(state, popup_data) {
-      state.nav.popup = popup_data
+      state.popup = popup_data
     }
   },
   actions: {
@@ -82,9 +93,20 @@ export default new Vuex.Store({
         .then(response => {
           if (JSON.stringify(response.data) != JSON.stringify(state.cards)) {
             commit('SET_CARDS', response.data)
-            dispatch('updateNavSelected', { key: 'primary', val: 0 })
-            dispatch('updateNavSelected', { key: 'secondary', val: 0 })
+            dispatch('updateNav', { key: 'primary', val: 0 })
+            dispatch('updateNav', { key: 'secondary', val: 0 })
+            dispatch('updateIcons')
           }
+        })
+        .catch(error => {
+          console.log('api error:', error.response)
+        })
+    },
+    updateIcons({ commit, state, dispatch }) {
+      ApiService.getApi('/core/icons_conf/')
+        .then(response => {
+          console.log('updating icons')
+          commit('SET_ICONS', response.data)
         })
         .catch(error => {
           console.log('api error:', error.response)
@@ -95,7 +117,7 @@ export default new Vuex.Store({
         commit('SET_DEVICES', devices)
       }
     },
-    updateNavSelected({ commit, state, getters }, data) {
+    updateNav({ commit, state, getters }, data) {
       let key = data['key']
       let idx = data['val']
       let selected = state.nav.selected
@@ -108,14 +130,38 @@ export default new Vuex.Store({
         ]
       commit('SET_NAV_SELECTED', selected)
     },
-    updateNavPopup({ commit }, data) {
-      commit('SET_NAV_POPUP', data)
+    updatePopup({ commit, state }, data) {
+      let show = true
+      if ('show' in data) {
+        show = data.show
+      }
+      else if (('component' in data) && (state.popup.show == true)) {
+        if (data.component == state.popup.component) {
+          if ('params' in data) {
+            if (JSON.stringify(data.params) == JSON.stringify(state.popup.params)) {
+              show = false
+            }
+          }
+          else {
+            show = false
+          }
+        }
+      }
+      let new_data = { ...state.popop, ...data, 'show': show }
+      commit('SET_NAV_POPUP', new_data)
     },
     updateVal({ commit }, data) {
       commit('SET_VAL', { 'key' : data.obj,  'val' : data.val })
     },
   },
   getters: {
+    cards: state => {
+      let cards = { ...state.cards }
+      for (const x in cards) {
+        cards.[x].card = upperFirst(camelCase(cards.[x].card))
+      }
+      return cards
+    },
     deviceByName: state => name => {
       let deviceData = {}
       let deviceCode = name.split('.')
@@ -130,8 +176,8 @@ export default new Vuex.Store({
       let things = []
       let primary = state.nav.selected.primary.name
       for (const x in state.cards) {
-        if (primary.toLowerCase() in state.cards.[x]) {
-          for (const y of state.cards.[x].[primary.toLowerCase()]) {
+        if (primary in state.cards.[x]) {
+          for (const y of state.cards.[x].[primary]) {
             if (!(things.includes(y))) { things.push(y) }
           }
         }
@@ -142,9 +188,15 @@ export default new Vuex.Store({
           (primary == state.nav.selected.secondary.name[0]) &&
           (x == state.nav.selected.secondary.name[1])
          ) ? 'active' : ''
+        let iconIndex = -1
+        if (primary in state.icons) {
+          iconIndex = state.icons.[primary].findIndex(y => y.label == x)
+        }
+        let icon = (iconIndex != -1) ? state.icons.[primary].[iconIndex].icon : 'mdi-adjust'
         return  {
           'name': x,
-          'active': active
+          'active': active,
+          'icon' : icon
         }
       })
     }

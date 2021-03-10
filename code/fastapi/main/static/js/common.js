@@ -329,7 +329,7 @@
         if (comp_val == 0) { new_val = 'on'; }
         else { new_val = 'off'; }
         console.log('card command: set_power --> card value/s: '+new_val);
-        var surl = '/api/core/run_command/?cmd=set_card_val&set_key=power&set_val='+new_val+'&wgt='+wgt_id+'&z='+get_rand_ext();
+        var surl = '/api/core/run_command/?cmd=set_device_val&set_key=power&set_val='+new_val+'&wgt='+wgt_id+'&z='+get_rand_ext();
         $.get(surl, function(data, status){
             //console.log(surl);
         });

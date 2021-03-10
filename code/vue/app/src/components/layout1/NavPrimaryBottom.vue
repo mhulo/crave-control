@@ -22,13 +22,8 @@ export default {
   },
   methods: {
     handleNavClick(navIndex) {
-      let popup = (
-        (navIndex == this.navIndex) && 
-        (this.$store.state.nav.popup == true)
-        ) ?  false : true
-
-      this.$store.dispatch('updateNavSelected', { key: 'primary', val: navIndex })
-      this.$store.dispatch('updateNavPopup', popup)
+      this.$store.dispatch('updateNav', { key: 'primary', val: navIndex })
+      this.$store.dispatch('updatePopup', { 'type': 'nav', 'component': 'NavSecondary', 'params': { 'navIndex' : navIndex } })
     }
   },
   computed: {
@@ -38,7 +33,7 @@ export default {
     },
     navButtons() {
       let more = {
-        'name': 'More',
+        'name': 'more',
         'icon': 'mdi-dots-horizontal',
       }
       let primary = [...this.$store.state.nav.primary.slice(0, 2), more]

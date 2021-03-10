@@ -9,6 +9,8 @@ def to_classname(s):
 def to_dict(x):
   if (x == None):
     x = {}
+  elif (type(x) == str):
+    x = json.loads(x)
   return x
 
 

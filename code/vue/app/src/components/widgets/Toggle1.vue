@@ -9,18 +9,16 @@
 </template>
 
 <script>
-import ApiService from '@/services/ApiService.js'
-
 export default {
   props: {
     card: Object,
     deviceName: String,
-    compKey: String
+    valKey: String
   },
   data() {
     return {
       compVal: false,
-      compOldVal: false,
+      compOldVal: null,
       compChgTs: 0,
       cardId: this.$vnode.key,
       compStates: {
@@ -34,18 +32,16 @@ export default {
       if (this.compVal != this.compOldVal) {
         this.compOldVal = this.compVal
         this.compChgTs = Date.now()
-        this.$emit('updated', { 'key': this.compKey, 'val': this.prettyVal })
-        console.log('command: ' + this.compCmd + ' --> card value/s: ' + this.prettyVal);
-        let cmdUrl = '/core/run_command/?cmd=' + this.compCmd + '&set_key=' + this.compKey + '&set_val=' + this.prettyVal + '&wgt=' + this.cardId + '&z=123'
-        ApiService.getApi(cmdUrl)
+        this.$emit('handleUpdate', { [this.valKey] : this.prettyVal })
+        this.$emit('handleCommand', { [this.valKey] : this.prettyVal })
         setTimeout(() => { this.deviceChange() }, 6000)
       }
     },
     deviceChange() {
       if ((Date.now() - this.compChgTs) > 6000) {
-        if (this.compKey in this.deviceData) {
-          this.compVal = this.toLogical(this.deviceData[this.compKey])
-          this.$emit('updated', { 'key': this.compKey, 'val': this.prettyVal })
+        if (this.valKey in this.deviceVals) {
+          this.compVal = this.toLogical(this.deviceVals[this.valKey])
+          this.$emit('handleUpdate', { [this.valKey] : this.prettyVal })
         }
       }
     },
@@ -60,20 +56,12 @@ export default {
     prettyVal() {
       return this.toPretty(this.compVal)
     },
-    deviceData() {
+    deviceVals() {
       return this.$store.getters.deviceByName(this.deviceName)
-    },
-    compCmd() {
-      if ('command' in this.card) {
-        return this.card[command]
-      }
-      else {
-        return 'set_card_val'
-      }
     }
   },
   watch: {
-    deviceData(newData, oldData)  {
+    deviceVals(newData, oldData)  {
       if (JSON.stringify(newData) != JSON.stringify(oldData)) {
         this.deviceChange()
       }

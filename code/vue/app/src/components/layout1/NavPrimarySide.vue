@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     handleNavClick(navIndex) {
-      this.$store.dispatch('updateNavSelected', { key: 'primary', val: navIndex })
+      this.$store.dispatch('updateNav', { key: 'primary', val: navIndex })
     }
   },
   computed: {
