@@ -5,16 +5,20 @@
         <NavPrimarySide/>
       </div>
       <div class="middle-container" v-show="layoutSize == 'large'">
-        <div class="headerbar">&lt; logo &gt;</div>
-        <div class="titlebar">{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
+        <div class="headerbar">&lt; crave control &gt;</div>
+        <div :class="'titlebar '+layoutSize">
+          <div>{{ nav.selected.secondary.name[0] }}</div>
+          <div class="title-chevron"><v-icon>mdi-chevron-right</v-icon></div>
+          <div class="title-thing">{{ nav.selected.secondary.name[1] }}</div>
+        </div>
         <div class="things">
           <NavSecondary/>
         </div>
         <div class="infobar">{{ socketState }}</div>
       </div>
       <div class="right-container">
-        <div class="headerbar" v-show="layoutSize == 'small'">&lt; logo &gt;</div>
-        <div class="titlebar" v-show="layoutSize == 'small'">{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
+        <div class="headerbar" v-show="layoutSize == 'small'">&lt; crave control &gt;</div>
+        <div :class="'titlebar '+layoutSize" v-show="layoutSize == 'small'">{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
         <div class="cards">
           <CardList/>
         </div>
@@ -140,7 +144,10 @@ export default {
   .headerbar {
     height: 40px;
     width: 100%;
-    background: pink;
+    font-size: 22px;
+    padding: 3px 0px 0px 24px;
+    color: white;
+    background: #1d1d1d;
   }
   .popup-area {
     position: absolute;
@@ -159,12 +166,19 @@ export default {
   .titlebar {
     height: 30px;
     width: 100%;
-    background: lightblue;
+    display: flex;
+    color: white;
+    padding: 3px 0px 0px 12px;
+    font-size: 14px;
+    background: #1d1d1d;
   }
   .infobar {
     height: 50px;
     width: 100%;
-    background: lightblue;
+    color: white;
+    font-size: 14px;
+    padding: 14px 0px 0px 12px;
+    background:#1d1d1d;
   }
   .cards {
     width: 100%;
@@ -179,7 +193,7 @@ export default {
     flex-grow: 1;
     height: 10px;
     overflow-x: auto;
-    background: lightgreen;
+    background: #1d1d1d;
   }
   .bottom-nav {
     height: 50px;
@@ -187,4 +201,20 @@ export default {
     z-index: 1100;
     background: yellow;
   }
+  .titlebar.small {
+    color: white;
+    display: flex;
+    justify-content: center;
+  }
+  .title-chevron .v-icon {
+    width: 24px;
+    font-size: 14px;
+    padding-bottom: 0px;
+    color: white;
+    border: 0px red solid;
+  }
+  .title-thing {
+    text-overflow: ellipsis;
+  }
+
 </style>

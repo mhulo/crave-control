@@ -46,6 +46,7 @@ export default {
   overflow-y: auto;
   border: 0px;
   padding-top: 18px;
+  background: #303030;
 }
 #side-nav-inner {
   position: relative;
@@ -67,23 +68,26 @@ export default {
   width: 36px;
   overflow: hidden;
   border-radius: 100%;
-  background: orange;
+  /*background: orange;*/
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;
   transition: background-color 0.3s linear;
 }
 .nav-button.active, .nav-button:hover {
-  background: red;
+  background: #1d1d1d;
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;
   transition: background-color 0.3s linear;
 }
 i.v-icon.side-nav-icon {
-  color: #9386ea;
+  color: grey;
   width: 40px;
   height: 44px;
   font-size: 20px;
   transform: translateX(0px);
   transition: 0.4s ease all;
+}
+.active i.v-icon.side-nav-icon {
+  color: white;
 }
 </style>

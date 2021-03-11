@@ -2,7 +2,7 @@
   <div id="secondary-side-nav-outer">
     <div v-for="(item, key) in navButtons" :key="'secondary_'+key">
       <button v-ripple :class="'nav-button-sec ' + item.active" v-on:click="handleNavClick(key)">
-        <v-icon class="side-nav-icon">{{ item.icon }}</v-icon>
+        <v-icon class="sec-nav-icon">{{ item.icon }}</v-icon>
         {{ item.name }}
       </button>
     </div>
@@ -58,24 +58,27 @@ export default {
 .nav-button-sec {
   display: flex;
   align-items: center;
-  height: 36px;
-  width: 200px;
+  width: 240px;
   overflow: hidden;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
+  padding: 8px 0px 8px 3px; 
   font-size: 14px;
-  background: orange;
+  color: white;
+  background: #1d1d1d;
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;
   transition: background-color 0.3s linear;
 }
-.nav-button-sec.active, .nav-button-sec:hover {
-  background: red;
+.nav-button-sec.active {}
+
+.nav-button-sec:hover {
+  background: #252525;
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;
   transition: background-color 0.3s linear;
 }
-i.v-icon.side-nav-icon {
-  color: #9386ea;
+i.v-icon.sec-nav-icon {
+  color: white;
   width: 40px;
   height: 44px;
   transform: translateX(0px);

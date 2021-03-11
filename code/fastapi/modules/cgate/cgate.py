@@ -63,7 +63,10 @@ class Cgate:
             checked_diff = time() - checked_ts
             resp = self.Read(conn, self.conf['event_timeout'])
             if ((resp != '') or (updated_diff < 10) or (checked_diff > 100)):
-              state = json.dumps(self.State())
+              state_data = self.State()
+              if ('error' in state_data):
+                  await asyncio.sleep(10) # back off if getting an error for some reason           
+              state = json.dumps(state_data)
               checked_ts = time()
               if (state != cached_state): # comparison of json strings
                 updated_ts = time()
@@ -96,13 +99,16 @@ class Cgate:
   def State(self):
     ret_val = {}
     ifx_vals = self.StateRaw()
-    for k, v in devices_conf[self.conf['interface']].items():
-      ret_val[k] = {}
-      ret_val[k]['address'] = v['address']
-      if (v['address'] in ifx_vals):
-        if ('level' in ifx_vals[v['address']]):
-          ret_val[k]['power'] = self.LevelToPower(ifx_vals[v['address']]['level'])
-          ret_val[k]['brightness'] = round(int(ifx_vals[v['address']]['level']) * (100/255))   
+    if ('error' in ifx_vals):
+      ret_val = ifx_vals
+    else:
+      for k, v in devices_conf[self.conf['interface']].items():
+        ret_val[k] = {}
+        ret_val[k]['address'] = v['address']
+        if (v['address'] in ifx_vals):
+          if ('level' in ifx_vals[v['address']]):
+            ret_val[k]['power'] = self.LevelToPower(ifx_vals[v['address']]['level'])
+            ret_val[k]['brightness'] = round(int(ifx_vals[v['address']]['level']) * (100/255))   
     return ret_val
 
 
@@ -116,10 +122,10 @@ class Cgate:
 
   def Ping(self):
     msg = 'noop'
+    #msg = 'show cbus state'
     resp_text = self.Send(msg)
     ret_val = self.CgateToJson(resp_text)
     return ret_val
-
 
   def Send(self, msg):
     with Telnet() as conn:
@@ -130,7 +136,7 @@ class Cgate:
         resp2 = self.Read(conn, self.conf['command_timeout']) # read resp msg
         ret_val = resp2
       except Exception as e:
-        ret_val = { 'message' : 'error: ' + str(e) + ' could not connect to host/port' }
+        ret_val = 'error: ' + str(e) + ' could not connect to host/port' + '\r\n'
       return ret_val
 
 
@@ -158,7 +164,10 @@ class Cgate:
     for row in text_arr:
       row = row.upper()
       if (row != ''):
-        if ('level=' in row.lower()):
+        if ('401 bad' in row.lower()):
+          resp['error'] = row
+          i += 1
+        elif ('level=' in row.lower()):
           pos1 = row.index('//')+2
           pos2 = row.index(':')
           pos3 = row.index('L=')+2
@@ -184,4 +193,21 @@ class Cgate:
     if (int(level) > 0):
       pwr = 'on'
     return pwr
+
+
+  def Restart(self):
+    msg1 = 'restart'
+    msg2 = 'confirm'
+    with Telnet() as conn:
+      try:
+        conn.open(self.conf['host'], self.conf['command_port'])
+        resp1 = self.Read(conn, self.conf['command_timeout']) # read welcome msg
+        conn.write((msg1 + '\r\n').encode('utf-8'))
+        resp2 = self.Read(conn, self.conf['command_timeout']) # read confirm msg
+        conn.write((msg2 + '\r\n').encode('utf-8'))
+        resp3 = 'cgate restarted'
+        ret_val = resp3
+      except Exception as e:
+        ret_val = { 'message' : 'error: ' + str(e) + ' could not connect to host/port' }
+      return ret_val
 

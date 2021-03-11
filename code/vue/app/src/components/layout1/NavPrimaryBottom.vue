@@ -56,7 +56,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #432fbf;
+  background: #1d1d1d;
   border: 0px;
 }
 #bottom-nav-inner {
@@ -79,7 +79,7 @@ a {
   font-size: 24px;
 }
 i.v-icon.bottom-nav-icon {
-  color: #9386ea;
+  color: grey;
   width: 40px;
   height: 44px;
   transform: translateX(30px);
@@ -112,7 +112,7 @@ a.active .link-text {
   position: absolute;
   left: 5px;
   top: 8px;
-  background: #5e4ecb;
+  background: #141414;
   border-radius: 18px;
   width: 90px;
   height: 35px;

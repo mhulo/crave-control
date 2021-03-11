@@ -165,8 +165,10 @@ export default new Vuex.Store({
       let deviceData = {}
       let deviceCode = name.split('.')
       if (deviceCode[0] in state.devices) {
-        if (deviceCode[1] in state.devices[deviceCode[0]]) {
-          deviceData = state.devices[deviceCode[0]][deviceCode[1]]
+        if (state.devices[deviceCode[0]] != '') {
+          if (deviceCode[1] in state.devices[deviceCode[0]]) {
+            deviceData = state.devices[deviceCode[0]][deviceCode[1]]
+          }
         }
       }
       return deviceData
