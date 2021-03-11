@@ -1,11 +1,12 @@
 <template>
-  <div class="stl3">
+  <div class="stl1">
     <v-slider
       v-model="compVal"
       @change="compChange()"
       max="100"
       min="0"
-      thumb-label
+      color="white"
+      track-color="grey"
     >
     </v-slider>
   </div>
@@ -64,14 +65,9 @@ export default {
 </script>
 
 <style scoped>
-.stl1 {
-  font-size: 15px;
-  color: blue;
-}
 
-.stl3 {
-  font-size: 13px;
-  color: black;
-  padding: 0px 20px 0px 20px;
+.stl1 {
+  height: 35px;
+  border: 0px red solid;
 }
 </style>

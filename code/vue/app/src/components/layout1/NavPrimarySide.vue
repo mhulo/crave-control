@@ -82,6 +82,7 @@ i.v-icon.side-nav-icon {
   color: #9386ea;
   width: 40px;
   height: 44px;
+  font-size: 20px;
   transform: translateX(0px);
   transition: 0.4s ease all;
 }

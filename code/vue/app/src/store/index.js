@@ -20,19 +20,19 @@ export default new Vuex.Store({
       'primary': [
         {
           'name': 'zones',
-          'icon': 'mdi-view-dashboard-outline'
+          'icon': 'fab fa-codepen'
         },
         {
           'name': 'groups',
-          'icon': 'mdi-flip-to-front'
+          'icon': 'mdi-gamepad-circle-outline'
         },
         {
           'name': 'lights',
           'icon': 'mdi-lightbulb-outline'
         },
         {
-          'name': 'battery',
-          'icon': 'mdi-battery-outline'
+          'name': 'admin',
+          'icon': 'mdi-monitor-dashboard'
         }
       ],
       'selected': {
@@ -99,17 +99,16 @@ export default new Vuex.Store({
           }
         })
         .catch(error => {
-          console.log('api error:', error.response)
+          console.log('cards api error:', error.response)
         })
     },
     updateIcons({ commit, state, dispatch }) {
       ApiService.getApi('/core/icons_conf/')
         .then(response => {
-          console.log('updating icons')
           commit('SET_ICONS', response.data)
         })
         .catch(error => {
-          console.log('api error:', error.response)
+          console.log('icons api error:', error.response)
         })
     },
     updateDevices({ commit, state }, devices) {
@@ -192,7 +191,7 @@ export default new Vuex.Store({
         if (primary in state.icons) {
           iconIndex = state.icons.[primary].findIndex(y => y.label == x)
         }
-        let icon = (iconIndex != -1) ? state.icons.[primary].[iconIndex].icon : 'mdi-adjust'
+        let icon = (iconIndex != -1) ? state.icons.[primary].[iconIndex].icon : 'mdi-power-plug-outline'
         return  {
           'name': x,
           'active': active,

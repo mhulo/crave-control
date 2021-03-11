@@ -1,22 +1,35 @@
 <template>
-  <div class="stl2">
-    <div class="stl1">{{ card.label }} :: {{ widgetVals.power.toUpperCase() }}</div>
-    <div>{{ card.devices[0] }} | {{ deviceVals.power }}</div>
-    <v-icon :color="'black'">mdi-lightbulb-outline</v-icon>
-    <Toggle1
-      :key="cardId+'_power_toggle'"
-      :card="card"
-      :deviceName="card.devices[0]"
-      valKey="power"
-      ref="power_toggle"
-      @handleUpdate="handleUpdate"
-      @handleCommand="handleCommand"
-    />
+  <div class="card-outer">
+    <div class="label-row">
+      <div class="label-name">
+        <div>{{ card.label }}</div>
+      </div>
+      <div class="label-value">{{ widgetVals.brightness }}%</div>
+      <div class="label-expand">
+        <v-btn icon class="expand-icon" @click="handleExpand()">
+          <v-icon>mdi-chevron-up</v-icon>
+        </v-btn>
+      </div>
+    </div>
+    <div class="interface-row">{{ card.devices[0] }} | {{ deviceVals.brightness }}</div>
+    <div class="widget-row">
+      <div class="icon-container">
+        <v-icon>{{ cardIcon }}</v-icon>
+      </div>
+      <div class="widget-container">
+        <Toggle1
+          :key="cardId+'_power_toggle'"
+          :card="card"
+          :deviceName="card.devices[0]"
+          valKey="power"
+          ref="power_toggle"
+          @handleUpdate="handleUpdate"
+          @handleCommand="handleCommand"
+        />
+      </div>
+    </div>
     <v-btn icon elevation="2" color="'blue'" @click="toggleComp('power_toggle')">
       <v-icon >mdi-swap-horizontal</v-icon>
-    </v-btn>
-    <v-btn icon elevation="2" color="'blue'" @click="handleExpand()">
-      <v-icon >mdi-arrow-expand</v-icon>
     </v-btn>
     <br>
   </div>
@@ -72,21 +85,100 @@ export default {
     },
     cardVals() {
       return { ...this.deviceVals, ...this.widgetVals }
+    },
+    cardIcon() {
+      return ('icon' in this.card) ? this.card.icon : 'mdi-lightbulb-outline'
     }
   }
 }
 </script>
 
 <style scoped>
-.stl1 {
-  font-size: 15px;
-  color: green;
+.card-outer {
+  color: grey;
+  background: #141414;
+  padding: 10px;
+  border: 0px blue solid;
 }
 
-.stl2 {
+.label-row {
+  display: flex;
   font-size: 13px;
-  color: black;
-  background: white;
-  border: 1px green solid;
+  font-weight: 400;
+  color: white;
+  border: 0px red solid;
+}
+
+.label-name {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: 0px orange solid;
+  padding-bottom: 2px;
+}
+
+.label-value {
+  font-size: 16px;
+  border: 0px green solid;
+  padding-right: 10px;
+}
+
+.label-expand {
+  color: white;
+  font-size: 14px;
+  width: 24px;
+  height: 24px;
+  background: #222222;
+  border-radius: 50%;
+  border: 0px green solid;
+}
+
+.interface-row {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+}
+
+.widget-row {
+  display: flex;
+  padding-top: 5px;
+  font-size: 11px;
+  border: 0px green solid;
+}
+
+.icon-container { 
+  display: inline-block;
+  display: flex;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  margin-top: 2px;
+  border: 1px white solid;
+  border-radius: 50%;
+}
+
+.widget-container {
+  padding-left: 10px;
+  flex-grow: 1;
+  display: inline-block;
+  border: 0px red solid;
+}
+
+.icon-container i.v-icon{
+  font-size: 20px;
+  color: white;
+  padding-left: 0px;
+}
+
+.expand-icon i.v-icon {
+  font-size: 20px;
+  color: white;
+  padding-left: 1px;
+}
+
+.v-btn.expand-icon {
+  width: 24px;
+  height: 24px;
 }
 </style>

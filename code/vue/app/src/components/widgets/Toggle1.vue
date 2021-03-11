@@ -1,8 +1,11 @@
 <template>
-  <div class="stl3">
+  <div class="stl1">
     <v-switch
       v-model="compVal"
       @change="compChange()"
+      color="white"
+      dark
+      dense
     >
     </v-switch>
   </div>
@@ -75,13 +78,11 @@ export default {
 
 <style scoped>
 .stl1 {
-  font-size: 15px;
-  color: blue;
+  height: 35px;
+  border: 0px blue solid;
 }
 
-.stl3 {
-  font-size: 13px;
-  color: black;
-  padding-left: 20px;
+.stl1 .v-input--switch {
+  margin: 1px;
 }
 </style>

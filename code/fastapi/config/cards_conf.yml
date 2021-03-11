@@ -2,6 +2,7 @@
 card0001:
   card: 'dimmer_1'
   label: 'Master Bedroom Lights'
+  icon: 'mdi-lightbulb-outline'
   devices:
     - 'cgate.master_bedroom_lights' # listener is the first one in the list
   command_params:
@@ -17,6 +18,7 @@ card0001:
 card0002:
   card: 'dimmer_1'
   label: 'Nia''s Bedroom Lights'
+  icon: 'mdi-lightbulb-outline'
   devices:
     - 'cgate.nias_bedroom_lights'
   fave_1: 15
@@ -30,6 +32,7 @@ card0002:
 card0003:
   card: 'dimmer_1'
   label: 'Study Lights'
+  icon: 'mdi-lightbulb-outline'  
   devices:
     - 'cgate.study_lights'
   fave_1: 15
@@ -43,6 +46,7 @@ card0003:
 wgt5003:
   card: 'dimmer_1'
   label: 'Study Lights 2'
+  icon: 'mdi-lightbulb-outline'
   devices:
     - 'cgate.study_lights'
   fave_1: 15
@@ -56,6 +60,7 @@ wgt5003:
 card0200:
   card: 'dimmer_1'
   label: 'Master LED Strip'
+  icon: 'mdi-led-strip-variant'
   devices:
     - 'hue.master_led_strip'
   fave_1: 20
@@ -70,6 +75,7 @@ card0200:
 card0201:
   card: 'dimmer_1'
   label: 'Stairs LED Strip'
+  icon: 'mdi-led-strip-variant'
   devices:
     - 'hue.stairs_led_strip'
   fave_1: 20
@@ -83,6 +89,7 @@ card0201:
 card0102:
   card: 'switch_1'
   label: 'Ensuite Lights'
+  icon: 'mdi-lightbulb-outline'
   devices:
     - 'cgate.ensuite_lights'
   groups:
@@ -94,6 +101,7 @@ card0102:
 card0103:
   card: 'switch_1'
   label: 'Ensuite Fan'
+  icon: 'mdi-fan'
   devices:
     - 'cgate.ensuite_fan'
   groups:
@@ -105,6 +113,7 @@ card0103:
 card0104:
   card: 'switch_1'
   label: 'Ensuite Ceiling Heat'
+  icon: 'mdi-fire'
   devices:
     - 'cgate.ensuite_ceiling_heat'
   groups:
@@ -116,6 +125,7 @@ card0104:
 card0004:
   card: 'dimmer_1'
   label: 'Dining Lights'
+  icon: 'mdi-lightbulb-outline'
   devices:
     - 'cgate.dining_lights'
   fave_1: 15
@@ -129,6 +139,7 @@ card0004:
 card0005:
   card: 'dimmer_1'
   label: 'Lounge Lights'
+  icon: 'mdi-lightbulb-outline'
   devices:
     - 'cgate.lounge_lights'
   fave_1: 15
@@ -142,6 +153,7 @@ card0005:
 card0006:
   card: 'dimmer_1'
   label: 'Kitchen Lights'
+  icon: 'mdi-lightbulb-outline'
   devices:
     - 'cgate.kitchen_lights'
   fave_1: 15
@@ -155,6 +167,7 @@ card0006:
 card0007:
   card: 'dimmer_1'
   label: 'Entrance Lights'
+  icon: 'mdi-lightbulb-outline'
   devices:
     - 'cgate.entrance_lights'
   fave_1: 15
@@ -168,6 +181,7 @@ card0007:
 card0008:
   card: 'dimmer_1'
   label: 'Dim Downstairs'
+  icon: 'mdi-lightbulb-group-outline'
   devices:
     - 'cgate.kitchen_lights'
     - 'cgate.dining_lights'
@@ -184,6 +198,7 @@ card0008:
 card0009:
   card: 'switch_1'
   label: 'Bathroom Lights'
+  icon: 'mdi-lightbulb-outline'
   devices:
     - 'cgate.bathroom_lights'
   groups:
@@ -195,6 +210,7 @@ card0009:
 card0010:
   card: 'switch_1'
   label: 'Bathroom Fan'
+  icon: 'mdi-fan'
   devices:
     - 'cgate.bathroom_fan'
   groups:
@@ -206,6 +222,7 @@ card0010:
 card0011:
   card: 'switch_1'
   label: 'Bathroom Ceiling Heat'
+  icon: 'mdi-fire'
   devices:
     - 'cgate.bathroom_ceiling_heat'
   groups:
@@ -217,6 +234,7 @@ card0011:
 card0012:
   card: 'switch_1'
   label: 'Front Door Light'
+  icon: 'mdi-lightbulb-outline'
   devices:
     - 'cgate.front_door_light'
   groups:
@@ -228,6 +246,7 @@ card0012:
 card0101:
   card: 'switch_1'
   label: 'Master LED Strip'
+  icon: 'mdi-power-plug-outline'
   devices:
     - 'cgate.master_led_strip'
   groups:
@@ -236,6 +255,7 @@ card0101:
 card0105:
   card: 'switch_1'
   label: 'Stairs LED Strip'
+  icon: 'mdi-power-plug-outline'
   devices:
     - 'cgate.stairs_led_strip'
   groups:

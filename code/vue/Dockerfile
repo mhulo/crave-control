@@ -11,7 +11,7 @@ WORKDIR /vue/app
 COPY ./app/package.json /vue/app/package.json
 RUN npm install
 RUN npm install @vue/cli@4.5.9 -g
-RUN npm install json-server -g 
+RUN npm install json-server -g
 
 # start app
 CMD ["npm", "run", "serve"]

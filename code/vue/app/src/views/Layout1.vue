@@ -112,6 +112,7 @@ export default {
   #outer-container {
     display: flex;
     height: 100%;
+    font-family: 'Montserrat', sans-serif;
   }
   .left-container {
     display: flex;
@@ -148,7 +149,7 @@ export default {
     width: 100%;
     height: calc(100% - 120px);
     overflow-x: auto;
-    background: green;
+    background: #252525;
   }
   .popup-area.large {
     width: calc(100% - 290px);
@@ -171,7 +172,7 @@ export default {
     height: 10px;
     flex: 1 1 auto;
     overflow-y: auto;
-    background: grey;
+    background: #252525;
   }
   .things {
     width: 100%;
