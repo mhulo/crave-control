@@ -1,7 +1,6 @@
 <template>
   <div id="popup-outer">
-    <div v-if="popup.type == 'nav'">
-      <div>popup: {{ title }} [{{ popup.component }}]</div>
+    <div v-if="popup.type == 'nav'" class="popup-nav">
       <component :is="popup.component" key="popup_comp"/>
     </div>
     <div v-else-if="popup.type == 'card'">
@@ -80,7 +79,11 @@ export default {
 } 
 .small #popup-outer {
   justify-content:flex-end;
-  padding-top: 18px;
-  padding-bottom: 18px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.popup-nav {
+  border: 0px blue solid;
+  background: #141414;
 }
 </style>

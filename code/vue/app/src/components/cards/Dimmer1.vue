@@ -142,7 +142,8 @@ export default {
 }
 
 .label-value {
-  font-size: 16px;
+  font-size: 14px;
+  padding-top: 2px;
   border: 0px green solid;
   padding-right: 10px;
 }
@@ -159,7 +160,7 @@ export default {
 
 .interface-row {
   font-size: 11px;
-  color: rgba(255,255,255,0.5);
+  color: #f000f0
 }
 
 .widget-row {

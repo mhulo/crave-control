@@ -45,8 +45,9 @@ export default {
   flex: 1 1 auto;
   overflow-y: auto;
   border: 0px;
-  padding-top: 18px;
-  background: #303030;
+  padding-top: 12px;
+  border-right: 1px #333333 solid;
+  background: #141414;
 }
 #side-nav-inner {
   position: relative;
@@ -74,7 +75,7 @@ export default {
   transition: background-color 0.3s linear;
 }
 .nav-button.active, .nav-button:hover {
-  background: #1d1d1d;
+  background: #222222;
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;
   transition: background-color 0.3s linear;

@@ -7,9 +7,11 @@
       <div class="middle-container" v-show="layoutSize == 'large'">
         <div class="headerbar">&lt; crave control &gt;</div>
         <div :class="'titlebar '+layoutSize">
-          <div>{{ nav.selected.secondary.name[0] }}</div>
-          <div class="title-chevron"><v-icon>mdi-chevron-right</v-icon></div>
-          <div class="title-thing">{{ nav.selected.secondary.name[1] }}</div>
+          <div class="titlebar-inner">
+            <div>{{ nav.selected.secondary.name[0] }}</div>
+            <div class="title-chevron"><v-icon>mdi-chevron-right</v-icon></div>
+            <div class="title-thing">{{ nav.selected.secondary.name[1] }}</div>
+          </div>
         </div>
         <div class="things">
           <NavSecondary/>
@@ -142,19 +144,19 @@ export default {
     background: green;
   }
   .headerbar {
-    height: 40px;
+    height: 50px;
     width: 100%;
     font-size: 22px;
-    padding: 3px 0px 0px 24px;
+    padding: 12px 0px 0px 24px;
     color: white;
-    background: #1d1d1d;
+    background: #141414;
   }
   .popup-area {
     position: absolute;
     z-index: 1000;
     bottom: 50px;
     width: 100%;
-    height: calc(100% - 120px);
+    height: calc(100% - 130px);
     overflow-x: auto;
     background: #252525;
   }
@@ -164,21 +166,30 @@ export default {
     bottom: 0px;
   }
   .titlebar {
-    height: 30px;
     width: 100%;
     display: flex;
     color: white;
-    padding: 3px 0px 0px 12px;
+    padding: 0px 15px;
     font-size: 14px;
-    background: #1d1d1d;
+    border: 0px blue solid;
+    background: purple;
+  }
+    .titlebar-inner {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    border: 0px red solid;
   }
   .infobar {
-    height: 50px;
+    height: 40px;
     width: 100%;
     color: white;
     font-size: 14px;
-    padding: 14px 0px 0px 12px;
-    background:#1d1d1d;
+    padding: 10px 12px;
+    background:#141414;
   }
   .cards {
     width: 100%;
@@ -192,8 +203,8 @@ export default {
     width: 100%;
     flex-grow: 1;
     height: 10px;
-    overflow-x: auto;
-    background: #1d1d1d;
+    /*overflow-x: auto;*/
+    background: #141414;
   }
   .bottom-nav {
     height: 50px;
@@ -203,11 +214,13 @@ export default {
   }
   .titlebar.small {
     color: white;
+    padding: 5px 15px;
     display: flex;
     justify-content: center;
+    background: purple
   }
   .title-chevron .v-icon {
-    width: 24px;
+    width: 20px;
     font-size: 14px;
     padding-bottom: 0px;
     color: white;

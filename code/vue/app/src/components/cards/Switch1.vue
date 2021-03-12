@@ -4,14 +4,14 @@
       <div class="label-name">
         <div>{{ card.label }}</div>
       </div>
-      <div class="label-value">{{ widgetVals.brightness }}%</div>
+      <div class="label-value">{{ widgetVals.power.toUpperCase() }}</div>
       <div class="label-expand">
         <v-btn icon class="expand-icon" @click="handleExpand()">
           <v-icon>mdi-chevron-up</v-icon>
         </v-btn>
       </div>
     </div>
-    <div class="interface-row">{{ card.devices[0] }} | {{ deviceVals.brightness }}</div>
+    <div class="interface-row">{{ card.devices[0] }} | {{ deviceVals.power }}</div>
     <div class="widget-row">
       <div class="icon-container">
         <v-icon>{{ cardIcon }}</v-icon>
@@ -119,7 +119,8 @@ export default {
 }
 
 .label-value {
-  font-size: 16px;
+  font-size: 14px;
+  padding-top: 2px;
   border: 0px green solid;
   padding-right: 10px;
 }
@@ -136,7 +137,7 @@ export default {
 
 .interface-row {
   font-size: 11px;
-  color: rgba(255,255,255,0.5);
+  color: #f000f0
 }
 
 .widget-row {

@@ -1,10 +1,16 @@
 <template>
-  <div id="secondary-side-nav-outer">
-    <div v-for="(item, key) in navButtons" :key="'secondary_'+key">
-      <button v-ripple :class="'nav-button-sec ' + item.active" v-on:click="handleNavClick(key)">
-        <v-icon class="sec-nav-icon">{{ item.icon }}</v-icon>
-        {{ item.name }}
-      </button>
+  <div id="sec-nav-outer">
+    <div class="sec-nav-title">
+      <div>{{ navSelected.primary.name }}</div>
+      <!--<div class="things-chevron"><v-icon>mdi-chevron-down</v-icon></div>-->
+    </div>
+    <div class="sec-nav-buttons">
+      <div v-for="(item, key) in navSecondary" :key="'secondary_'+key">
+        <button v-ripple :class="'sec-nav-button ' + item.active" v-on:click="handleNavClick(key)">
+          <v-icon class="sec-nav-icon">{{ item.icon }}</v-icon>
+          {{ item.name }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -24,7 +30,10 @@ export default {
     }
   },
   computed: {
-    navButtons() {
+    navSelected() {
+      return this.$store.state.nav.selected
+    },
+    navSecondary() {
       return this.$store.getters.navSecondary
     }
   },
@@ -34,44 +43,58 @@ export default {
 </script>
 
 <style>
-#side-nav-outer {
+#sec-nav-outer {
   width: 100%;
-  height: 10px;
-  flex: 1 1 auto;
-  overflow-y: auto;
-  border: 0px;
-  padding-top: 18px;
-}
-#side-nav-inner {
-  position: relative;
-  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  flex: 1 auto;
+  border: 0px;
+  padding: 5px 10px;
+  border: 0px blue solid;
 }
-.link-div {
-  padding-left: 7px;
-  padding-bottom: 18px;
-  font-size: 24px;
-  border: 0px green solid;
-
+.sec-nav-title {
+  color: white;
+  display: flex;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: bold;
+  border: 0px orange solid;  
 }
-.nav-button-sec {
+.sec-nav-buttons {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+  padding: 0px;
+  font-size: 14px;
+  border: 0px red solid;  
+}
+.things-chevron .v-icon {
+  width: 24px;
+  font-size: 14px;
+  padding-left: 0px;
+  color: white;
+  border: 0px red solid;
+}
+.sec-nav-button {
   display: flex;
   align-items: center;
-  width: 240px;
+  width: 100%;
   overflow: hidden;
   margin-bottom: 0px;
-  padding: 8px 0px 8px 3px; 
-  font-size: 14px;
+  padding: 5px 5px; 
   color: white;
-  background: #1d1d1d;
+  border: 0px grey solid;
+  background: #141414;
+  font-size: 12px;
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;
   transition: background-color 0.3s linear;
 }
 .nav-button-sec.active {}
 
-.nav-button-sec:hover {
+.sec-nav-button:hover {
   background: #252525;
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;
@@ -81,6 +104,7 @@ i.v-icon.sec-nav-icon {
   color: white;
   width: 40px;
   height: 44px;
+  font-size: 20px;
   transform: translateX(0px);
   transition: 0.4s ease all;
 }
