@@ -83,11 +83,11 @@ export default {
   #card-list {
     display: flex;
     flex-wrap: wrap;
-    padding: 0px 14px 14px 0px;
+    padding: 0px 5px 0px 5px;
   }
   .card-wrapper {
     width: 100%;
-    padding: 14px 0px 0px 14px;
+    padding: 0px 5px 10px 5px;
   }
 
   .card-wrapper.cols-2 {

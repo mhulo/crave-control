@@ -56,7 +56,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #1d1d1d;
+  background: #141414;
   border: 0px;
 }
 #bottom-nav-inner {
@@ -112,7 +112,7 @@ a.active .link-text {
   position: absolute;
   left: 5px;
   top: 8px;
-  background: #141414;
+  background: #2b2d39;
   border-radius: 18px;
   width: 90px;
   height: 35px;

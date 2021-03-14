@@ -5,20 +5,21 @@
         <NavPrimarySide/>
       </div>
       <div class="middle-container" v-show="layoutSize == 'large'">
-        <div class="headerbar">&lt; crave control &gt;</div>
-        <div :class="'titlebar '+layoutSize">
-          <div class="titlebar-inner">
-            <div>{{ nav.selected.secondary.name[0] }}</div>
-            <div class="title-chevron"><v-icon>mdi-chevron-right</v-icon></div>
-            <div class="title-thing">{{ nav.selected.secondary.name[1] }}</div>
+        <div class="logobar">&lt; crave control &gt;</div>
+        <div class="middle-wrapper">
+          <div class="middle-wrapper-inner">
+            <div class="things">
+              <NavSecondary/>
+            </div>
+            <div class="infobar">{{ socketState }}</div>
           </div>
         </div>
-        <div class="things">
-          <NavSecondary/>
-        </div>
-        <div class="infobar">{{ socketState }}</div>
       </div>
       <div class="right-container">
+        <div class="searchbar">
+          <div>search..</div>
+          <div>{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
+        </div>
         <div class="headerbar" v-show="layoutSize == 'small'">&lt; crave control &gt;</div>
         <div :class="'titlebar '+layoutSize" v-show="layoutSize == 'small'">{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
         <div class="cards">
@@ -119,6 +120,7 @@ export default {
     display: flex;
     height: 100%;
     font-family: 'Montserrat', sans-serif;
+    background: red;
   }
   .left-container {
     display: flex;
@@ -126,30 +128,67 @@ export default {
     height: 100%;
     width: 50px;
     min-width: 50px;
-    background: cyan; 
   }
   .middle-container {
-    display: flex;
-    flex-direction: column;
     height: 100%;
     width: 240px;
     min-width: 240px;
-    background: orange; 
+    display: flex;
+    flex-direction: column;
+  }
+  .middle-wrapper {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    padding: 0px 0px 10px 0px;
+  }
+  .middle-wrapper-inner {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    border: 0px blue solid;
+    background: rgba(0,0,0,0.6);
+    overflow: hidden;
   }
   .right-container {
     display: flex;
     flex-direction: column;
     height: 100%;
     flex-grow: 1;
-    background: green;
+    padding-bottom: 10px;
+    border: 0px orange solid;
+  }
+  .logobar {
+    height: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 26px;
+    color: white;
+    border: 0px blue solid;
+  }
+  .searchbar {
+    height: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    line-height: 26px;
+    padding: 0px 11px;
+    color: white;
+    border: 0px blue solid;
   }
   .headerbar {
-    height: 50px;
+    height: 30px;
     width: 100%;
-    font-size: 22px;
-    padding: 12px 0px 0px 24px;
+    font-size: 20px;
+    line-height: 26px;
+    padding: 0px 15px;
     color: white;
-    background: #141414;
+    border: 0px blue solid;
   }
   .popup-area {
     position: absolute;
@@ -167,29 +206,29 @@ export default {
   }
   .titlebar {
     width: 100%;
-    display: flex;
+    displax: flex;
     color: white;
     padding: 0px 15px;
     font-size: 14px;
     border: 0px blue solid;
-    background: purple;
   }
-    .titlebar-inner {
+  .titlebar-inner {
     width: 100%;
     display: flex;
     justify-content: center;
     color: white;
     padding: 5px 10px;
     font-size: 12px;
+    border-radius: 5px;
+    background-image: linear-gradient(155deg, #184886, #30176b);
     border: 0px red solid;
   }
   .infobar {
     height: 40px;
     width: 100%;
     color: white;
-    font-size: 14px;
+    font-size: 12px;
     padding: 10px 12px;
-    background:#141414;
   }
   .cards {
     width: 100%;
@@ -197,27 +236,23 @@ export default {
     height: 10px;
     flex: 1 1 auto;
     overflow-y: auto;
-    background: #252525;
   }
   .things {
     width: 100%;
     flex-grow: 1;
     height: 10px;
-    /*overflow-x: auto;*/
-    background: #141414;
+    border: 0px green solid;
   }
   .bottom-nav {
     height: 50px;
     width: 100%;
     z-index: 1100;
-    background: yellow;
   }
   .titlebar.small {
     color: white;
     padding: 5px 15px;
     display: flex;
     justify-content: center;
-    background: purple
   }
   .title-chevron .v-icon {
     width: 20px;

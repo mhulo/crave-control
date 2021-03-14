@@ -119,8 +119,9 @@ export default {
 <style scoped>
 .card-outer {
   color: grey;
-  background: #141414;
-  padding: 10px;
+  background: rgba(0,0,0,0.6);
+  padding: 14px;
+  /*border-radius: 10px;*/
   border: 0px blue solid;
 }
 
@@ -153,14 +154,14 @@ export default {
   font-size: 14px;
   width: 24px;
   height: 24px;
-  background: #222222;
+  background: rgba(0,0,0,0.3);
   border-radius: 50%;
   border: 0px green solid;
 }
 
 .interface-row {
   font-size: 11px;
-  color: #f000f0
+  color: grey;
 }
 
 .widget-row {
@@ -198,7 +199,7 @@ export default {
 .expand-icon i.v-icon {
   font-size: 20px;
   color: white;
-  padding-left: 1px;
+  padding-left: 0px;
 }
 
 .v-btn.expand-icon {

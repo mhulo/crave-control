@@ -41,26 +41,27 @@ export default {
 <style>
 #side-nav-outer {
   width: 100%;
-  height: 10px;
-  flex: 1 1 auto;
-  overflow-y: auto;
-  border: 0px;
-  padding-top: 12px;
-  border-right: 1px #333333 solid;
-  background: #141414;
-}
-#side-nav-inner {
-  position: relative;
-  width: 100%;
   display: flex;
   flex-direction: column;
+  min-height: 10px;
+  height: 10px;
+  flex: 1;
+  justify-content: center;
+  border: 0px black solid;
+}
+#side-nav-inner {
+  width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+  border: 0px blue solid;
 }
 .link-div {
   padding-left: 7px;
   padding-bottom: 18px;
   font-size: 24px;
   border: 0px green solid;
-
 }
 .nav-button {
   display: flex;
@@ -75,13 +76,13 @@ export default {
   transition: background-color 0.3s linear;
 }
 .nav-button.active, .nav-button:hover {
-  background: #222222;
+  /*background: #2b2d39;*/
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;
   transition: background-color 0.3s linear;
 }
 i.v-icon.side-nav-icon {
-  color: grey;
+  color: #a3a3a3;
   width: 40px;
   height: 44px;
   font-size: 20px;

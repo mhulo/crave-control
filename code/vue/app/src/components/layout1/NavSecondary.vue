@@ -51,7 +51,7 @@ export default {
   flex: 1 auto;
   border: 0px;
   padding: 5px 10px;
-  border: 0px blue solid;
+  border: 0px yellow solid;
 }
 .sec-nav-title {
   color: white;
@@ -85,8 +85,9 @@ export default {
   margin-bottom: 0px;
   padding: 5px 5px; 
   color: white;
-  border: 0px grey solid;
-  background: #141414;
+  border-bottom: 0px rgb(59, 59, 59) solid;
+  border-radius: 5px;
+  background: #12b2d39;
   font-size: 12px;
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;
@@ -95,7 +96,7 @@ export default {
 .nav-button-sec.active {}
 
 .sec-nav-button:hover {
-  background: #252525;
+  background: #2b2d39;
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;
   transition: background-color 0.3s linear;
