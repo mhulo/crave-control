@@ -120,7 +120,8 @@ export default {
     display: flex;
     height: 100%;
     font-family: 'Montserrat', sans-serif;
-    background: red;
+    /*background: red;*/
+    background: url('~@/assets/img/bg3.jpg') no-repeat center center fixed;
   }
   .left-container {
     display: flex;
@@ -163,7 +164,7 @@ export default {
     height: 30px;
     width: 100%;
     display: flex;
-    justify-content: start;
+    justify-content: center;
     font-size: 20px;
     font-weight: 500;
     line-height: 26px;
