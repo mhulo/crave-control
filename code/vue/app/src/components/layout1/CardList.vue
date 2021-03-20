@@ -1,7 +1,12 @@
 <template>
   <div id="card-list">
     <div :class="'card-wrapper '+layoutCols" v-for="(val, key) in filteredCards" :key="key+'_wrapper'">
-      <component :is="val.card" :key="key" :card="val"/>
+      <component
+        :is="val.card"
+        :key="key"
+        :card="val"
+        ver="min"
+      />
     </div>
   </div>
 </template>

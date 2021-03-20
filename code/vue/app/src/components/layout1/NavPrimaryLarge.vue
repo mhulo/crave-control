@@ -1,9 +1,9 @@
 <template>
-  <div id="side-nav-outer">
-    <div id="side-nav-inner">
+  <div id="nav-large-outer">
+    <div id="nav-large-inner">
       <div class="link-div" v-for="(item, key) in navButtons" :key="'side_'+key">
         <button v-ripple :class="'nav-button ' + item.active" v-on:click="handleNavClick(key)">
-          <v-icon class="side-nav-icon">{{ item.icon }}</v-icon>
+          <v-icon class="nav-large-icon">{{ item.icon }}</v-icon>
         </button>
       </div>
     </div>
@@ -39,35 +39,31 @@ export default {
 </script>
 
 <style>
-#side-nav-outer {
+#nav-large-outer {
+  height: 100%;
   width: 100%;
   display: flex;
-  flex-direction: column;
-  min-height: 10px;
-  height: 10px;
   flex: 1;
   justify-content: center;
-  border: 0px black solid;
-}
-#side-nav-inner {
-  width: 100%;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow-x: auto;
   border: 0px blue solid;
 }
+#nav-large-inner {
+  height: 100%;
+  display: flex;
+  overflow-x: auto;
+  border: 0px green solid;
+}
 .link-div {
-  padding-left: 7px;
-  padding-bottom: 18px;
+  padding: 4px 10px 0px 10px;
+  padding-bottom: 0px;
   font-size: 24px;
   border: 0px green solid;
 }
 .nav-button {
   display: flex;
   align-items: center;
-  height: 36px;
-  width: 36px;
+  height: 40px;
+  width: 40px;
   overflow: hidden;
   border-radius: 100%;
   /*background: orange;*/
@@ -76,20 +72,20 @@ export default {
   transition: background-color 0.3s linear;
 }
 .nav-button.active, .nav-button:hover {
-  /*background: #2b2d39;*/
+  background: rgba(255, 255, 255, 0.1);
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;
   transition: background-color 0.3s linear;
 }
-i.v-icon.side-nav-icon {
-  color: #a3a3a3;
+i.v-icon.nav-large-icon {
+  color: rgba(255, 255, 255, 0.5);
   width: 40px;
   height: 44px;
-  font-size: 20px;
+  font-size: 22px;
   transform: translateX(0px);
   transition: 0.4s ease all;
 }
-.active i.v-icon.side-nav-icon {
+.active i.v-icon.nav-large-icon {
   color: white;
 }
 </style>

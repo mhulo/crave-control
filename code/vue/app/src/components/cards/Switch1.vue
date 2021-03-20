@@ -13,9 +13,9 @@
     </div>
     <div class="interface-row">{{ card.devices[0] }} | {{ deviceVals.power }}</div>
     <div class="widget-row">
-      <div class="icon-container">
+      <v-btn icon :class="'icon-container '+isOn('power')" @click="toggleComp('power_toggle')">
         <v-icon>{{ cardIcon }}</v-icon>
-      </div>
+      </v-btn>
       <div class="widget-container">
         <Toggle1
           :key="cardId+'_power_toggle'"
@@ -28,10 +28,6 @@
         />
       </div>
     </div>
-    <v-btn icon elevation="2" color="'blue'" @click="toggleComp('power_toggle')">
-      <v-icon >mdi-swap-horizontal</v-icon>
-    </v-btn>
-    <br>
   </div>
 </template>
 
@@ -44,7 +40,8 @@ export default {
     Toggle1
   },
   props: {
-    card: Object
+    card: Object,
+    ver: String
   },
   data() {
     return {
@@ -74,6 +71,9 @@ export default {
         'params': { 'card': this.card } 
       })
     },
+    isOn(key) {
+      return (this.widgetVals[key] == 'on') ? 'active' : ''
+    },
     toggleComp(key) {
       this.$refs[key].compVal = !this.$refs[key].compVal
       this.$refs[key].compChange()
@@ -96,12 +96,11 @@ export default {
 <style scoped>
 .card-outer {
   color: grey;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.75);
   padding: 14px;
-  /*border-radius: 10px;*/
+  border-radius: 10px;
   border: 0px blue solid;
 }
-
 .label-row {
   display: flex;
   font-size: 13px;
@@ -109,7 +108,6 @@ export default {
   color: white;
   border: 0px red solid;
 }
-
 .label-name {
   flex-grow: 1;
   display: flex;
@@ -118,67 +116,64 @@ export default {
   border: 0px orange solid;
   padding-bottom: 2px;
 }
-
 .label-value {
   font-size: 14px;
   padding-top: 2px;
   border: 0px green solid;
   padding-right: 10px;
 }
-
 .label-expand {
   color: white;
   font-size: 14px;
   width: 24px;
   height: 24px;
-  background: rgba(0,0,0,0.3);
+  background: rgba(255,255,255,0.1);
   border-radius: 50%;
   border: 0px green solid;
 }
-
 .interface-row {
   font-size: 11px;
-  color: grey
+  color: rgba(255,255,255,0.5);
 }
-
 .widget-row {
   display: flex;
   padding-top: 5px;
   font-size: 11px;
   border: 0px green solid;
 }
-
 .icon-container { 
   display: inline-block;
   display: flex;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   font-size: 20px;
   margin-top: 2px;
-  border: 1px white solid;
+  border: 1px rgba(255, 255, 255, 0.5) solid;
   border-radius: 50%;
 }
-
 .widget-container {
   padding-left: 10px;
   flex-grow: 1;
   display: inline-block;
   border: 0px red solid;
 }
-
 .icon-container i.v-icon{
   font-size: 20px;
-  color: white;
+  color: rgba(255, 255, 255, 0.5);
   padding-left: 0px;
 }
-
+.active.icon-container {
+  border-color: white;
+}
+.active.icon-container i.v-icon{
+  color: white;
+}
 .expand-icon i.v-icon {
   font-size: 20px;
   color: white;
   padding-left: 0px;
 }
-
 .v-btn.expand-icon {
   width: 24px;
   height: 24px;

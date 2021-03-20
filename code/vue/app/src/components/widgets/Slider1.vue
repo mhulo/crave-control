@@ -6,7 +6,7 @@
       max="100"
       min="0"
       color="white"
-      track-color="grey"
+      track-color="rgba(255, 255, 255, 0.5)"
     >
     </v-slider>
   </div>

@@ -1,44 +1,53 @@
 <template>
   <v-main>
     <div id="outer-container">
-      <div class="left-container" v-show="layoutSize == 'large'">
-        <NavPrimarySide/>
+
+      <div class="left-container" v-show="layoutSize=='large'">
+        <div class="logobar large">
+          &lt; crave control &gt;
+        </div>
+        <div class="nav-secondary">
+          <NavSecondary/>
+        </div>
+
+        <div class="nav-large" v-show="layoutSize=='large'">
+          <NavPrimaryLarge/>
+        </div>
+
+        <div class="infobar">{{ socketState }}</div>
       </div>
-      <div class="middle-container" v-show="layoutSize == 'large'">
-        <div class="logobar">&lt; crave control &gt;</div>
-        <div class="middle-wrapper">
-          <div class="middle-wrapper-inner">
-            <div class="things">
-              <NavSecondary/>
-            </div>
-            <div class="infobar">{{ socketState }}</div>
+
+      <div :class="'right-container '+layoutSize">
+        <div class="logobar small" v-show="layoutSize=='small'">
+          &lt; crave control &gt;
+        </div>
+        <div :class="'headerbar '+layoutSize">
+          <div class="things-title">
+            <div>{{ upperFirst(nav.selected.secondary.name[0]) }}</div>
+            <div class="title-chevron"><v-icon>mdi-chevron-right</v-icon></div>
+            <div>{{ nav.selected.secondary.name[1] }}</div>
           </div>
-        </div>
-      </div>
-      <div class="right-container">
-        <div class="searchbar">
           <div>search..</div>
-          <div>{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
         </div>
-        <div class="headerbar" v-show="layoutSize == 'small'">&lt; crave control &gt;</div>
-        <div :class="'titlebar '+layoutSize" v-show="layoutSize == 'small'">{{ nav.selected.secondary.name[0] }} >> {{ nav.selected.secondary.name[1] }}</div>
         <div class="cards">
           <CardList/>
         </div>
         <transition name="slide-popup">
           <div :class="'popup-area '+layoutSize" v-show="popup.show"><MainPopup/></div>
         </transition>
-        <div class="bottom-nav" v-show="layoutSize == 'small'">
-          <NavPrimaryBottom/>
+        <div class="nav-small" v-show="layoutSize == 'small'">
+          <NavPrimarySmall/>
         </div>
       </div>
+
     </div>
   </v-main>
 </template>
 
 <script>
-import NavPrimarySide from '@/components/layout1/NavPrimarySide.vue'
-import NavPrimaryBottom from '@/components/layout1/NavPrimaryBottom.vue'
+import upperFirst from 'lodash/upperFirst'
+import NavPrimaryLarge from '@/components/layout1/NavPrimaryLarge.vue'
+import NavPrimarySmall from '@/components/layout1/NavPrimarySmall.vue'
 import NavSecondary from '@/components/layout1/NavSecondary.vue'
 import MainPopup from '@/components/layout1/MainPopup.vue'
 import CardList from '@/components/layout1/CardList.vue'
@@ -46,14 +55,15 @@ import CardList from '@/components/layout1/CardList.vue'
 export default {
   props: {},
   components: {
-    NavPrimarySide,
-    NavPrimaryBottom,
+    NavPrimaryLarge,
+    NavPrimarySmall,
     NavSecondary,
     MainPopup,
     CardList
   },
   data() {
     return {
+      upperFirst: upperFirst,
       layoutSize: 'small'
     }
   },
@@ -121,107 +131,82 @@ export default {
     height: 100%;
     font-family: 'Montserrat', sans-serif;
     /*background: red;*/
-    background: url('~@/assets/img/bg3.jpg') no-repeat center center fixed;
+    background: url('~@/assets/img/bg3.jpg') no-repeat top fixed;
+    background-size: cover;
   }
   .left-container {
-    display: flex;
-    flex-direction: column;
     height: 100%;
-    width: 50px;
-    min-width: 50px;
-  }
-  .middle-container {
-    height: 100%;
-    width: 240px;
-    min-width: 240px;
+    width: 330px;
+    min-width: 330px;
     display: flex;
     flex-direction: column;
-  }
-  .middle-wrapper {
-    width: 100%;
-    flex-grow: 1;
-    display: flex;
-    padding: 0px 0px 10px 0px;
-  }
-  .middle-wrapper-inner {
-    width: 100%;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    border: 0px blue solid;
-    background: rgba(0,0,0,0.6);
-    overflow: hidden;
+    margin: 0px;
+    background: rgba(0,0,0,0.75);
+    border: 0px red solid;
   }
   .right-container {
     display: flex;
     flex-direction: column;
     height: 100%;
     flex-grow: 1;
-    padding-bottom: 10px;
     border: 0px orange solid;
   }
+  .right-container.large {
+    padding-bottom: 10px;
+  }
   .logobar {
-    height: 30px;
+    height: 40px;
     width: 100%;
     display: flex;
     justify-content: center;
     font-size: 20px;
     font-weight: 500;
-    line-height: 26px;
-    color: white;
+    padding-top: 15px;
+    color: rgba(255, 255, 255, 0.5);
     border: 0px blue solid;
   }
-  .searchbar {
-    height: 30px;
+  .logobar.small {
+    height: 40px;
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    font-size: 16px;
-    line-height: 26px;
-    padding: 0px 11px;
+    justify-content: start;
+    font-size: 20px;
+    font-weight: 500;
+    padding: 4px 10px 0px 10px;
     color: white;
     border: 0px blue solid;
   }
   .headerbar {
-    height: 30px;
-    width: 100%;
-    font-size: 20px;
-    line-height: 26px;
-    padding: 0px 15px;
-    color: white;
-    border: 0px blue solid;
-  }
-  .popup-area {
-    position: absolute;
-    z-index: 1000;
-    bottom: 50px;
-    width: 100%;
-    height: calc(100% - 130px);
-    overflow-x: auto;
-    background: #252525;
-  }
-  .popup-area.large {
-    width: calc(100% - 290px);
-    height: 100%;
-    bottom: 0px;
-  }
-  .titlebar {
-    width: 100%;
-    displax: flex;
-    color: white;
-    padding: 0px 15px;
-    font-size: 14px;
-    border: 0px blue solid;
-  }
-  .titlebar-inner {
+    height: 60px;
     width: 100%;
     display: flex;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: 400;
+    padding: 0px 11px;
+    color: rgba(0,0,0,0.7);
+    border: 0px blue solid;
+  }
+  .headerbar.small {
+    height: 50px;
+    width: 100%;
+    font-size: 16px;
+    line-height: 26px;
+    padding: 0px 15px;
+    margin-bottom: 10px;
     color: white;
-    padding: 5px 10px;
-    font-size: 12px;
-    border-radius: 5px;
-    background-image: linear-gradient(155deg, #184886, #30176b);
+    background: rgba(0,0,0,0.75);
+    border: 0px blue solid;
+  }
+  .things-title {
+    display: flex;
+  }
+  .nav-large {
+    display: flex;
+    height: 50px;
+    width: 100%;
+    min-width: 100%;
     border: 0px red solid;
   }
   .infobar {
@@ -231,6 +216,20 @@ export default {
     font-size: 12px;
     padding: 10px 12px;
   }
+  .popup-area {
+    position: absolute;
+    z-index: 1000;
+    bottom: 50px;
+    width: 100%;
+    height: calc(100% - 130px);
+    overflow-x: auto;
+    background: rgba(0,0,0,0.95);
+  }
+  .popup-area.large {
+    width: calc(100% - 330px);
+    height: 100%;
+    bottom: 0px;
+  }
   .cards {
     width: 100%;
     min-height: 0px;
@@ -238,32 +237,27 @@ export default {
     flex: 1 1 auto;
     overflow-y: auto;
   }
-  .things {
+  .nav-secondary {
     width: 100%;
     flex-grow: 1;
     height: 10px;
     border: 0px green solid;
   }
-  .bottom-nav {
+  .nav-small {
     height: 50px;
     width: 100%;
     z-index: 1100;
-  }
-  .titlebar.small {
-    color: white;
-    padding: 5px 15px;
-    display: flex;
-    justify-content: center;
+    border: 0px blue solid;
   }
   .title-chevron .v-icon {
     width: 20px;
     font-size: 14px;
     padding-bottom: 0px;
-    color: white;
+    color: rgba(0,0,0,0.7);
     border: 0px red solid;
   }
-  .title-thing {
-    text-overflow: ellipsis;
+  .small .title-chevron .v-icon {
+    color: white;
   }
 
 </style>

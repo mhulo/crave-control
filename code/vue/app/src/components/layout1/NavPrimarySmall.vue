@@ -1,10 +1,10 @@
 <template>
-  <div id="bottom-nav-outer">
-    <div id="bottom-nav-inner">
+  <div id="nav-small-outer">
+    <div id="nav-small-inner">
       <div class="bottom-link-bg" :style="bgTransform"></div>
       <div v-for="(item, key) in navButtons" :key="'bottom_'+key">
         <a :class="'bottom-link-container ' + item.active" v-on:click="handleNavClick(key)">
-          <v-icon class="bottom-nav-icon">{{ item.icon }}</v-icon>
+          <v-icon class="nav-small-icon">{{ item.icon }}</v-icon>
           <span class="link-text">{{ item.name }}</span>
         </a>
       </div>
@@ -52,14 +52,14 @@ export default {
 </script>
 
 <style>
-#bottom-nav-outer {
+#nav-small-outer {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #141414;
+  background: rgba(0,0,0,0.75);
   border: 0px;
 }
-#bottom-nav-inner {
+#nav-small-inner {
   position: relative;
   margin: 0;
   display: flex;
@@ -78,7 +78,7 @@ a {
 .bottom-link-container {
   font-size: 24px;
 }
-i.v-icon.bottom-nav-icon {
+i.v-icon.nav-small-icon {
   color: grey;
   width: 40px;
   height: 44px;
@@ -99,7 +99,7 @@ i.v-icon.bottom-nav-icon {
   padding-top: 12px;
   z-index: 1;
 }
-a.active .v-icon.bottom-nav-icon {
+a.active .v-icon.nav-small-icon {
   color: white;
   transform: translateX(7px);
 }
@@ -112,7 +112,7 @@ a.active .link-text {
   position: absolute;
   left: 5px;
   top: 8px;
-  background: #2b2d39;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 18px;
   width: 90px;
   height: 35px;

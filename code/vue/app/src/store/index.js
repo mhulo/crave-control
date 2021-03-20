@@ -20,19 +20,19 @@ export default new Vuex.Store({
       'primary': [
         {
           'name': 'zones',
-          'icon': 'fab fa-codepen'
+          'icon': 'mdi-view-dashboard-outline' //'fab fa-codepen'
         },
         {
           'name': 'groups',
           'icon': 'mdi-gamepad-circle-outline'
         },
         {
-          'name': 'lights',
-          'icon': 'mdi-lightbulb-outline'
+          'name': 'dashboard',
+          'icon': 'mdi-monitor-dashboard'
         },
         {
           'name': 'admin',
-          'icon': 'mdi-monitor-dashboard'
+          'icon': 'mdi-cog-outline'
         }
       ],
       'selected': {

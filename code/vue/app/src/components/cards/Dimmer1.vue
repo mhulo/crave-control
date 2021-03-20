@@ -13,9 +13,9 @@
     </div>
     <div class="interface-row">{{ card.devices[0] }} | {{ deviceVals.brightness }}</div>
     <div class="widget-row">
-      <div class="icon-container">
+      <v-btn icon :class="'icon-container '+isActive('brightness')" @click="toggleVal('power')">
         <v-icon>{{ cardIcon }}</v-icon>
-      </div>
+      </v-btn>
       <div class="widget-container">
         <Slider1
           :key="cardId+'_brightness_slider'"
@@ -28,16 +28,14 @@
         />
       </div>
     </div>
-    <v-btn icon elevation="2" color="'blue'" @click="decrementComp('brightness_slider')">
-      <v-icon >mdi-minus</v-icon>
-    </v-btn>
-    <v-btn icon elevation="2" color="'blue'" @click="incrementComp('brightness_slider')">
-      <v-icon >mdi-plus</v-icon>
-    </v-btn>
-    <v-btn icon elevation="2" color="'blue'" @click="toggleVal('power')">
-      <v-icon >mdi-power</v-icon>
-    </v-btn>
-    <br>
+    <div v-if="ver=='full'">
+      <v-btn icon class="extras" @click="decrementComp('brightness_slider')">
+        <v-icon>mdi-minus</v-icon>
+      </v-btn>
+      <v-btn icon class="extras" @click="incrementComp('brightness_slider')">
+        <v-icon >mdi-plus</v-icon>
+      </v-btn>
+    </div>  
   </div>
 </template>
 
@@ -50,7 +48,8 @@ export default {
     Slider1
   },
   props: {
-    card: Object
+    card: Object,
+    ver: String
   },
   data() {
     return {
@@ -79,6 +78,9 @@ export default {
         'component': this.card.card,
         'params': { 'card': this.card } 
       })
+    },
+    isActive(key) {
+      return (this.widgetVals[key] > 0) ? 'active' : ''
     },
     decrementComp(key) {
       this.$refs[key].compVal --
@@ -119,12 +121,11 @@ export default {
 <style scoped>
 .card-outer {
   color: grey;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.75);
   padding: 14px;
-  /*border-radius: 10px;*/
+  border-radius: 10px;
   border: 0px blue solid;
 }
-
 .label-row {
   display: flex;
   font-size: 13px;
@@ -132,7 +133,6 @@ export default {
   color: white;
   border: 0px red solid;
 }
-
 .label-name {
   flex-grow: 1;
   display: flex;
@@ -141,69 +141,69 @@ export default {
   border: 0px orange solid;
   padding-bottom: 2px;
 }
-
 .label-value {
   font-size: 14px;
   padding-top: 2px;
   border: 0px green solid;
   padding-right: 10px;
 }
-
 .label-expand {
   color: white;
   font-size: 14px;
   width: 24px;
   height: 24px;
-  background: rgba(0,0,0,0.3);
+  background: rgba(255,255,255,0.1);
   border-radius: 50%;
   border: 0px green solid;
 }
-
 .interface-row {
   font-size: 11px;
-  color: grey;
+  color: rgba(255,255,255,0.5);
 }
-
 .widget-row {
   display: flex;
   padding-top: 5px;
   font-size: 11px;
   border: 0px green solid;
 }
-
 .icon-container { 
   display: inline-block;
   display: flex;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   font-size: 20px;
   margin-top: 2px;
-  border: 1px white solid;
+  border: 1px rgba(255, 255, 255, 0.5) solid;
   border-radius: 50%;
 }
-
 .widget-container {
-  padding-left: 10px;
+  padding: 0px 2px 0px 10px;
   flex-grow: 1;
   display: inline-block;
   border: 0px red solid;
 }
-
-.icon-container i.v-icon{
+.icon-container i.v-icon {
   font-size: 20px;
-  color: white;
+  color: rgba(255, 255, 255, 0.5);
   padding-left: 0px;
 }
-
+.active.icon-container {
+  border-color: white;
+}
+.active.icon-container i.v-icon{
+  color: white;
+}
 .expand-icon i.v-icon {
   font-size: 20px;
   color: white;
-  padding-left: 0px;
 }
-
 .v-btn.expand-icon {
   width: 24px;
   height: 24px;
+}
+.extras i.v-icon {
+  font-size: 20px;
+  color: white;
 }
 </style>

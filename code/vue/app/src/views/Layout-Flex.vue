@@ -4,7 +4,7 @@
           <div class="header">crave control</div>
           <div class="left-nav">leftnav</div>
           <div class="main">main</div>
-          <div class="bottom-nav">
+          <div class="nav-small">
           </div>
     </div>
   </v-main>
@@ -99,7 +99,7 @@ html, body {
   border: 1px black solid;
 }
 
-.bottom-nav {
+.nav-small {
   grid-column: 1/-1;
   border: 1px black solid;
 }
@@ -114,7 +114,7 @@ html, body {
     display: unset;
   }
 
-  .bottom-nav {
+  .nav-small {
     display: none;
   }
 
