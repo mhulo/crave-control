@@ -185,7 +185,8 @@ export default {
     font-size: 20px;
     font-weight: 400;
     padding: 0px 11px;
-    color: rgba(0,0,0,0.7);
+    /*color: rgba(0,0,0,0.7);*/
+    color: white;
     border: 0px blue solid;
   }
   .headerbar.small {
@@ -253,7 +254,8 @@ export default {
     width: 20px;
     font-size: 14px;
     padding-bottom: 0px;
-    color: rgba(0,0,0,0.7);
+    /*color: rgba(0,0,0,0.7);*/
+    color: white;
     border: 0px red solid;
   }
   .small .title-chevron .v-icon {
