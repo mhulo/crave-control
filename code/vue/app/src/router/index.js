@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuetify from '@/views/Vuetify.vue'
-import Layout from '@/views/Layout.vue'
 import Layout1 from '@/views/Layout1.vue'
 
 Vue.use(VueRouter)
