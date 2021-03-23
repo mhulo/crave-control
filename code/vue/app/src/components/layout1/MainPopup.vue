@@ -76,24 +76,30 @@ export default {
   min-height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   border: 0px red solid;
   background: rgba(255,255,255,0.15);
 }
 .large .popup-outer {
-  justify-content: center;
   padding: 30px;
 } 
 .small .popup-outer {
+  padding: 10px;
+} 
+.small .popup-outer.nav {
   justify-content: flex-end;
-  padding: 20px 10px 10px 10px;
+  padding: 0px;
+  border: 0px red solid;
 }
 .popup-outer.nav {
+  padding: 20px 0px 0px 0px;
+  background: rgba(255,255,255,0.05);
 }
 .popup-nav {
   background: rgba(0,0,0,0.7);
   border: 0px blue solid;
   padding-top: 20px;
-  padding-left: 20px;
+  padding-left: 0px;
 }
 
 </style>

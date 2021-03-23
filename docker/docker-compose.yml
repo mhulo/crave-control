@@ -28,15 +28,12 @@ services:
     nginx:
       build: ./nginx
       volumes:
-        - ../code/php:/code:cached
-        - ../code/static:/static:cached
         - ./nginx/ssl:/etc/nginx/ssl
         - ./nginx/nginx.conf:/etc/nginx/nginx.conf
         - ./nginx/start-nginx.sh:/nginx/start-nginx.sh
       ports:
         - "8888:8888" # http
         - "443:443" # https
-        - "9090:9090" # php
       depends_on:
         - python
         - vue
@@ -64,7 +61,7 @@ services:
 
     vue:
       build: ../code/vue/
-      command: npm run serve
+      command: npm run serve #change this to 'tail -f /dev/null' is to start the container to run the cli
       volumes:
         - ../code/vue/:/vue:cached
         - /vue/app/node_modules
@@ -72,7 +69,6 @@ services:
       ports:
         - "4000:4000"
         - "4001:8000" # vue-cli ui type: vue ui --headless --host 0.0.0.0
-        - "4002:3000" # json-server type: json-server --watch --host 0.0.0.0 db.json
       networks:
         - frontend
         - backend
@@ -85,21 +81,6 @@ services:
         - "6379:6379"
       volumes:
         - ../data/redis:/data
-      networks:
-        - backend
-
-### PHP ##############################################
-  
-    php:
-      build:
-        context: ./php-fpm
-      ports:
-        - "9000:9000"
-        - "5000:5000" # websockets
-      volumes:
-        - ./php-fpm/php73.ini:/usr/local/etc/php/php.ini
-        - ./php-fpm/log.conf:/usr/local/etc/php-fpm.d/zz-log.conf
-        - ../code/php:/code:cached
       networks:
         - backend
 

@@ -1,5 +1,5 @@
 # base image
-FROM node:15.3.0-alpine
+FROM node:15.12.0-alpine
 
 # set working directory
 WORKDIR /vue/app
@@ -10,8 +10,7 @@ WORKDIR /vue/app
 # install and cache app dependencies
 COPY ./app/package.json /vue/app/package.json
 RUN npm install
-RUN npm install @vue/cli@4.5.9 -g
-RUN npm install json-server -g
+#RUN npm install @vue/cli@4.5.12 -g
 
 # start app
 CMD ["npm", "run", "serve"]

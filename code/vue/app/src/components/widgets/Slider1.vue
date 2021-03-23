@@ -1,5 +1,5 @@
 <template>
-  <div class="stl1">
+  <div class="slider-1">
     <v-slider
       v-model="compVal"
       @change="compChange()"
@@ -66,8 +66,9 @@ export default {
 
 <style scoped>
 
-.stl1 {
+.slider-1 {
   height: 35px;
-  border: 0px red solid;
+  width: 100%;
+  border: 0px blue solid;
 }
 </style>

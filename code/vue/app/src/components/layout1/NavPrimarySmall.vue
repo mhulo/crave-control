@@ -79,10 +79,11 @@ a {
   font-size: 24px;
 }
 i.v-icon.nav-small-icon {
-  color: grey;
+  color: rgba(255, 255, 255, 0.5);
   width: 40px;
   height: 44px;
   transform: translateX(30px);
+  border: 0px blue solid;
   transition: 0.4s ease all;
 }
 .link-text {
@@ -115,7 +116,7 @@ a.active .link-text {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 18px;
   width: 90px;
-  height: 35px;
+  height: 34px;
   z-index: 0;
   transition: 0.4s cubic-bezier(0.7, 0, 0.38, 0.86) all;
 }

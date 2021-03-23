@@ -70,7 +70,7 @@ export default {
   methods: {
     updateSizes() {
       let width = document.getElementById('outer-container').offsetWidth
-      this.layoutSize = (width > 940)? 'large' : 'small'
+      this.layoutSize = (width > 970)? 'large' : 'small'
       this.$store.dispatch('updatePopup', { 'show' : false })
     }
   },
@@ -130,7 +130,7 @@ export default {
     display: flex;
     height: 100%;
     font-family: 'Montserrat', sans-serif;
-    /*background: red;*/
+    /*background: #5e618b;*/
     background: url('~@/assets/img/bg3.jpg') no-repeat top fixed;
     background-size: cover;
   }
@@ -148,6 +148,7 @@ export default {
     display: flex;
     flex-direction: column;
     height: 100%;
+    min-width: 50%;
     flex-grow: 1;
     border: 0px orange solid;
   }

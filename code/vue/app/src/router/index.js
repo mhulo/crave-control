@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Vuetify from '@/views/Vuetify.vue'
 import Layout1 from '@/views/Layout1.vue'
+import Test1 from '@/views/Test1.vue'
 
 Vue.use(VueRouter)
 
@@ -12,9 +12,9 @@ const routes = [
     component: Layout1,
   },
   {
-    path: '/vuetify/',
-    name: 'vuetify-hello',
-    component: Vuetify,
+    path: '/test/',
+    name: 'test1',
+    component: Test1,
     props: true
   }
 ]

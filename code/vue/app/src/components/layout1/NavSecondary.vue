@@ -59,7 +59,7 @@ export default {
 .sec-nav-title {
   color: white;
   display: flex;
-  padding: 5px 12px;
+  padding: 20px 15px 5px 15px;
   font-size: 16px;
   border: 0px orange solid;  
 }

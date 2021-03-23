@@ -1,6 +1,14 @@
 # install mkcert
+
+# mac os
 brew install mkcert
+
+# raspberry pi
+sudo wget https://github.com/FiloSottile/mkcert/releases/download/v1.3.0/mkcert-v1.3.0-linux-arm -O /usr/local/bin/mkcert
+sudo chmod +x /usr/local/bin/mkcert
+
+# now activate
 mkcert -install
 
-# create keys
+# now create keys
 mkcert -key-file localhost.key -cert-file localhost.crt localhost

@@ -179,7 +179,7 @@ export default {
 }
 .widget-container {
   padding: 0px 2px 0px 10px;
-  flex-grow: 1;
+  width: 100%;
   display: inline-block;
   border: 0px red solid;
 }

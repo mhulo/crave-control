@@ -1,5 +1,5 @@
 <template>
-  <div class="stl1">
+  <div class="toggle-1">
     <v-switch
       v-model="compVal"
       @change="compChange()"
@@ -77,12 +77,12 @@ export default {
 </script>
 
 <style scoped>
-.stl1 {
+.toggle-1 {
   height: 35px;
   border: 0px blue solid;
 }
 
-.stl1 .v-input--switch {
+.toggle-1 .v-input--switch {
   margin: 1px;
 }
 </style>
