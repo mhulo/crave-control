@@ -53,11 +53,12 @@ export default {
 
 <style>
 #nav-small-outer {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: black;
-  border: 0px;
+  border-bottom: 1px #1d1d1d solid ;
 }
 #nav-small-inner {
   position: relative;
