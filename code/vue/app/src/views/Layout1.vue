@@ -27,7 +27,9 @@
             <div class="title-chevron"><v-icon>mdi-chevron-right</v-icon></div>
             <div>{{ nav.selected.secondary.name[1] }}</div>
           </div>
-          <div>search..</div>
+          <v-btn icon class="search-icon">
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
         </div>
         <div class="cards">
           <CardList/>
@@ -249,6 +251,10 @@ export default {
     height: 50px;
     width: 100%;
     z-index: 1100;
+    border: 0px blue solid;
+  }
+  .search-icon.v-btn i.v-icon {
+    color: white;
     border: 0px blue solid;
   }
   .title-chevron .v-icon {

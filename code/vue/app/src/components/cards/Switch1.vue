@@ -7,7 +7,8 @@
       <div class="label-value">{{ widgetVals.power.toUpperCase() }}</div>
       <div class="label-expand">
         <v-btn icon class="expand-icon" @click="handleExpand()">
-          <v-icon>mdi-chevron-up</v-icon>
+          <v-icon v-if="options.show=='full'" class="close">mdi-close</v-icon>
+          <v-icon v-else>mdi-chevron-up</v-icon>
         </v-btn>
       </div>
     </div>
@@ -28,6 +29,11 @@
         />
       </div>
     </div>
+    <div v-if="options.show=='full'">
+      <div class="extras">
+        <v-icon>mdi-plus</v-icon>
+      </div>
+    </div> 
   </div>
 </template>
 
@@ -41,7 +47,7 @@ export default {
   },
   props: {
     card: Object,
-    ver: String
+    options: Object
   },
   data() {
     return {
@@ -177,5 +183,13 @@ export default {
 .v-btn.expand-icon {
   width: 24px;
   height: 24px;
+}
+i.v-icon.close {
+  font-size: 16px;
+  color: white;
+}
+.extras i.v-icon {
+  font-size: 20px;
+  color: white;
 }
 </style>

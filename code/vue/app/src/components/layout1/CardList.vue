@@ -5,7 +5,7 @@
         :is="val.card"
         :key="key"
         :card="val"
-        ver="min"
+        :options="cardOptions"
       />
     </div>
   </div>
@@ -18,7 +18,10 @@ export default {
     return {
       layoutCols: 'cols-1',
       imported: [],
-      cards: {}
+      cards: {},
+      cardOptions: {
+        'show': 'min'
+      }
     }
   },
   methods: {

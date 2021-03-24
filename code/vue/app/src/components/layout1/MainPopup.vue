@@ -8,7 +8,7 @@
         :is="popup.component"
         key="popup_comp"
         :card="popup.params.card"
-        ver="full"
+        :options="cardOptions"
       />
     </div>
   </div>
@@ -25,7 +25,10 @@ export default {
   data() {
     return {
       imported: [],
-      cards: {}
+      cards: {},
+      cardOptions: {
+        'show': 'full'
+      }
     }
   },
   methods: {
