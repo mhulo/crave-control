@@ -23,6 +23,7 @@ services:
         - ./cgate/config/NET1.xml:/cgate/tag/NET1.xml
       networks:
         - backend
+      restart: unless-stopped
 
 ### NGINX Server #########################################
     nginx:
@@ -40,6 +41,7 @@ services:
       networks:
         - frontend
         - backend
+      restart: unless-stopped
 
 ### Web ##############################################
 
@@ -56,6 +58,7 @@ services:
         - redis
       networks:
         - backend
+      restart: unless-stopped
 
 ### Vue ##############################################
 
@@ -72,6 +75,7 @@ services:
       networks:
         - frontend
         - backend
+      restart: unless-stopped
 
 ### Redis DB ################################################
 
@@ -83,4 +87,5 @@ services:
         - ../data/redis:/data
       networks:
         - backend
+      restart: unless-stopped
 

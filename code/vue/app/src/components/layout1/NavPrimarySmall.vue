@@ -56,7 +56,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,0.75);
+  background: black;
   border: 0px;
 }
 #nav-small-inner {

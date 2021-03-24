@@ -1,21 +1,17 @@
+# this will be installed in ;
 # /etc/systemd/system/crave.service
-
-# sudo usermod -a -G docker michael
-# sudo nano /etc/systemd/system/crave.service
-
-# sudo systemctl enable docker.service
-# sudo systemctl enable crave.service
-# sudo systemctl start crave.service
+# need to set correct working directory based on user (eg. pi)
+# and the location that crave-control is installed
 
 [Unit]
-Description=Docker Compose Opt Service
+Description=Docker Compose Crave Service
 Requires=docker.service
 After=docker.service
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-WorkingDirectory=/opt
+WorkingDirectory=/home/pi/projects/crave-control/docker
 ExecStart=/usr/local/bin/docker-compose up -d
 ExecStop=/usr/local/bin/docker-compose down
 TimeoutStartSec=0

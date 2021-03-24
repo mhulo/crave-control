@@ -58,6 +58,7 @@ export default {
       else {
         // message received on websocket from server
         // dispatch action to update state with new data
+        //console.log(jsonData)
         store.dispatch('updateDevices', jsonData)
       }
     }

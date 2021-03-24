@@ -65,8 +65,16 @@ export default new Vuex.Store({
     SET_CARDS(state, cards_data) {
       state.cards = cards_data
     },
-    SET_DEVICES(state, devices_data) {
-      state.devices = devices_data
+    SET_IFX(state, ifx_data) {
+      if (ifx_data['val'] == null) {
+        Vue.delete(state.devices, ifx_data['key'])        
+      }
+      else if (!(ifx_data['key'] in state.devices)) {
+        Vue.set(state.devices, ifx_data['key'], ifx_data['val'])
+      }
+      else {
+        state.devices[ifx_data['key']] = ifx_data['val']
+      }
     },
     SET_ICONS(state, icons_data) {
       state.icons = icons_data
@@ -112,9 +120,11 @@ export default new Vuex.Store({
         })
     },
     updateDevices({ commit, state }, devices) {
-      if (JSON.stringify(devices) != JSON.stringify(state.devices)) {
-        commit('SET_DEVICES', devices)
-      }
+      Object.entries(devices).forEach(([k, v]) => {
+        if (JSON.stringify(v) != JSON.stringify(state.devices['k'])) {
+          commit('SET_IFX', { 'key': k, 'val': v})
+        }
+      })
     },
     updateNav({ commit, state, getters }, data) {
       let key = data['key']

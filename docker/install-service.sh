@@ -1,4 +1,5 @@
 #!/bin/bash
 
-sudo cp ~/cravectl-1/cravectl-1.service /etc/systemd/system/cravectl-1.service
-sudo systemctl enable cravectl-1
+sudo cp crave.service /etc/systemd/system/crave.service
+sudo systemctl enable crave.service
+sudo systemctl start crave.service
