@@ -38,6 +38,17 @@
           <v-icon >mdi-plus</v-icon>
         </v-btn>
       </div>
+      <div>
+        <RgbCircle1
+          :key="cardId+'_rgb_circle'"
+          :card="card"
+          :deviceName="card.devices[0]"
+          valKey="rgb"
+          ref="rgb_circle"
+          @handleUpdate="handleUpdate"
+          @handleCommand="handleCommand"
+        />
+      </div>
     </div>  
   </div>
 </template>
@@ -45,10 +56,12 @@
 <script>
 import ApiService from '@/services/ApiService.js'
 import Slider1 from '@/components/widgets/Slider1.vue'
+import RgbCircle1 from '@/components/widgets/RgbCircle1.vue'
 
 export default {
   components: {
-    Slider1
+    Slider1,
+    RgbCircle1
   },
   props: {
     card: Object,
@@ -58,7 +71,8 @@ export default {
     return {
       cardId: this.$vnode.key,
       widgetVals: {
-        'brightness' : 0
+        'brightness' : 0,
+        'rgb' : 0
       }
     }
   },

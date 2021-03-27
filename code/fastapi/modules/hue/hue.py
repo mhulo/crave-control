@@ -1,4 +1,9 @@
 from main.main_common import *
+from rgbxy import Converter
+from rgbxy import GamutA
+from rgbxy import GamutB
+from rgbxy import GamutC
+import math
 
 class Hue:
 
@@ -17,6 +22,9 @@ class Hue:
       ret_val.append(resp)
     if ('power' in data):
       resp = self.SetPower(data)
+      ret_val.append(resp)
+    if ('rgb' in data):
+      resp = self.SetRgb(data)
       ret_val.append(resp)
     return ret_val
 
@@ -40,6 +48,15 @@ class Hue:
     else:
       set_power = False
     set_data = { 'on' : set_power }
+    endpoint = 'lights/' + data['address'] + '/state'
+    res = self.HitHue(endpoint, 'put', json.dumps(set_data))
+    ret_val = res.json()
+    return ret_val
+
+
+  def SetRgb(self, data):
+    set_xy = self.RgbToXy('c', data['rgb'])
+    set_data = { 'xy' : set_xy }
     endpoint = 'lights/' + data['address'] + '/state'
     res = self.HitHue(endpoint, 'put', json.dumps(set_data))
     ret_val = res.json()
@@ -119,13 +136,38 @@ class Hue:
       ret_val[k] = {}
       ret_val[k]['address'] = v['address']
       if ('state' in ifx_vals[v['address']]):
+        # get power
         ret_val[k]['power'] = self.LevelToPower(ifx_vals[v['address']]['state']['on'])
-        if (ret_val[k]['power'] == 'on'):
-          ret_val[k]['brightness'] = round(int(ifx_vals[v['address']]['state']['bri']) * (100/255))
-        else:
-          ret_val[k]['brightness'] = 0
 
-          
+        # get brightness
+        ret_val[k]['brightness'] = 0
+        if ('bri' in ifx_vals[v['address']]['state']):
+          if (ret_val[k]['power'] == 'on'):
+            ret_val[k]['brightness'] = round(int(ifx_vals[v['address']]['state']['bri']) * (100/255))
+
+        # get color from xy and gamut
+        ct = None
+        xy = None
+        gamut = None
+        rgb = None
+        if ('ct' in ifx_vals[v['address']]['state']):
+          ct = ifx_vals[v['address']]['state']['ct']
+        if ('xy' in ifx_vals[v['address']]['state']):
+          xy = ifx_vals[v['address']]['state']['xy']
+        if ('capabilities' in ifx_vals[v['address']]):
+          if ('control' in ifx_vals[v['address']]['capabilities']):
+            if ('colorgamuttype' in ifx_vals[v['address']]['capabilities']['control']):
+              gamut = ifx_vals[v['address']]['capabilities']['control']['colorgamuttype']
+        if ((xy != None) and (gamut != None)):
+          rgb = self.XyToRgb(gamut, xy[0], xy[1])
+        ret_val[k] = {
+          **ret_val[k],
+          'ct': ct, 
+          'xy': xy,
+          'gamut': gamut,
+          'rgb': rgb
+        }
+
     return ret_val
 
 
@@ -136,7 +178,6 @@ class Hue:
 
 
   def HitHue(self, endpoint, typ, data=None):
-
     url = self.conf['bridge_url'] + endpoint
     headers = { 'Content-Type' : 'application/json;charset=utf-8' }
     if (typ == 'get'):
@@ -153,4 +194,26 @@ class Hue:
     if (state == True):
       pwr = 'on'
     return pwr
+
+
+  def GetGamut(self, gamut):
+    if (gamut.lower() == 'a'):
+      conv = Converter(GamutA)
+    elif (gamut.lower() == 'c'):
+      conv = Converter(GamutC)   
+    else:
+      conv = Converter(GamutB)
+    return conv
+
+
+  def XyToRgb(self, gamut, x, y):
+    conv = self.GetGamut(gamut)
+    rgb = conv.xy_to_rgb(x, y)
+    return rgb
+
+
+  def RgbToXy(self, gamut, rgb):
+    conv = self.GetGamut(gamut)
+    xy = conv.rgb_to_xy(*rgb)
+    return xy
 

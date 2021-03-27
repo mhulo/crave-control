@@ -58,7 +58,7 @@ wgt5003:
     - 'Study'
 
 card0200:
-  card: 'dimmer_1'
+  card: 'dimmer_rgb_1'
   label: 'Master LED Strip'
   icon: 'mdi-led-strip-variant'
   devices:
@@ -73,7 +73,7 @@ card0200:
     - 'Master Bedroom'
 
 card0201:
-  card: 'dimmer_1'
+  card: 'dimmer_rgb_1'
   label: 'Stairs LED Strip'
   icon: 'mdi-led-strip-variant'
   devices:

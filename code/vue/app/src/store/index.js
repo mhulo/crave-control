@@ -19,12 +19,12 @@ export default new Vuex.Store({
     nav: {
       'primary': [
         {
-          'name': 'zones',
-          'icon': 'mdi-view-dashboard-outline' //'fab fa-codepen'
-        },
-        {
           'name': 'groups',
           'icon': 'mdi-gamepad-circle-outline'
+        },
+        {
+          'name': 'zones',
+          'icon': 'mdi-collage' //'fab fa-codepen'
         },
         {
           'name': 'dashboard',
@@ -101,7 +101,7 @@ export default new Vuex.Store({
         .then(response => {
           if (JSON.stringify(response.data) != JSON.stringify(state.cards)) {
             commit('SET_CARDS', response.data)
-            dispatch('updateNav', { key: 'primary', val: 0 })
+            dispatch('updateNav', { key: 'primary', val: 1 })
             dispatch('updateNav', { key: 'secondary', val: 0 })
             dispatch('updateIcons')
           }

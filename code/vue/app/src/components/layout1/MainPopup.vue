@@ -81,7 +81,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   border: 0px red solid;
-  background: rgba(255,255,255,0.15);
+  background: rgba(43, 43, 43, 0.4);
 }
 .large .popup-outer {
   padding: 30px;
@@ -96,7 +96,7 @@ export default {
 }
 .popup-outer.nav {
   padding: 20px 0px 0px 0px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(0, 0, 0, 0.4);
 }
 .popup-nav {
   background: rgba(0,0,0,0.7);

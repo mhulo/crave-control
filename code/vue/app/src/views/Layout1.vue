@@ -138,8 +138,8 @@ export default {
   }
   .left-container {
     height: 100%;
-    width: 330px;
-    min-width: 330px;
+    width: 300px;
+    min-width: 300px;
     display: flex;
     flex-direction: column;
     margin: 0px;
@@ -230,7 +230,7 @@ export default {
     background: rgba(0,0,0,0.95);
   }
   .popup-area.large {
-    width: calc(100% - 330px);
+    width: calc(100% - 300px);
     height: 100%;
     bottom: 0px;
   }

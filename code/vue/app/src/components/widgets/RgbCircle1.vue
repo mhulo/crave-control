@@ -1,17 +1,12 @@
 <template>
-  <div class="slider-1">
-    <v-slider
-      v-model="compVal"
-      max="100"
-      min="0"
-      color="white"
-      track-color="rgba(255, 255, 255, 0.5)"
-    >
-    </v-slider>
+  <div class="circle-1">
+      <div :id="circleId"></div>
   </div>
 </template>
 
 <script>
+import iro from '@jaames/iro'
+
 export default {
   props: {
     card: Object,
@@ -25,12 +20,13 @@ export default {
       compChgTimestamp: 0,
       cmdRate: 300,
       cmdTimeStamp: 0,
-      cmdVal: null
+      cmdVal: null,
+      rgbCircle: null
     }
   },
   methods: {
-    compChange(newVal=null) {
-      if ((newVal != null) && (newVal != this.deviceVals[this.valKey])) {
+    compChange(newVal = null) {
+      if ((newVal != null) && (JSON.stringify(newVal) != JSON.stringify(this.deviceVals[this.valKey]))) {
         this.cmdVal = newVal
       }
       if (this.cmdVal != null) {
@@ -53,12 +49,22 @@ export default {
       if ((Date.now() - this.compChgTimestamp) > 6000) {
         if (this.valKey in this.deviceVals) {
           this.compVal = this.deviceVals[this.valKey]
+          this.rgbCircle.color.rgb = this.toCompFormat(this.compVal)
           this.$emit('handleUpdate', { [this.valKey] : this.compVal })
         }
       }
+    },
+    toCompFormat(val) {
+      return { r: val[0], g: val[1], b: val[2] }
+    },
+    toIfxFormat(val) {
+      return [ val.r, val.g, val.b ]
     }
   },
   computed: {
+    circleId() {
+      return this.cardId + '_rgb_circle_1'
+    },
     deviceVals() {
       return this.$store.getters.deviceByName(this.deviceName)
     }
@@ -74,16 +80,31 @@ export default {
     }
   },
   mounted() {
-    this.deviceChange()
+    this.rgbCircle = new iro.ColorPicker('#'+this.circleId, {
+      width: 300,
+      color: '#FFF',
+      handleRadius: 12,
+      layout: [{ component: iro.ui.Wheel }]
+    })
+
+    this.rgbCircle.on('color:change', (color) => {
+      this.compVal = this.toIfxFormat(color.rgb)
+    })
+    setTimeout(() => { this.deviceChange() }, 200)
+  },
+  beforeDestroy() {
+    this.rgbCircle = null
   }
 }
 </script>
 
 <style scoped>
 
-.slider-1 {
-  height: 35px;
+.circle-1 {
   width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 5px;
   border: 0px blue solid;
 }
 </style>

@@ -32,6 +32,13 @@ def hue_state(request: Request):
   return resp
 
 
+@router.get('/state_raw/')
+def hue_state_raw(request: Request):
+  ifx = get_ifx(request)
+  resp = Hue(ifx).StateRaw().json()
+  return resp
+
+
 @router.get('/status/')  
 def hue_status(request: Request):
   ifx = get_ifx(request)
