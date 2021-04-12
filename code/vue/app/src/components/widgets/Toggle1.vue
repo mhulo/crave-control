@@ -78,7 +78,7 @@ export default {
 
 <style scoped>
 .toggle-1 {
-  height: 35px;
+  height: 30px;
   border: 0px blue solid;
 }
 

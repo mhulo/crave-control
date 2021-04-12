@@ -6,7 +6,7 @@ Request.state = MainState()
 
 app = FastAPI(debug=True)
 
-hosts = ['localhost', '192.168.2.19', '192.168.2.20', '192.168.2.237']
+hosts = ['localhost', '192.168.2.19', '192.168.2.20', '192.168.2.237', '10.0.0.124']
 origins = []
 for host in hosts:
   origins += ['https://' + host, 'http://' + host + ':4000']

@@ -80,7 +80,7 @@ export default new Vuex.Store({
       state.icons = icons_data
     },
     SET_NAV_SELECTED(state, selected_data) {
-      state.nav.selected = selected_data
+      state.nav.selected.[selected_data['key']] = selected_data['val']
     },
     SET_NAV_POPUP(state, popup_data) {
       state.popup = popup_data
@@ -101,7 +101,6 @@ export default new Vuex.Store({
         .then(response => {
           if (JSON.stringify(response.data) != JSON.stringify(state.cards)) {
             commit('SET_CARDS', response.data)
-            dispatch('updateNav', { key: 'primary', val: 1 })
             dispatch('updateNav', { key: 'secondary', val: 0 })
             dispatch('updateIcons')
           }
@@ -130,14 +129,15 @@ export default new Vuex.Store({
       let key = data['key']
       let idx = data['val']
       let selected = state.nav.selected
-      selected.[key].index = idx
-      selected.[key].name = (key == 'primary') ?
+      let sec = (Object.keys(getters.navSecondary).length > 0) ?
+        getters.navSecondary[idx].name :
+        'All'
+      let navVal = {}
+      navVal.index = idx
+      navVal.name = (key == 'primary') ?
         state.nav.primary[idx].name :
-        [
-          state.nav.selected.primary.name,
-          getters.navSecondary[idx].name
-        ]
-      commit('SET_NAV_SELECTED', selected)
+        [ state.nav.selected.primary.name, sec]
+      commit('SET_NAV_SELECTED', { 'key': key, 'val': navVal })
     },
     updatePopup({ commit, state }, data) {
       let show = true
@@ -186,10 +186,12 @@ export default new Vuex.Store({
     navSecondary: state => {
       let things = []
       let primary = state.nav.selected.primary.name
-      for (const x in state.cards) {
-        if (primary in state.cards.[x]) {
-          for (const y of state.cards.[x].[primary]) {
-            if (!(things.includes(y))) { things.push(y) }
+      if (Object.keys(state.cards).length > 0) {
+        for (const x in state.cards) {
+          if (primary in state.cards.[x]) {
+            for (const y of state.cards.[x].[primary]) {
+              if (!(things.includes(y))) { things.push(y) }
+            }
           }
         }
       }

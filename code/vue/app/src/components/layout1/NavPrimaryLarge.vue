@@ -20,7 +20,9 @@ export default {
   },
   methods: {
     handleNavClick(navIndex) {
-      this.$store.dispatch('updateNav', { key: 'primary', val: navIndex })
+      let navPath = '/cards/nav/' + navIndex + '/'
+      if (this.$route.path !== navPath) { this.$router.push({ path: navPath }) }
+      else { this.$router.push({ path: '/cards/' }) }
     }
   },
   computed: {

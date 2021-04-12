@@ -34,9 +34,14 @@
         <div class="cards">
           <CardList/>
         </div>
+
         <transition name="slide-popup">
-          <div :class="'popup-area '+layoutSize" v-show="popup.show"><MainPopup/></div>
+          <div :class="'popup-area '+layoutSize" v-if="popupRoutes.includes($route.name+'_'+layoutSize)">
+            <router-view :key="$route.fullPath+'_cards_list'"></router-view>
+          </div>
         </transition>
+
+
         <div class="nav-small" v-show="layoutSize == 'small'">
           <NavPrimarySmall/>
         </div>
@@ -48,6 +53,7 @@
 
 <script>
 import upperFirst from 'lodash/upperFirst'
+import isEmpty from 'lodash/isEmpty'
 import NavPrimaryLarge from '@/components/layout1/NavPrimaryLarge.vue'
 import NavPrimarySmall from '@/components/layout1/NavPrimarySmall.vue'
 import NavSecondary from '@/components/layout1/NavSecondary.vue'
@@ -66,7 +72,8 @@ export default {
   data() {
     return {
       upperFirst: upperFirst,
-      layoutSize: 'small'
+      layoutSize: 'small',
+      popupRoutes: ['cards-detail_large', 'cards-detail_small', 'cards-nav_small']
     }
   },
   methods: {
@@ -74,6 +81,10 @@ export default {
       let width = document.getElementById('outer-container').offsetWidth
       this.layoutSize = (width > 970)? 'large' : 'small'
       this.$store.dispatch('updatePopup', { 'show' : false })
+    },
+    backCalled() {
+      //console.log('back')
+      alert('back')
     }
   },
   computed: {
@@ -88,10 +99,15 @@ export default {
     }
   },
   watch: {},
-  created() {},
+  created() {
+    this.$store.dispatch('updateNav', { key: 'primary', val: 1 })
+  },
   mounted() {
     this.updateSizes()
     window.addEventListener('resize', this.updateSizes)
+    //window.onpopstate = function() {
+    //  alert('back')
+    //}
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.updateSizes)

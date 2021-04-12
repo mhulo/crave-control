@@ -29,7 +29,8 @@ export default {
   methods: {
     handleNavClick(navIndex) {
       this.$store.dispatch('updateNav', { key: 'secondary', val: navIndex })
-      this.$store.dispatch('updatePopup', { 'show' : false })
+      let navPath = '/cards/'
+      if (this.$route.path !== navPath) { this.$router.push({ path: navPath }) }
     }
   },
   computed: {
@@ -40,7 +41,14 @@ export default {
       return this.$store.getters.navSecondary
     }
   },
-  watch: {},
+  watch: {
+    $route(to, from) {
+      if ('navIndex' in this.$route.params) {
+        let navIndex = parseInt(this.$route.params.navIndex)
+        this.$store.dispatch('updateNav', { key: 'primary', val: navIndex })
+      }
+    }
+  },
   mounted() {}
 }
 </script>

@@ -5,15 +5,31 @@ import Test1 from '@/views/Test1.vue'
 
 Vue.use(VueRouter)
 
+// **** note ****
+// routes to be kept alive are configured in a 'keepList'
+// array in the component that has the router-view in it
+
 const routes = [
   {
-    path: '/home/',
-    name: 'layout1',
-    component: Layout1,
+    path: '/cards/',
+    name: 'cards-list',
+    component: () => import('@/views/Layout1.vue'),
+    children: [
+      {
+        path: 'detail/:cardId/',
+        name: 'cards-detail',
+        component: () => import('@/components/layout1/CardDetail.vue')
+      },
+      {
+        path: 'nav/:navIndex/',
+        name: 'cards-nav',
+        component: () => import('@/components/layout1/NavSecondary.vue')
+      }
+    ]
   },
   {
     path: '/test/',
-    name: 'test1',
+    name: 'landing',
     component: Test1,
     props: true
   }

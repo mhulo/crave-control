@@ -71,7 +71,6 @@ export default {
     }
   },
   created() {
-    console.log('cards created')
     this.$store.dispatch('startSocket')
     this.importCards()
     this.$store.dispatch('updateCards')

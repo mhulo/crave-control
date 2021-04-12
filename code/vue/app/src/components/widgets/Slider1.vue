@@ -82,7 +82,7 @@ export default {
 <style scoped>
 
 .slider-1 {
-  height: 35px;
+  height: 30px;
   width: 100%;
   border: 0px blue solid;
 }

@@ -90,11 +90,9 @@ export default {
       ApiService.getApi(cmdUrl)
     },
     handleExpand() {
-      this.$store.dispatch('updatePopup', {
-        'type': 'card',
-        'component': this.card.card,
-        'params': { 'card': this.card } 
-      })
+      (this.options.show == 'full') ?
+        this.$router.push({ path: '/cards/' }) :
+        this.$router.push({ path: `/cards/detail/${this.cardId}/` })
     },
     isActive(key) {
       return (this.widgetVals[key] > 0) ? 'active' : ''

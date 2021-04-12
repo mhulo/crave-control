@@ -22,8 +22,9 @@ export default {
   },
   methods: {
     handleNavClick(navIndex) {
-      this.$store.dispatch('updateNav', { key: 'primary', val: navIndex })
-      this.$store.dispatch('updatePopup', { 'type': 'nav', 'component': 'NavSecondary', 'params': { 'navIndex' : navIndex } })
+      let navPath = '/cards/nav/' + navIndex + '/'
+      if (this.$route.path !== navPath) { this.$router.push({ path: navPath }) }
+      else { this.$router.push({ path: '/cards/' }) }
     }
   },
   computed: {

@@ -1,14 +1,8 @@
 <template>
   <v-main>
     <div class="stl-test">
-      <v-slider
-        v-model="compVal"
-        @change="compChange()"
-        max="100"
-        min="0"
-        thumb-label
-      >
-      </v-slider>
+      Crave control<br/>
+      ...landing
     </div>
   </v-main>
 </template>
@@ -29,6 +23,11 @@ export default {
     compChange() {
       console.log('changed')
     }
+  },
+  mounted() {
+    setTimeout(() => { 
+      window.location.href = '/home/'
+    }, 1000)
   }
 }
 </script>

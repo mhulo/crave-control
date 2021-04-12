@@ -4,7 +4,7 @@
       <div class="label-name">
         <div>{{ card.label }}</div>
       </div>
-      <div class="label-value">{{ widgetVals.power.toUpperCase() }}</div>
+      <div class="label-value">{{ widgetVals.brightness }}%</div>
       <div class="label-expand">
         <v-btn icon class="expand-icon" @click="handleExpand()">
           <v-icon v-if="options.show=='full'" class="close">mdi-close</v-icon>
@@ -12,38 +12,43 @@
         </v-btn>
       </div>
     </div>
-    <div class="interface-row">{{ card.devices[0] }} | {{ deviceVals.power }}</div>
+    <div class="interface-row">{{ card.devices[0] }} | {{ deviceVals.brightness }}</div>
     <div class="widget-row">
-      <v-btn icon :class="'icon-container '+isOn('power')" @click="toggleComp('power_toggle')">
+      <v-btn icon :class="'icon-container '+isActive('brightness')" @click="toggleVal('power')">
         <v-icon>{{ cardIcon }}</v-icon>
       </v-btn>
       <div class="widget-container">
-        <Toggle1
-          :key="cardId+'_power_toggle'"
+        <Slider1
+          :key="cardId+'_brightness_slider'"
           :card="card"
           :deviceName="card.devices[0]"
-          valKey="power"
-          ref="power_toggle"
+          valKey="brightness"
+          ref="brightness_slider"
           @handleUpdate="handleUpdate"
           @handleCommand="handleCommand"
         />
       </div>
     </div>
     <div v-if="options.show=='full'">
-      <div class="extras">
-        <v-icon>mdi-plus</v-icon>
+      <div class="plus-minus">
+        <v-btn icon class="extras" @click="decrementComp('brightness_slider')">
+          <v-icon>mdi-minus</v-icon>
+        </v-btn>
+        <v-btn icon class="extras" @click="incrementComp('brightness_slider')">
+          <v-icon >mdi-plus</v-icon>
+        </v-btn>
       </div>
-    </div> 
+    </div>  
   </div>
 </template>
 
 <script>
 import ApiService from '@/services/ApiService.js'
-import Toggle1 from '@/components/widgets/Toggle1.vue'
+import Slider1 from '@/components/widgets/Slider1.vue'
 
 export default {
   components: {
-    Toggle1
+    Slider1
   },
   props: {
     card: Object,
@@ -53,7 +58,7 @@ export default {
     return {
       cardId: this.$vnode.key,
       widgetVals: {
-        power: 'off'
+        'brightness' : 0
       }
     }
   },
@@ -75,13 +80,30 @@ export default {
         this.$router.push({ path: '/cards/' }) :
         this.$router.push({ path: `/cards/detail/${this.cardId}/` })
     },
-    isOn(key) {
-      return (this.widgetVals[key] == 'on') ? 'active' : ''
+    isActive(key) {
+      return (this.widgetVals[key] > 0) ? 'active' : ''
     },
-    toggleComp(key) {
-      this.$refs[key].compVal = !this.$refs[key].compVal
+    decrementComp(key) {
+      this.$refs[key].compVal --
       this.$refs[key].compChange()
-    }
+    },
+    incrementComp(key) {
+      this.$refs[key].compVal ++
+      this.$refs[key].compChange()
+    },
+    toggleVal(key) {
+      let data = null
+      if (key in this.cardVals) {
+        if (key == 'power') {
+          let val = (this.cardVals[key] == 'on')? 'off' : 'on'
+          data = { [key] : val }
+        }
+      }
+      if (data != null) {
+        this.handleUpdate(data)
+        this.handleCommand(data)
+      }
+    },
   },
   computed: {
     deviceVals() {
@@ -157,12 +179,12 @@ export default {
   border-radius: 50%;
 }
 .widget-container {
-  padding-left: 10px;
-  flex-grow: 1;
+  padding: 0px 2px 0px 10px;
+  width: 100%;
   display: inline-block;
   border: 0px red solid;
 }
-.icon-container i.v-icon{
+.icon-container i.v-icon {
   font-size: 20px;
   color: rgba(255, 255, 255, 0.5);
   padding-left: 0px;
@@ -176,7 +198,6 @@ export default {
 .expand-icon i.v-icon {
   font-size: 20px;
   color: white;
-  padding-left: 0px;
 }
 .v-btn.expand-icon {
   width: 24px;
@@ -189,5 +210,11 @@ i.v-icon.close {
 .extras i.v-icon {
   font-size: 20px;
   color: white;
+}
+.plus-minus {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 35px;
+  border: 0px blue solid;
 }
 </style>

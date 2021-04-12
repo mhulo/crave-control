@@ -12,7 +12,6 @@ card0001:
   groups:
     - 'Lights'
   zones:
-    - 'All Upstairs'
     - 'Master Bedroom'
 
 card0002:
@@ -26,7 +25,7 @@ card0002:
   groups:
     - 'Lights'
   zones:
-    - 'All Upstairs'
+    - 'Upstairs'
     - 'Nia''s Bedroom'
 
 card0003:
@@ -40,21 +39,7 @@ card0003:
   groups:
     - 'Lights'
   zones:
-    - 'All Upstairs'
-    - 'Study'
-
-wgt5003:
-  card: 'dimmer_1'
-  label: 'Study Lights 2'
-  icon: 'mdi-lightbulb-outline'
-  devices:
-    - 'cgate.study_lights'
-  fave_1: 15
-  fave_2: 40
-  groups:
-    - 'Lights'
-  zones:
-    - 'All Upstairs'
+    - 'Upstairs'
     - 'Study'
 
 card0200:
@@ -69,7 +54,6 @@ card0200:
     - 'Lights'
     - 'Hue'
   zones:
-    - 'All Upstairs'
     - 'Master Bedroom'
 
 card0201:
@@ -84,7 +68,7 @@ card0201:
     - 'Lights'
     - 'Hue'
   zones:
-    - 'All Upstairs'
+    - 'Upstairs'
 
 card0102:
   card: 'switch_1'
@@ -95,8 +79,7 @@ card0102:
   groups:
     - 'Lights'
   zones:
-    - 'All Upstairs'
-    - 'Master Bedroom'
+    - 'Ensuite'
 
 card0103:
   card: 'switch_1'
@@ -107,8 +90,7 @@ card0103:
   groups:
     - 'Devices'
   zones:
-    - 'All Upstairs'
-    - 'Master Bedroom'
+    - 'Ensuite'
 
 card0104:
   card: 'switch_1'
@@ -119,11 +101,10 @@ card0104:
   groups:
     - 'Devices'
   zones:
-    - 'All Upstairs'
-    - 'Master Bedroom'
+    - 'Ensuite'
 
 card0004:
-  card: 'dimmer_1'
+  card: 'dimmer_0'
   label: 'Dining Lights'
   icon: 'mdi-lightbulb-outline'
   devices:
@@ -133,7 +114,6 @@ card0004:
   groups:
     - 'Lights'
   zones:
-    - 'All Downstairs'
     - 'Living Area'
 
 card0005:
@@ -147,7 +127,6 @@ card0005:
   groups:
     - 'Lights'
   zones:
-    - 'All Downstairs'
     - 'Living Area'
 
 card0006:
@@ -161,7 +140,7 @@ card0006:
   groups:
     - 'Lights'
   zones:
-    - 'All Downstairs'
+    - 'Kitchen'
     - 'Living Area'
 
 card0007:
@@ -175,8 +154,7 @@ card0007:
   groups:
     - 'Lights'
   zones:
-    - 'All Downstairs'
-    - 'Entrance'
+    - 'Entrance Area'
 
 card0008:
   card: 'dimmer_1'
@@ -192,7 +170,6 @@ card0008:
     - 'Lights'
     - 'Scenes'
   zones:
-    - 'All Downstairs'
     - 'Living Area'
 
 card0009:
@@ -204,7 +181,6 @@ card0009:
   groups:
     - 'Lights'
   zones:
-    - 'All Downstairs'
     - 'Bathroom'
 
 card0010:
@@ -216,7 +192,6 @@ card0010:
   groups:
     - 'Devices'
   zones:
-    - 'All Downstairs'
     - 'Bathroom'
 
 card0011:
@@ -228,7 +203,6 @@ card0011:
   groups:
     - 'Devices'
   zones:
-    - 'All Downstairs'
     - 'Bathroom'
 
 card0012:
@@ -240,8 +214,7 @@ card0012:
   groups:
     - 'Lights'
   zones:
-    - 'All Downstairs'
-    - 'Entrance'
+    - 'Entrance Area'
 
 card0101:
   card: 'switch_1'
