@@ -150,7 +150,6 @@ export default {
   margin-top: 2px;
   /*background: rgb(224, 10, 128);*/
   background: rgba(255,255,255,0.1);
-  /*border: 1px rgba(255, 255, 255, 0.5) solid;*/
   border-radius: 50%;
 }
 .icon-container i.v-icon {
@@ -210,11 +209,12 @@ export default {
   border: 0px red solid;
 }
 .active.icon-container {
-  /*border-color: white;*/
-  background: rgba(255,255,255,0.3);
+  /*background: rgba(255,255,255,0.4);*/
+  background: rgba(255,255,255,0.85);
 }
 .active.icon-container i.v-icon{
-  color: white;
+  /*color: white;*/
+  color: rgba(0,0,0,0.5);
 }
 .expand-icon i.v-icon {
   font-size: 20px;

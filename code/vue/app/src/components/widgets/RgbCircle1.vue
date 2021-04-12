@@ -10,6 +10,7 @@ import iro from '@jaames/iro'
 export default {
   props: {
     card: Object,
+    options: Object,
     deviceName: String,
     valKey: String
   },
@@ -49,10 +50,30 @@ export default {
       if ((Date.now() - this.compChgTimestamp) > 6000) {
         if (this.valKey in this.deviceVals) {
           this.compVal = this.deviceVals[this.valKey]
-          this.rgbCircle.color.rgb = this.toCompFormat(this.compVal)
           this.$emit('handleUpdate', { [this.valKey] : this.compVal })
+          if (this.rgbCircle != null) {
+            this.rgbCircle.color.rgb = this.toCompFormat(this.compVal)
+          }
         }
       }
+    },
+    handleCircleActive() {
+      this.deviceChange()
+      if (this.options.show == 'full') {
+        if (this.rgbCircle == null) {
+          this.rgbCircle = new iro.ColorPicker('#'+this.circleId, {
+            width: 300,
+            color: '#FFF',
+            handleRadius: 12,
+            layout: [{ component: iro.ui.Wheel }]
+          })
+          this.rgbCircle.on('color:change', this.onColorChange)
+          setTimeout(() => { this.deviceChange() }, 300)
+        }
+      }
+    },
+    onColorChange(color) {
+      this.compVal = this.toIfxFormat(color.rgb)
     },
     toCompFormat(val) {
       return { r: val[0], g: val[1], b: val[2] }
@@ -63,7 +84,7 @@ export default {
   },
   computed: {
     circleId() {
-      return this.cardId + '_rgb_circle_1'
+      return this.cardId + '_rgb_circle_1_' + this.options.show
     },
     deviceVals() {
       return this.$store.getters.deviceByName(this.deviceName)
@@ -80,20 +101,13 @@ export default {
     }
   },
   mounted() {
-    this.rgbCircle = new iro.ColorPicker('#'+this.circleId, {
-      width: 300,
-      color: '#FFF',
-      handleRadius: 12,
-      layout: [{ component: iro.ui.Wheel }]
-    })
-
-    this.rgbCircle.on('color:change', (color) => {
-      this.compVal = this.toIfxFormat(color.rgb)
-    })
-    setTimeout(() => { this.deviceChange() }, 200)
+    this.handleCircleActive()
   },
   beforeDestroy() {
-    this.rgbCircle = null
+    if (this.rgbCircle != null) {
+      this.rgbCircle.off('color:change', this.onColorChange)
+      this.rgbCircle = null
+    }
   }
 }
 </script>
