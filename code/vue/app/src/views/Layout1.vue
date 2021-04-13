@@ -83,7 +83,6 @@ export default {
       this.$store.dispatch('updatePopup', { 'show' : false })
     },
     backCalled() {
-      //console.log('back')
       alert('back')
     }
   },
@@ -105,9 +104,6 @@ export default {
   mounted() {
     this.updateSizes()
     window.addEventListener('resize', this.updateSizes)
-    //window.onpopstate = function() {
-    //  alert('back')
-    //}
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.updateSizes)
@@ -148,8 +144,9 @@ export default {
     display: flex;
     height: 100%;
     font-family: 'Montserrat', sans-serif;
-    /*background: #5e618b;*/
-    background: url('~@/assets/img/bg3.jpg') no-repeat top fixed;
+    /*background: #4e4e4e;*/
+    background-image: radial-gradient(#494949, #161616);
+    /*background: url('~@/assets/img/bg3.jpg') no-repeat top fixed;*/
     background-size: cover;
   }
   .left-container {
@@ -216,7 +213,7 @@ export default {
     padding: 0px 15px;
     margin-bottom: 10px;
     color: white;
-    background: rgba(0,0,0,0.75);
+    background: rgba(0,0,0,0.6);
     border: 0px blue solid;
   }
   .things-title {
@@ -242,13 +239,14 @@ export default {
     bottom: 50px;
     width: 100%;
     height: calc(100% - 130px);
-    overflow-x: auto;
+    overflow-y: auto;
     background: rgba(0,0,0,0.95);
   }
   .popup-area.large {
     width: calc(100% - 300px);
     height: 100%;
     bottom: 0px;
+    border: 0px red solid;
   }
   .cards {
     width: 100%;

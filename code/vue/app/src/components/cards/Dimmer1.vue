@@ -1,47 +1,50 @@
 <template>
   <div class="card-outer">
-    <div class="card-icon">
-      <v-btn icon :class="'icon-container '+isActive('brightness')" @click="toggleVal('power')">
-        <v-icon>{{ cardIcon }}</v-icon>
-      </v-btn>
+    <div class="card-details">
+      <div class="card-icon">
+        <v-btn icon :class="'icon-container '+isActive('brightness')" @click="toggleVal('power')">
+          <v-icon>{{ cardIcon }}</v-icon>
+        </v-btn>
+      </div>
+      <div class="details-main">
+        <div class="label-row">
+          <div class="label-name">
+            <div>{{ card.label }}</div>
+          </div>
+          <div class="label-value">{{ widgetVals.brightness }}%</div>
+          <div class="label-expand">
+            <v-btn icon class="expand-icon" @click="handleExpand()">
+              <v-icon v-if="options.show=='full'" class="close">mdi-close</v-icon>
+              <v-icon v-else>mdi-chevron-up</v-icon>
+            </v-btn>
+          </div>
+        </div>
+        <div class="interface-row">{{ card.devices[0] }} | {{ deviceVals.brightness }}</div>
+        <div class="widget-row">
+          <div class="widget-container">
+            <Slider1
+              :key="cardId+'_brightness_slider'"
+              :card="card"
+              :deviceName="card.devices[0]"
+              sliderRgb="white"
+              valKey="brightness"
+              ref="brightness_slider"
+              @handleUpdate="handleUpdate"
+              @handleCommand="handleCommand"
+            />
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="card-main">
-      <div class="label-row">
-        <div class="label-name">
-          <div>{{ card.label }} --2--</div>
-        </div>
-        <div class="label-value">{{ widgetVals.brightness }}%</div>
-        <div class="label-expand">
-          <v-btn icon class="expand-icon" @click="handleExpand()">
-            <v-icon v-if="options.show=='full'" class="close">mdi-close</v-icon>
-            <v-icon v-else>mdi-chevron-up</v-icon>
-          </v-btn>
-        </div>
+    <div v-if="options.show=='full'" class="card-main">
+      <div class="plus-minus">
+        <v-btn icon class="extras" @click="decrementComp('brightness_slider')">
+          <v-icon>mdi-minus</v-icon>
+        </v-btn>
+        <v-btn icon class="extras" @click="incrementComp('brightness_slider')">
+          <v-icon >mdi-plus</v-icon>
+        </v-btn>
       </div>
-      <div class="interface-row">{{ card.devices[0] }} | {{ deviceVals.brightness }}</div>
-      <div class="widget-row">
-        <div class="widget-container">
-          <Slider1
-            :key="cardId+'_brightness_slider'"
-            :card="card"
-            :deviceName="card.devices[0]"
-            valKey="brightness"
-            ref="brightness_slider"
-            @handleUpdate="handleUpdate"
-            @handleCommand="handleCommand"
-          />
-        </div>
-      </div>
-      <div v-if="options.show=='full'">
-        <div class="plus-minus">
-          <v-btn icon class="extras" @click="decrementComp('brightness_slider')">
-            <v-icon>mdi-minus</v-icon>
-          </v-btn>
-          <v-btn icon class="extras" @click="incrementComp('brightness_slider')">
-            <v-icon >mdi-plus</v-icon>
-          </v-btn>
-        </div>
-      </div>  
     </div>
   </div>
 </template>
@@ -126,14 +129,22 @@ export default {
 <style scoped>
 .card-outer {
   color: grey;
-  background: rgba(0,0,0,0.75);
+  background: rgba(0,0,0,0.6);
   padding: 14px;
   border-radius: 10px;
   border: 0px blue solid;
   display: flex;
+  flex-direction: column;
+}
+.card-details {
+  border: 0px red solid;
+  display: flex;
+}
+.card-main {
+  border: 0px red solid;
 }
 .card-icon {
-  width: 50px;
+  width: 45px;
   height: 75px;
   display: flex;
   flex-direction: column;
@@ -145,19 +156,18 @@ export default {
   display: inline-block;
   display: flex;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 35px;
+  height: 35px;
   margin-top: 2px;
-  /*background: rgb(224, 10, 128);*/
   background: rgba(255,255,255,0.1);
   border-radius: 50%;
 }
 .icon-container i.v-icon {
   font-size: 22px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.6);
   padding-left: 0px;
 }
-.card-main {
+.details-main {
   height: 100%;
   flex-grow: 1;
   border: 0px red solid;
@@ -194,7 +204,7 @@ export default {
 }
 .interface-row {
   font-size: 11px;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255,255,255,0.6);
 }
 .widget-row {
   display: flex;
@@ -209,12 +219,10 @@ export default {
   border: 0px red solid;
 }
 .active.icon-container {
-  /*background: rgba(255,255,255,0.4);*/
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.9);
 }
-.active.icon-container i.v-icon{
-  /*color: white;*/
-  color: rgba(0,0,0,0.5);
+.active.icon-container i.v-icon {
+  color: rgba(0,0,0,0.6);
 }
 .expand-icon i.v-icon {
   font-size: 20px;
@@ -235,7 +243,7 @@ i.v-icon.close {
 .plus-minus {
   display: flex;
   justify-content: space-between;
-  padding-left: 35px;
+  padding-left: 47px;
   border: 0px blue solid;
 }
 </style>

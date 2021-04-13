@@ -58,7 +58,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0e0e0e;
+  background: #000000;
 }
 #nav-small-inner {
   position: relative;

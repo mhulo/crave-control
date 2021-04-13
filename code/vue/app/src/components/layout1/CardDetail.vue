@@ -53,8 +53,13 @@ export default {
 <style>
 .popup-comp-wrapper {
   width: 100%;
-  height: 100%;
-  border: 0px red solid;
+  min-height: 100%;
+  border: 0px yellow solid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  background: rgba(255,255,255,0.1)
 }
 
 </style>

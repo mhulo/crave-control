@@ -4,7 +4,7 @@
       v-model="compVal"
       max="100"
       min="0"
-      color="white"
+      :color="sliderRgb"
       track-color="rgba(255, 255, 255, 0.5)"
     >
     </v-slider>
@@ -16,6 +16,7 @@ export default {
   props: {
     card: Object,
     deviceName: String,
+    sliderRgb: String,
     valKey: String
   },
   data() {

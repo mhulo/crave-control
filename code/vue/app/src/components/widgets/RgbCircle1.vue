@@ -68,7 +68,7 @@ export default {
             layout: [{ component: iro.ui.Wheel }]
           })
           this.rgbCircle.on('color:change', this.onColorChange)
-          setTimeout(() => { this.deviceChange() }, 300)
+          setTimeout(() => { this.deviceChange() }, 50)
         }
       }
     },

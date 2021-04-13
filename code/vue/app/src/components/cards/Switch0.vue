@@ -4,7 +4,7 @@
       <div class="label-name">
         <div>{{ card.label }} -0-</div>
       </div>
-      <div class="label-value">{{ widgetVals.brightness }}%</div>
+      <div class="label-value">{{ widgetVals.power.toUpperCase() }}</div>
       <div class="label-expand">
         <v-btn icon class="expand-icon" @click="handleExpand()">
           <v-icon v-if="options.show=='full'" class="close">mdi-close</v-icon>
@@ -12,44 +12,38 @@
         </v-btn>
       </div>
     </div>
-    <div class="interface-row">{{ card.devices[0] }} | {{ deviceVals.brightness }}</div>
+    <div class="interface-row">{{ card.devices[0] }} | {{ deviceVals.power }}</div>
     <div class="widget-row">
-      <v-btn icon :class="'icon-container '+isActive('brightness')" @click="toggleVal('power')">
+      <v-btn icon :class="'icon-container '+isOn('power')" @click="toggleComp('power_toggle')">
         <v-icon>{{ cardIcon }}</v-icon>
       </v-btn>
       <div class="widget-container">
-        <Slider1
-          :key="cardId+'_brightness_slider'"
+        <Toggle1
+          :key="cardId+'_power_toggle'"
           :card="card"
           :deviceName="card.devices[0]"
-          sliderRgb="white"
-          valKey="brightness"
-          ref="brightness_slider"
+          valKey="power"
+          ref="power_toggle"
           @handleUpdate="handleUpdate"
           @handleCommand="handleCommand"
         />
       </div>
     </div>
     <div v-if="options.show=='full'">
-      <div class="plus-minus">
-        <v-btn icon class="extras" @click="decrementComp('brightness_slider')">
-          <v-icon>mdi-minus</v-icon>
-        </v-btn>
-        <v-btn icon class="extras" @click="incrementComp('brightness_slider')">
-          <v-icon >mdi-plus</v-icon>
-        </v-btn>
+      <div class="extras">
+        <v-icon>mdi-plus</v-icon>
       </div>
-    </div>  
+    </div> 
   </div>
 </template>
 
 <script>
 import ApiService from '@/services/ApiService.js'
-import Slider1 from '@/components/widgets/Slider1.vue'
+import Toggle1 from '@/components/widgets/Toggle1.vue'
 
 export default {
   components: {
-    Slider1
+    Toggle1
   },
   props: {
     card: Object,
@@ -59,7 +53,7 @@ export default {
     return {
       cardId: this.$vnode.key,
       widgetVals: {
-        'brightness' : 0
+        power: 'off'
       }
     }
   },
@@ -81,30 +75,13 @@ export default {
         this.$router.push({ path: '/cards/' }) :
         this.$router.push({ path: `/cards/detail/${this.cardId}/` })
     },
-    isActive(key) {
-      return (this.widgetVals[key] > 0) ? 'active' : ''
+    isOn(key) {
+      return (this.widgetVals[key] == 'on') ? 'active' : ''
     },
-    decrementComp(key) {
-      this.$refs[key].compVal --
+    toggleComp(key) {
+      this.$refs[key].compVal = !this.$refs[key].compVal
       this.$refs[key].compChange()
-    },
-    incrementComp(key) {
-      this.$refs[key].compVal ++
-      this.$refs[key].compChange()
-    },
-    toggleVal(key) {
-      let data = null
-      if (key in this.cardVals) {
-        if (key == 'power') {
-          let val = (this.cardVals[key] == 'on')? 'off' : 'on'
-          data = { [key] : val }
-        }
-      }
-      if (data != null) {
-        this.handleUpdate(data)
-        this.handleCommand(data)
-      }
-    },
+    }
   },
   computed: {
     deviceVals() {
@@ -180,12 +157,12 @@ export default {
   border-radius: 50%;
 }
 .widget-container {
-  padding: 0px 2px 0px 10px;
-  width: 100%;
+  padding-left: 10px;
+  flex-grow: 1;
   display: inline-block;
   border: 0px red solid;
 }
-.icon-container i.v-icon {
+.icon-container i.v-icon{
   font-size: 20px;
   color: rgba(255, 255, 255, 0.5);
   padding-left: 0px;
@@ -199,6 +176,7 @@ export default {
 .expand-icon i.v-icon {
   font-size: 20px;
   color: white;
+  padding-left: 0px;
 }
 .v-btn.expand-icon {
   width: 24px;
@@ -211,11 +189,5 @@ i.v-icon.close {
 .extras i.v-icon {
   font-size: 20px;
   color: white;
-}
-.plus-minus {
-  display: flex;
-  justify-content: space-between;
-  padding-left: 35px;
-  border: 0px blue solid;
 }
 </style>

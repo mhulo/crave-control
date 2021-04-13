@@ -104,7 +104,7 @@ card0104:
     - 'Ensuite'
 
 card0004:
-  card: 'dimmer_0'
+  card: 'dimmer_1'
   label: 'Dining Lights'
   icon: 'mdi-lightbulb-outline'
   devices:

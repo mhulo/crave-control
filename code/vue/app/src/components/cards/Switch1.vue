@@ -1,37 +1,45 @@
 <template>
   <div class="card-outer">
-    <div class="label-row">
-      <div class="label-name">
-        <div>{{ card.label }}</div>
-      </div>
-      <div class="label-value">{{ widgetVals.power.toUpperCase() }}</div>
-      <div class="label-expand">
-        <v-btn icon class="expand-icon" @click="handleExpand()">
-          <v-icon v-if="options.show=='full'" class="close">mdi-close</v-icon>
-          <v-icon v-else>mdi-chevron-up</v-icon>
+    <div class="card-details">
+      <div class="card-icon">
+        <v-btn icon :class="'icon-container '+isOn('power')" @click="toggleComp('power_toggle')">
+          <v-icon>{{ cardIcon }}</v-icon>
         </v-btn>
       </div>
-    </div>
-    <div class="interface-row">{{ card.devices[0] }} | {{ deviceVals.power }}</div>
-    <div class="widget-row">
-      <v-btn icon :class="'icon-container '+isOn('power')" @click="toggleComp('power_toggle')">
-        <v-icon>{{ cardIcon }}</v-icon>
-      </v-btn>
-      <div class="widget-container">
-        <Toggle1
-          :key="cardId+'_power_toggle'"
-          :card="card"
-          :deviceName="card.devices[0]"
-          valKey="power"
-          ref="power_toggle"
-          @handleUpdate="handleUpdate"
-          @handleCommand="handleCommand"
-        />
+      <div class="details-main">
+        <div class="label-row">
+          <div class="label-name">
+            <div>{{ card.label }}</div>
+          </div>
+          <div class="label-value">{{ widgetVals.power.toUpperCase() }}</div>
+          <div class="label-expand">
+            <v-btn icon class="expand-icon" @click="handleExpand()">
+              <v-icon v-if="options.show=='full'" class="close">mdi-close</v-icon>
+              <v-icon v-else>mdi-chevron-up</v-icon>
+            </v-btn>
+          </div>
+        </div>
+        <div class="interface-row">{{ card.devices[0] }} | {{ deviceVals.power }}</div>
+        <div class="widget-row">
+          <div class="widget-container">
+            <Toggle1
+              :key="cardId+'_power_toggle'"
+              :card="card"
+              :deviceName="card.devices[0]"
+              valKey="power"
+              ref="power_toggle"
+              @handleUpdate="handleUpdate"
+              @handleCommand="handleCommand"
+            />
+          </div>
+        </div>
       </div>
     </div>
-    <div v-if="options.show=='full'">
-      <div class="extras">
-        <v-icon>mdi-plus</v-icon>
+    <div v-if="options.show=='full'" class="card-main">
+      <div class="plus-minus">
+        <div class="extras">
+          <v-icon>mdi-plus</v-icon>
+        </div>
       </div>
     </div> 
   </div>
@@ -100,10 +108,48 @@ export default {
 <style scoped>
 .card-outer {
   color: grey;
-  background: rgba(0,0,0,0.75);
+  background: rgba(0,0,0,0.6);
   padding: 14px;
   border-radius: 10px;
   border: 0px blue solid;
+  display: flex;
+  flex-direction: column;
+}
+.card-details {
+  border: 0px red solid;
+  display: flex;
+}
+.card-main {
+  border: 0px red solid;
+}
+.card-icon {
+  width: 45px;
+  height: 75px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 0px;
+  border: 0px blue solid;
+}
+.icon-container { 
+  display: inline-block;
+  display: flex;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  margin-top: 2px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+}
+.icon-container i.v-icon {
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.6);
+  padding-left: 0px;
+}
+.details-main {
+  height: 100%;
+  flex-grow: 1;
+  border: 0px red solid;
 }
 .label-row {
   display: flex;
@@ -137,7 +183,7 @@ export default {
 }
 .interface-row {
   font-size: 11px;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255,255,255,0.6);
 }
 .widget-row {
   display: flex;
@@ -145,33 +191,17 @@ export default {
   font-size: 11px;
   border: 0px green solid;
 }
-.icon-container { 
-  display: inline-block;
-  display: flex;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  font-size: 20px;
-  margin-top: 2px;
-  border: 1px rgba(255, 255, 255, 0.5) solid;
-  border-radius: 50%;
-}
 .widget-container {
-  padding-left: 10px;
-  flex-grow: 1;
+  padding: 0px 2px 0px 2px;
+  width: 100%;
   display: inline-block;
   border: 0px red solid;
 }
-.icon-container i.v-icon{
-  font-size: 20px;
-  color: rgba(255, 255, 255, 0.5);
-  padding-left: 0px;
-}
 .active.icon-container {
-  border-color: white;
+  background: rgba(255,255,255,0.9);
 }
 .active.icon-container i.v-icon{
-  color: white;
+  color: rgba(0,0,0,0.5);
 }
 .expand-icon i.v-icon {
   font-size: 20px;
@@ -189,5 +219,10 @@ i.v-icon.close {
 .extras i.v-icon {
   font-size: 20px;
   color: white;
+}
+.plus-minus {
+  display: flex;
+  padding-left: 47px;
+  border: 0px blue solid;
 }
 </style>
