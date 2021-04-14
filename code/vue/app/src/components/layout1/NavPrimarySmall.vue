@@ -77,12 +77,12 @@ a {
   overflow: hidden;
 }
 .bottom-link-container {
-  font-size: 24px;
 }
 i.v-icon.nav-small-icon {
-  color: rgba(255, 255, 255, 0.5);
   width: 40px;
   height: 44px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 20px;
   transform: translateX(30px);
   border: 0px blue solid;
   transition: 0.4s ease all;
@@ -113,11 +113,11 @@ a.active .link-text {
 .bottom-link-bg {
   position: absolute;
   left: 5px;
-  top: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  top: 9px;
+  background-image: linear-gradient(var(--theme-grad-deg), var(--theme-color-1), var(--theme-color-2));
   border-radius: 18px;
   width: 90px;
-  height: 34px;
+  height: 32px;
   z-index: 0;
   transition: 0.4s cubic-bezier(0.7, 0, 0.38, 0.86) all;
 }

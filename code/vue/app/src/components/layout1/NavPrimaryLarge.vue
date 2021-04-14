@@ -74,7 +74,8 @@ export default {
   transition: background-color 0.3s linear;
 }
 .nav-button.active, .nav-button:hover {
-  background: rgba(255, 255, 255, 0.1);
+  /*background: rgba(255, 255, 255, 0.1);*/
+  background-image: linear-gradient(var(--theme-grad-deg), var(--theme-color-1), var(--theme-color-2));
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;
   transition: background-color 0.3s linear;

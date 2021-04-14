@@ -19,7 +19,7 @@
 
       <div :class="'right-container '+layoutSize">
         <div class="logobar small" v-show="layoutSize=='small'">
-          &lt; crave control &gt;
+          <span class="grad">&lt; crave control &gt;</span>
         </div>
         <div :class="'headerbar '+layoutSize">
           <div class="things-title">
@@ -144,8 +144,7 @@ export default {
     display: flex;
     height: 100%;
     font-family: 'Montserrat', sans-serif;
-    /*background: #4e4e4e;*/
-    background-image: radial-gradient(#494949, #161616);
+    background-image: linear-gradient(var(--theme-bg-grad-deg), var(--theme-bg-color-1), var(--theme-bg-color-2));
     /*background: url('~@/assets/img/bg3.jpg') no-repeat top fixed;*/
     background-size: cover;
   }
@@ -156,7 +155,7 @@ export default {
     display: flex;
     flex-direction: column;
     margin: 0px;
-    background: rgba(0,0,0,0.75);
+    background: rgba(0,0,0,var(--theme-side-opacity));
     border: 0px red solid;
   }
   .right-container {
@@ -175,22 +174,19 @@ export default {
     width: 100%;
     display: flex;
     justify-content: center;
-    font-size: 20px;
-    font-weight: 500;
+    font-size: 22px;
+    font-weight: 400;
     padding-top: 15px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.6);
     border: 0px blue solid;
   }
   .logobar.small {
-    height: 40px;
+    height: 50px;
     width: 100%;
     display: flex;
     justify-content: start;
-    font-size: 20px;
-    font-weight: 500;
-    padding: 4px 10px 0px 10px;
-    color: white;
-    border: 0px blue solid;
+    padding: 10px 10px 0px 15px;
+    background: rgb(0,0,0);
   }
   .headerbar {
     height: 60px;
@@ -201,19 +197,18 @@ export default {
     font-size: 20px;
     font-weight: 400;
     padding: 0px 11px;
-    /*color: rgba(0,0,0,0.7);*/
     color: white;
     border: 0px blue solid;
   }
   .headerbar.small {
-    height: 50px;
+    height: 40px;
     width: 100%;
     font-size: 16px;
     line-height: 26px;
-    padding: 0px 15px;
+    padding: 0px 15px 0px 15px;
     margin-bottom: 10px;
     color: white;
-    background: rgba(0,0,0,0.6);
+    background-image: linear-gradient(var(--theme-grad-deg), var(--theme-color-1), var(--theme-color-2));
     border: 0px blue solid;
   }
   .things-title {
@@ -238,7 +233,7 @@ export default {
     z-index: 1000;
     bottom: 50px;
     width: 100%;
-    height: calc(100% - 130px);
+    height: calc(100% - 140px);
     overflow-y: auto;
     background: rgba(0,0,0,0.95);
   }

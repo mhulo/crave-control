@@ -1,6 +1,16 @@
 <template>
   <div class="circle-1">
-      <div :id="circleId"></div>
+    <div :id="circleId">
+    </div>
+    <div class="handle-container">
+      <svg>
+        <defs>
+          <g id="handle">
+            <circle r="10" fill="rgba(0,0,0,0)" stroke-width="2" stroke="#000"></circle>
+          </g>
+        </defs>
+      </svg>
+    </div>
   </div>
 </template>
 
@@ -65,6 +75,7 @@ export default {
             width: 300,
             color: '#FFF',
             handleRadius: 12,
+            handleSvg: '#handle',
             layout: [{ component: iro.ui.Wheel }]
           })
           this.rgbCircle.on('color:change', this.onColorChange)
@@ -119,6 +130,9 @@ export default {
   display: flex;
   justify-content: center;
   padding-bottom: 5px;
-  border: 0px blue solid;
+  border: 0px red solid;
+}
+.handle-container {
+  display: none;
 }
 </style>

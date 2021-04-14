@@ -51,16 +51,18 @@
         </v-btn>
       </div>
       <div>
-        <RgbCircle1
-          :key="cardId+'_rgb_circle'"
-          :card="card"
-          :options="options"
-          :deviceName="card.devices[0]"
-          valKey="rgb"
-          ref="rgb_circle"
-          @handleUpdate="handleUpdate"
-          @handleCommand="handleCommand"
-        />
+        <div class="circle-container">
+          <RgbCircle1
+            :key="cardId+'_rgb_circle'"
+            :card="card"
+            :options="options"
+            :deviceName="card.devices[0]"
+            valKey="rgb"
+            ref="rgb_circle"
+            @handleUpdate="handleUpdate"
+            @handleCommand="handleCommand"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -149,11 +151,14 @@ export default {
     iconRgb() {
       return (this.widgetVals.brightness > 0) ?
         ({
-          color: `rgba(0,0,0,0.6) !important`,
-          backgroundColor: `rgba(${this.deviceRgb},1) !important`,
+          color: `rgba(${this.deviceRgb}) !important`,
+          border: `1px rgba(${this.deviceRgb}) solid !important`,
+          backgroundColor: `rgba(0,0,0,0) !important`
+
         }) :
         ({
           color: `rgba(255,255,255,0.6) !important`,
+          border: `0px rgba(255,255,255,0.6) solid !important`,
           backgroundColor: `rgba(255,255,255,0.1) !important`,
         })
     },
@@ -170,7 +175,7 @@ export default {
 <style scoped>
 .card-outer {
   color: grey;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,var(--theme-card-opacity));
   padding: 14px;
   border-radius: 10px;
   border: 0px blue solid;
@@ -183,7 +188,10 @@ export default {
 }
 .card-main {
   border: 0px red solid;
+  display: flex;
+  flex-direction: column;
 }
+
 .card-icon {
   width: 45px;
   height: 75px;
@@ -257,6 +265,11 @@ export default {
   width: 100%;
   display: inline-block;
   border: 0px red solid;
+}
+.circle-container {
+  display: flex;
+  justify-content: center;
+  border: 0px blue solid;
 }
 .active.icon-container {
   background: rgba(255,255,255,1);

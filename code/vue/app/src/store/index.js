@@ -128,7 +128,6 @@ export default new Vuex.Store({
     updateNav({ commit, state, getters }, data) {
       let key = data['key']
       let idx = data['val']
-      let selected = state.nav.selected
       let sec = (Object.keys(getters.navSecondary).length > 0) ?
         getters.navSecondary[idx].name :
         'All'

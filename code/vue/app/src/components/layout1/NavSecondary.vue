@@ -103,11 +103,14 @@ export default {
 }
 .active.sec-nav-button {
   color: white;
-  background: rgba(255, 255, 255, 0.05);
+  background-image: linear-gradient(var(--theme-grad-deg), var(--theme-color-1), var(--theme-color-2));
 }
-
+.small .active.sec-nav-button {
+  color: white;
+  background: rgba(255, 255, 255, 0.15);
+}
 .sec-nav-button:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.1);
   -webkit-transition: background-color 0.3s linear;
   -ms-transition: background-color 0.3s linear;
   transition: background-color 0.3s linear;

@@ -108,7 +108,7 @@ export default {
 <style scoped>
 .card-outer {
   color: grey;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,var(--theme-card-opacity));
   padding: 14px;
   border-radius: 10px;
   border: 0px blue solid;
@@ -198,10 +198,11 @@ export default {
   border: 0px red solid;
 }
 .active.icon-container {
-  background: rgba(255,255,255,0.9);
+  border: 1px white solid;
+  background: rgba(0,0,0,0);
 }
 .active.icon-container i.v-icon{
-  color: rgba(0,0,0,0.5);
+  color:white;
 }
 .expand-icon i.v-icon {
   font-size: 20px;
