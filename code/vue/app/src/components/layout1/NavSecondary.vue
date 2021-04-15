@@ -103,7 +103,7 @@ export default {
 }
 .active.sec-nav-button {
   color: white;
-  background-image: linear-gradient(var(--theme-grad-deg), var(--theme-color-1), var(--theme-color-2));
+  background-image: linear-gradient(var(--theme-hl-grad-deg), var(--theme-hl-color-1), var(--theme-hl-color-2));
 }
 .small .active.sec-nav-button {
   color: white;

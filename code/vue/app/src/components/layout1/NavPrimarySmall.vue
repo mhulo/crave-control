@@ -114,7 +114,7 @@ a.active .link-text {
   position: absolute;
   left: 5px;
   top: 9px;
-  background-image: linear-gradient(var(--theme-grad-deg), var(--theme-color-1), var(--theme-color-2));
+  background-image: linear-gradient(var(--theme-hl-grad-deg), var(--theme-hl-color-1), var(--theme-hl-color-2));
   border-radius: 18px;
   width: 90px;
   height: 32px;

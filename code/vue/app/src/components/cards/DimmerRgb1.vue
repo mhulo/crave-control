@@ -5,7 +5,7 @@
         <v-btn
           icon
           :class="'icon-container '+isActive('brightness')"
-          :style="iconRgb"
+          :style="icon1"
           @click="toggleVal('power')"
         >
           <v-icon>{{ cardIcon }}</v-icon>
@@ -148,12 +148,27 @@ export default {
       let rgb = this.widgetVals.rgb
       return `${rgb[0]}, ${rgb[1]}, ${rgb[2]}`
     },
-    iconRgb() {
+    icon0() {
+      // hollow icons with coloured borders
       return (this.widgetVals.brightness > 0) ?
         ({
           color: `rgba(${this.deviceRgb}) !important`,
           border: `1px rgba(${this.deviceRgb}) solid !important`,
           backgroundColor: `rgba(0,0,0,0) !important`
+        }) :
+        ({
+          color: `rgba(255,255,255,0.6) !important`,
+          border: `0px rgba(255,255,255,0.6) solid !important`,
+          backgroundColor: `rgba(255,255,255,0.1) !important`,
+        })
+    },
+    icon1() {
+      //solid icons with coloured background
+      return (this.widgetVals.brightness > 0) ?
+        ({
+          color: `rgba(0,0,0,0.8) !important`,
+          border: `0px rgba(255,255,255,0.6) solid !important`,
+          backgroundColor: `rgba(${this.deviceRgb}) !important`,
 
         }) :
         ({
@@ -272,10 +287,10 @@ export default {
   border: 0px blue solid;
 }
 .active.icon-container {
-  background: rgba(255,255,255,1);
+  /*background: rgba(0,0,0,0);*/
 }
 .active.icon-container i.v-icon{
-  /*color: rgba(0,0,0,0.5);*/
+  /*color: white;*/
 }
 .expand-icon i.v-icon {
   font-size: 20px;

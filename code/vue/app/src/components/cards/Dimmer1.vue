@@ -2,7 +2,12 @@
   <div class="card-outer">
     <div class="card-details">
       <div class="card-icon">
-        <v-btn icon :class="'icon-container '+isActive('brightness')" @click="toggleVal('power')">
+        <v-btn 
+          icon
+          :class="'icon-container '+isActive('brightness')"
+          :style="icon1"
+          @click="toggleVal('power')"
+        >
           <v-icon>{{ cardIcon }}</v-icon>
         </v-btn>
       </div>
@@ -121,6 +126,38 @@ export default {
     },
     cardIcon() {
       return ('icon' in this.card) ? this.card.icon : 'mdi-lightbulb-outline'
+    },
+    deviceRgb() {
+      return `255,255,255`
+    },
+    icon0() {
+      // hollow icons with coloured borders
+      return (this.widgetVals.brightness > 0) ?
+        ({
+          color: `rgba(${this.deviceRgb}) !important`,
+          border: `1px rgba(${this.deviceRgb}) solid !important`,
+          backgroundColor: `rgba(0,0,0,0) !important`
+        }) :
+        ({
+          color: `rgba(255,255,255,0.6) !important`,
+          border: `0px rgba(255,255,255,0.6) solid !important`,
+          backgroundColor: `rgba(255,255,255,0.1) !important`,
+        })
+    },
+    icon1() {
+      //solid icons with coloured background
+      return (this.widgetVals.brightness > 0) ?
+        ({
+          color: `rgba(0,0,0,0.8) !important`,
+          border: `0px rgba(255,255,255,0.6) solid !important`,
+          backgroundColor: `rgba(${this.deviceRgb}) !important`,
+
+        }) :
+        ({
+          color: `rgba(255,255,255,0.6) !important`,
+          border: `0px rgba(255,255,255,0.6) solid !important`,
+          backgroundColor: `rgba(255,255,255,0.1) !important`,
+        })
     }
   }
 }
@@ -164,13 +201,12 @@ export default {
 }
 .icon-container i.v-icon {
   font-size: 22px;
-  color: rgba(255, 255, 255, 0.6);
   padding-left: 0px;
 }
 .details-main {
   height: 100%;
   flex-grow: 1;
-  border: 0px red solid;
+  border: 0px green solid;
 }
 .label-row {
   display: flex;
@@ -219,11 +255,10 @@ export default {
   border: 0px red solid;
 }
 .active.icon-container {
-  border: 1px white solid;
-  background: rgba(0,0,0,0);
+  /*background: rgba(0,0,0,0);*/
 }
 .active.icon-container i.v-icon {
-  color: white;
+  /*color: white;*/
 }
 .expand-icon i.v-icon {
   font-size: 20px;

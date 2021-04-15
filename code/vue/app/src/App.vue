@@ -12,35 +12,35 @@ export default {
       // themes
       selected: 'grey1',
       grey1: {
-        color1: '#1d2225', 
-        color2: '#1d2225', 
-        sideOpacity: '0.6',
-        cardOpacity: '0.4',
-        gradDeg: '45deg',
+        hlColor1: '#0b1114',
+        hlColor2: '#292f31',
+        hlGradDeg: '135deg',
         bgColor1: '#0b1114', 
         bgColor2: '#363e41', 
-        bgGradDeg: '-45deg'
+        bgGradDeg: '-45deg',
+        sideOpacity: '0.5',
+        cardOpacity: '0.4'
       },
       blue1: {
-        color1: '#1f1f42', 
-        color2: '#1c1c5f', 
-        sideOpacity: '0.6',
-        cardOpacity: '0.4',
-        gradDeg: '45deg',
+        hlColor1: '#1f1f42', 
+        hlCcolor2: '#1c1c5f', 
+        hlGradDeg: '45deg',
         bgColor1: '#3c415a', 
         bgColor2: '#000000', 
         bgColor3: '#0b1114', 
-        bgGradDeg: '-45deg'
+        bgGradDeg: '-45deg',
+        sideOpacity: '0.6',
+        cardOpacity: '0.4'
       },
       blue2: {
-        color1: '#3f35d8', 
-        color2: '#191558', 
-        sideOpacity: '0.6',
-        cardOpacity: '0.4',
-        gradDeg: '45deg',
+        hlColor1: '#3f35d8', 
+        hlColor2: '#191558', 
+        hlGradDeg: '45deg',
         bgColor1: '#000000', 
         bgColor2: '#3f35d8', 
-        bgGradDeg: '-45deg'
+        bgGradDeg: '-45deg',
+        sideOpacity: '0.6',
+        cardOpacity: '0.4'
       }
     }
   },
@@ -49,14 +49,14 @@ export default {
     cssVars () {
       let theme = this.[this.selected]
       return {
-        '--theme-color-1': theme.color1,
-        '--theme-color-2': theme.color2,
-        '--theme-side-opacity': theme.sideOpacity,
-        '--theme-card-opacity': theme.cardOpacity,
-        '--theme-grad-deg': theme.gradDeg,
+        '--theme-hl-color-1': theme.hlColor1,
+        '--theme-hl-color-2': theme.hlColor2,
+        '--theme-hl-grad-deg': theme.hlGradDeg,
         '--theme-bg-color-1': theme.bgColor1,
         '--theme-bg-color-2': theme.bgColor2,
-        '--theme-bg-grad-deg': theme.bgGradDeg
+        '--theme-bg-grad-deg': theme.bgGradDeg,
+        '--theme-side-opacity': theme.sideOpacity,
+        '--theme-card-opacity': theme.cardOpacity
       }
     }
   }

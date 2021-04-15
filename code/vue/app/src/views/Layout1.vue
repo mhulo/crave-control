@@ -208,7 +208,7 @@ export default {
     padding: 0px 15px 0px 15px;
     margin-bottom: 10px;
     color: white;
-    background-image: linear-gradient(var(--theme-grad-deg), var(--theme-color-1), var(--theme-color-2));
+    background-image: linear-gradient(var(--theme-hl-grad-deg), var(--theme-hl-color-1), var(--theme-hl-color-2));
     border: 0px blue solid;
   }
   .things-title {
