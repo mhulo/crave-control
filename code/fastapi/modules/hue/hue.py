@@ -9,8 +9,7 @@ class Hue:
 
   def __init__(self, ifx):
     self.conf = get_interface_conf(ifx)
-    self.daemon_key = self.conf['interface'] + '_daemon'
-    self.state_key = self.conf['interface'] + '_state'
+    self.ifx_key = 'ifx_' + self.conf['interface']
     self.redis = Request.state.redis
     self.ws = Request.state.ws
 
@@ -26,6 +25,11 @@ class Hue:
     if ('rgb' in data):
       resp = self.SetRgb(data)
       ret_val.append(resp)
+  
+    x = {}
+    x['trace'] = data
+    ret_val.append(x)
+
     return ret_val
 
 
@@ -67,45 +71,65 @@ class Hue:
   async def Start(self):
     started_ts = str(time())
     this_id = started_ts
-    instance_id = started_ts
-    self.redis.HSet(self.daemon_key, { 'instance_id' : instance_id , 'started_ts' : started_ts })
-    self.redis.HSet(self.daemon_key, { 'message' : 'started',  'loop_ts' : str(time()) })
-    self.redis.HSet('state', { self.conf['interface'] : '' })
+    loop_id = started_ts
+    self.redis.HSet(self.ifx_key, {
+      'loop_id': loop_id ,
+      'loop_ts': started_ts,
+      'started_ts': started_ts,
+      'updated_ts': started_ts,
+      'message':  'started',
+      'state': '{'+'}'
+    })
     retries = 0
     max_retries = 1 # fail fast if cant connect first go - could be config issue. 
     updated_ts = 0
-    checked_ts = 0
-    cached_state = '{{}}' #json string
-    while ((retries < max_retries) and (this_id == instance_id)):
+    cached_state = '{'+'}' #json string
+    while ((retries < max_retries) and (this_id == loop_id)):
+      loop_id = self.redis.HGet(self.ifx_key, 'loop_id')
       ifx_vals = self.StateRaw()
       if (ifx_vals.status_code == 200):
         retries = 0
-        max_retries = 10
+        max_retries = 100
         updated_diff = time() - updated_ts
-        checked_diff = time() - checked_ts
         state_raw = ifx_vals.json()
         state = json.dumps(self.ProcessState(state_raw))
-        checked_ts = time()
         if (state != cached_state): # comparison of json strings
           updated_ts = time()
-          self.redis.HSet('state', { self.conf['interface'] : state })
+          self.redis.HSet(self.ifx_key, {
+            'state' : state,
+            'updated_ts' : updated_ts
+          })
+          self.redis.HSet('ifx_core', {
+            'updated_ts' : updated_ts
+          })
           cached_state = state
-        instance_id = self.redis.HGet(self.daemon_key, 'instance_id')
-        self.redis.HSet(self.daemon_key, { 'loop_ts' : str(time()) })
+
+        self.redis.HSet(self.ifx_key, { 'loop_ts' : str(time()) })
         if (updated_diff < 600):
           await asyncio.sleep(0.5) # 500ms
         else:
           await asyncio.sleep(1.5) # 1.5s (sleep mode)
       else:
-        self.redis.HSet(self.daemon_key, { 'message' : 'error - could not connect to bridge' })
-        instance_id = self.redis.HGet(self.daemon_key, 'instance_id')
+        self.redis.HSet(self.ifx_key, { 'message' : 'error - could not connect to bridge' })
         retries += 1
-        await asyncio.sleep(2)
+        await asyncio.sleep(retries) # will wait longer and longer if not connecting
 
 
   def Stop(self):
-    self.redis.HSet(self.daemon_key, { 'instance_id' : '0',  'message' : 'stopped' })
-    self.redis.HSet('state', { self.conf['interface'] : '{'+'}' })
+    self.redis.HSet(self.ifx_key, {
+      'loop_id': '0',
+      'message': 'stopped' ,
+      'state': '{'+'}'
+    })
+
+
+  def Test(self):
+    state = self.redis.GetState()
+    device = 'hue.master_led_strip'
+    device_arr = device.split('.')
+    device_state = state[device_arr[0]][device_arr[1]]
+    ret_val = device_state
+    return ret_val
 
 
   def Status(self):
@@ -117,7 +141,7 @@ class Hue:
     ifx_vals = self.StateRaw()
     if (ifx_vals.status_code == 200):
       state_raw = ifx_vals.json()
-      ret_val = self.ProcessState(state_raw) 
+      ret_val = self.ProcessState(state_raw)
     else:
       ret_val = { 'message' : 'error - could not connect to bridge' }  
     return ret_val

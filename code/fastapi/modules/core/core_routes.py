@@ -1,7 +1,7 @@
 from main.main_common import *
 
 
-# autoload modules in main_settings so that core 
+# autoload (create references to) modules in main_settings so that core 
 # can access everything required for the actions
 modules = {}
 for k, v in interfaces_conf.items():
@@ -36,36 +36,36 @@ def core_icons_conf():
   return modules['core'].IconsConf()
 
 
-@router.get("/event/start/")
+@router.get('/state/')  
+def core_event_state():
+  resp = modules['core'].event.State()
+  return resp
+
+
+@router.get('/status/')  
+def core_event_status():
+  resp = modules['core'].event.Status()
+  return resp
+
+
+@router.get("/start/")
 async def core_event_start(background_tasks: BackgroundTasks):
   background_tasks.add_task(modules['core'].event.Start)
   resp = { 'message' : 'event daemon: started' }
   return resp
 
 
-@router.get('/event/start_debug/')  
+@router.get('/start_debug/')  
 async def core_event_start_debug():
   resp = await modules['core'].event.Start()
   resp = { 'message' : 'event daemon: started' }
   return resp
 
 
-@router.get('/event/stop/')  
+@router.get('/stop/')  
 async def core_event_stop():
   resp = modules['core'].event.Stop()
   resp = { 'message' : 'event daemon: stopped' }
-  return resp
-
-
-@router.get('/event/state/')  
-def core_event_state():
-  resp = modules['core'].event.State()
-  return resp
-
-
-@router.get('/event/status/')  
-def core_event_status():
-  resp = modules['core'].event.Status()
   return resp
 
 

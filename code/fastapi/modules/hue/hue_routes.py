@@ -53,3 +53,10 @@ def hue_ping(request: Request):
   return resp
 
 
+@router.get('/test/')  
+def hue_test(request: Request):
+  ifx = get_ifx(request)
+  resp = Hue(ifx).Test()
+  return resp
+
+

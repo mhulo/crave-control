@@ -4,6 +4,8 @@ import redis
 from time import time
 from datetime import datetime
 
+from main.main_common import *
+
 
 class MainRedis:
 
@@ -49,8 +51,6 @@ class MainRedis:
   # set a dict of values to a hash
   def HSet(self, rhash, rdata):
     r = self.Conn()
-    if (rhash == 'state'):
-      rdata['updated_ts'] = str(time())
     val = r.hset(rhash, mapping=rdata)
     return val
 
@@ -88,15 +88,17 @@ class MainRedis:
   # get state as dicts
   def GetState(self):
     r = self.Conn()
-    resp = r.hgetall('state')
     vals = {}
-    for i in resp:
-      if (resp[i] != None):
-        val = resp[i].decode("utf-8")
-        if (val[0:1] == '{'):
-          val = json.loads(val)
-      vals[i.decode("utf-8")] = val
-
+    for k, v in interfaces_conf.items():
+      if (v['active'] == True):
+        ifx = r.hgetall('ifx_'+k)
+        vals[k] = {}
+        for i in ifx:
+          if (ifx[i] != None):
+            val = ifx[i].decode("utf-8")
+            if (val[0:1] == '{'):
+              val = json.loads(val)
+          vals[k][i.decode("utf-8")] = val
     return vals
 
 

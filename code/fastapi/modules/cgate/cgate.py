@@ -4,8 +4,7 @@ class Cgate:
 
   def __init__(self, ifx):
     self.conf = get_interface_conf(ifx)
-    self.daemon_key = self.conf['interface'] + '_daemon'
-    self.state_key = self.conf['interface'] + '_state'
+    self.ifx_key = 'ifx_' + self.conf['interface']
     self.redis = Request.state.redis
     self.ws = Request.state.ws
 
@@ -45,24 +44,31 @@ class Cgate:
   async def Start(self):
     started_ts = str(time())
     this_id = started_ts
-    instance_id = started_ts
-    self.redis.HSet(self.daemon_key, { 'instance_id' : instance_id , 'started_ts' : started_ts })
-    self.redis.HSet(self.daemon_key, { 'message' : 'started',  'loop_ts' : str(time()) })
-    self.redis.HSet('state', { self.conf['interface'] : '' })
+    loop_id = started_ts
+    self.redis.HSet(self.ifx_key, {
+      'loop_id': loop_id ,
+      'loop_ts': started_ts,
+      'started_ts': started_ts,
+      'updated_ts': started_ts,
+      'message':  'started',
+      'state': '{'+'}'
+    })
     retries = 0
     max_retries = 1 # fail fast if cant connect first go - could be config issue. 
     updated_ts = 0
     checked_ts = 0
-    cached_state = '{{}}' #json string
-    while ((retries < max_retries) and (this_id == instance_id)):
+    cached_state = '{'+'}' #json string
+    while ((retries < max_retries) and (this_id == loop_id)):
       try:
         with Telnet(self.conf['host'], self.conf['change_port']) as conn:
           max_retries = 10
-          while (this_id == instance_id):
+          while (this_id == loop_id):
+            loop_id = self.redis.HGet(self.ifx_key, 'loop_id')
             updated_diff = time() - updated_ts
             checked_diff = time() - checked_ts
             resp = self.Read(conn, self.conf['event_timeout'])
             if ((resp != '') or (updated_diff < 10) or (checked_diff > 100)):
+              retries = 0
               state_data = self.State()
               if ('error' in state_data):
                   await asyncio.sleep(10) # back off if getting an error for some reason           
@@ -70,26 +76,32 @@ class Cgate:
               checked_ts = time()
               if (state != cached_state): # comparison of json strings
                 updated_ts = time()
-                self.redis.HSet('state', { self.conf['interface'] : state })
+                self.redis.HSet(self.ifx_key, {
+                  'state' : state,
+                  'updated_ts' : updated_ts
+                })
+                self.redis.HSet('ifx_core', {
+                  'updated_ts' : updated_ts
+                })
                 cached_state = state
-            instance_id = self.redis.HGet(self.daemon_key, 'instance_id')
-            self.redis.HSet(self.daemon_key, { 'loop_ts' : str(time()) })
+            self.redis.HSet(self.ifx_key, { 'loop_ts' : str(time()) })
             if (updated_diff < 600):
               await asyncio.sleep(0.5) # 500ms
             else:
               await asyncio.sleep(1.5) # 1.5s (sleep mode)
             retries = 0
       except Exception as e:
-        self.redis.HSet(self.daemon_key, { 'message' : 'error - ' + str(e) + ' could not connect to host/port' })
-        instance_id = self.redis.HGet(self.daemon_key, 'instance_id')
+        self.redis.HSet(self.ifx_key, { 'message' : 'error - ' + str(e) + ' could not connect to host/port' })
         retries += 1
-        await asyncio.sleep(2)
+        await asyncio.sleep(retries) # will wait longer and longer if not connecting
 
 
   def Stop(self):
-    self.redis.HSet(self.daemon_key, { 'instance_id' : '0',  'message' : 'stopped' })
-    self.redis.HSet('state', { self.conf['interface'] : '{'+'}' })
-
+    self.redis.HSet(self.ifx_key, {
+      'loop_id': '0',
+      'message': 'stopped' ,
+      'state': '{'+'}'
+    })
 
   def Status(self):
     ret_val = self.redis.GetStatus(self.daemon_key)

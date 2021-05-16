@@ -17,7 +17,6 @@ class CoreAction:
     act_meth = 'SetDevice'
     acts = []
     
-    
     for d in data['devices']:
       d_arr = d.split('.')
       device = devices_conf[d_arr[0]][d_arr[1]]
@@ -30,7 +29,7 @@ class CoreAction:
         resp = await act_obj(act_data)
       else:
         resp = act_obj(act_data)
-      
+
       a = {}
       a['data'] = act_data
       a['response'] = resp

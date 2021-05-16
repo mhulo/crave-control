@@ -42,7 +42,6 @@ export default {
       }
       if (this.cmdVal != null) {
         if ((Date.now() - this.cmdTimeStamp) > this.cmdRate) {
-          let val = this.cmdVal
           this.cmdVal = null
           this.cmdTimeStamp = Date.now()
           this.compChgTimestamp = Date.now()

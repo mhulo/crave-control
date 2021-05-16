@@ -49,13 +49,28 @@ cgate:
   front_door_light:
     address: 'NET1_254_56_24'
 
+  pergola_light:
+    address: 'NET1_254_56_19'
+
+  bedroom_led_strip__rgb__brightness:
+    address: 'NET1_254_56_25'
+
+  bedroom_led_strip__rgb__red:
+    address: 'NET1_254_56_26'
+
+  bedroom_led_strip__rgb__green:
+    address: 'NET1_254_56_27'
+
+  bedroom_led_strip__rgb__blue:
+    address: 'NET1_254_56_28'
 
 hue:
   stairs_led_strip:
     address: '2'
+    model: 'LST002'
 
   master_led_strip:
     address: '3'
-
+    model: 'LST002'
 
 

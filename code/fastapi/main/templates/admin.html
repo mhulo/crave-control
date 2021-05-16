@@ -6,23 +6,23 @@
 <script language="javascript" type="text/javascript">  
   $(document).ready(function(){
 
-    $('#event_start').click(function() {
-      $.ajax({url: "/api/core/event/start/", success: function(result){
+    $('#core_start').click(function() {
+      $.ajax({url: "/api/core/start/", success: function(result){
         alert(JSON.stringify(result));
        }});
     });
-    $('#event_stop').click(function() {
-      $.ajax({url: "/api/core/event/stop/", success: function(result){
+    $('#core_stop').click(function() {
+      $.ajax({url: "/api/core/stop/", success: function(result){
         alert(JSON.stringify(result));
        }});
     });
-    $('#event_status').click(function() {
-      $.ajax({url: "/api/core/event/status/", success: function(result){
+    $('#core_status').click(function() {
+      $.ajax({url: "/api/core/status/", success: function(result){
         alert(JSON.stringify(result));
        }});
     });
-    $('#event_state').click(function() {
-      $.ajax({url: "/api/core/event/state/", success: function(result){
+    $('#core_state').click(function() {
+      $.ajax({url: "/api/core/state/", success: function(result){
         alert(JSON.stringify(result));
        }});
     });
@@ -83,11 +83,11 @@
       <td width="100"></td>
     </tr>
     <tr>
-      <td id="event_light">Event Listner [event]</td>
-      <td align="center"><button id="event_start">Start</button></td>
-      <td align="center"><button id="event_stop">Stop</button></td>
-      <td align="center"><button id="event_status">Status</button></td>
-      <td align="center"><button id="event_state">State</button></td>
+      <td id="event_light">Core [core]</td>
+      <td align="center"><button id="core_start">Start</button></td>
+      <td align="center"><button id="core_stop">Stop</button></td>
+      <td align="center"><button id="core_status">Status</button></td>
+      <td align="center"><button id="core_state">State</button></td>
     </tr>
     <tr>
       <td id="cgate_light">Clipsal C-Bus [cgate]</td>
